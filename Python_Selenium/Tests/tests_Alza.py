@@ -67,12 +67,14 @@ class TestsAlza:
         self.login_dialog.login_provide_email(TestData.user_name)
         self.login_dialog.login_provide_password(TestData.password)
         self.login_dialog.login_click_signin_button()
-        self.login_dialog.login_switch_back_from_login_frame()
+        # self.login_dialog.login_switch_back_from_login_frame()
         assert self.login_dialog.login_dialog_is_invisible_out_of_frame(), "Login dialog is still visible but shall not be."
-        actual_signed_in_text = self.login_dialog.login_get_signed_in_text()
+        # actual_signed_in_text = self.login_dialog.login_get_signed_in_text()
+        actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
         assert actual_signed_in_text == TestData.user_signed_in_text, f"Wrong text in the top menu. Current text is {actual_signed_in_text} but shall be {TestData.user_signed_in_text}. User is not logged in though shall be?"
 
         # Logout.
+        self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
         assert self.top_section.top_section_login_link_is_visible(), "Login link is not visible, though it shall be."
 

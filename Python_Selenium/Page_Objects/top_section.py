@@ -8,7 +8,8 @@ class TopSection(BasePage):
     login_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleLogin']")
     alza_main_page_icon = (By.XPATH, "//a[@title='Alza']")
     user_profile_link = (By.ID, "lblUser")
-    logout_link = (By.ID, "lblSignOut")
+    signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
+    logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']")
     search_input = (By.ID, "edtSearch")
     search_button = (By.ID, "btnSearch")
     search_suggestion = (By.XPATH, "//ul[@id='ui-id-1'][not(contains(@style, 'none'))]")
@@ -45,3 +46,11 @@ class TopSection(BasePage):
     def top_section_login_link_is_visible(self):
         flag = self.base_is_visible(self.login_link)
         return flag
+
+    def top_section_get_signed_in_user_text(self):
+        if self.base_is_visible(self.signed_in_user_link):
+            signed_in_user_text = self.base_get_element_text(self.signed_in_user_link)
+            return signed_in_user_text
+
+    def top_section_click_signed_in_user_link(self):
+        self.base_click(self.signed_in_user_link)

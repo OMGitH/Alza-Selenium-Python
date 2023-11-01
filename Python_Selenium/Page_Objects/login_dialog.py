@@ -10,7 +10,7 @@ class LoginDialog(BasePage):
     password_input = (By.XPATH, "//input[@id='password' and not(@readonly)]")
     sign_in_button_active = (By.XPATH, "//button[@id='btnLogin'][not(contains(@class, 'disabled'))]")
     sign_in_button_disabled = (By.XPATH, "//button[@id='btnLogin'][not(contains(@class, 'disabled'))]")
-    signed_in_user_text = (By.ID, "lblUser")
+    # signed_in_user_text = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
     login_dialog_out_of_frame = (By.XPATH, "//div[@data-testid='alzaDialog']")
     login_dialog_in_frame = (By.CLASS_NAME, "login-body")
     provide_email_text = (By.XPATH, "//label[@for='userName']/parent::div/span")
@@ -43,8 +43,11 @@ class LoginDialog(BasePage):
         return flag
 
     def login_dialog_is_invisible_out_of_frame(self):
-        flag = self.base_is_invisible(self.login_dialog_out_of_frame)
+        flag = self.base_is_invisible(self.login_dialog_in_frame)
         return flag
+    # def login_dialog_is_invisible_out_of_frame(self):
+    #     flag = self.base_is_invisible(self.login_dialog_out_of_frame)
+    #     return flag
 
     def login_get_blank_email_text(self):
         if self.base_is_visible(self.provide_email_text):
@@ -61,10 +64,10 @@ class LoginDialog(BasePage):
             disabled_button_text = self.base_get_element_text(self.sign_in_button_disabled)
             return disabled_button_text
 
-    def login_get_signed_in_text(self):
-        if self.base_is_visible(self.signed_in_user_text):
-            signed_in_user_text = self.base_get_element_text(self.signed_in_user_text)
-            return signed_in_user_text
+    # def login_get_signed_in_text(self):
+    #     if self.base_is_visible(self.signed_in_user_text):
+    #         signed_in_user_text = self.base_get_element_text(self.signed_in_user_text)
+    #         return signed_in_user_text
 
     def login_successful_login(self, username, password):
         self.base_switch_to_frame(self.login_frame)

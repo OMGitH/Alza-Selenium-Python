@@ -8,7 +8,7 @@ class TestData:
     signin_button_incorrect_user_name_password_text = "Neplatné uživatelské jméno nebo heslo"
     blank_email_text = "Zadejte e-mailovou adresu"
     blank_password_text = "Zadejte prosím heslo"
-    user_signed_in_text = "Moje Alza - " + user_name
+    user_signed_in_text = user_name
 
     number_of_items_in_basket = 1
     text_once_all_items_removed_from_basket = "Jsem tak prázdný..."
