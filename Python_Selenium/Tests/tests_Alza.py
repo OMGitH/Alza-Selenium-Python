@@ -15,13 +15,13 @@ class TestsAlza:
 
     def test_login_logout(self):
         """
-        Tests log in functionality. First all cookies are rejected, then login is clicked to invoke login dialog.
+        Tests log in functionality. First all cookies are rejected, then login is clicked.
         Credential fields are blank, signin button is pressed and is checked that login dialog stays open and there are corresponding error messages displayed.
-        Then wrong email address is provided with correct password, signin button is pressed and is checked that login dialog stays displayed and there is correct
+        Then wrong email address is provided with correct password, signin button is clicked and is checked that login stays displayed and there is correct
         text on signin button.
-        Then correct email address is provided with wrong password, signin button is pressed and is checked that login dialog stays displayed and there is correct
+        Then correct email address is provided with wrong password, signin button is clicked and is checked that login stays displayed and there is correct
         text on signin button.
-        Then both correct email address and correct password are provided, signin button is pressed and is checked that login dialog disappears and correct
+        Then both correct email address and correct password are provided, signin button is clicked and is checked that login disappears and correct
         user email is displayed in upper part of the screen.
         At the end logout link is clicked and is checked that login link is present.
         """
@@ -36,7 +36,7 @@ class TestsAlza:
 
         # Click login link and switch to login frame.
         self.top_section.top_section_click_login_link()
-        self.login_dialog.login_switch_to_login_frame()
+        # self.login_dialog.login_switch_to_login_frame()
 
         # Unsuccessful login:
         # Email and password fields blank.

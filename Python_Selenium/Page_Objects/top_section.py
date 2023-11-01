@@ -5,7 +5,7 @@ from Page_objects.base_page import BasePage
 class TopSection(BasePage):
 
     # Identification of objects in top section of the page.
-    login_link = (By.ID, "lblLogin")
+    login_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleLogin']")
     alza_main_page_icon = (By.XPATH, "//a[@title='Alza']")
     user_profile_link = (By.ID, "lblUser")
     logout_link = (By.ID, "lblSignOut")

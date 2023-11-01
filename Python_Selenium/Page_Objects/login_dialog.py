@@ -5,7 +5,7 @@ from Page_objects.base_page import BasePage
 class LoginDialog(BasePage):
 
     # Identification of objects on login dialog.
-    login_frame = (By.ID, "loginIframe")
+    # login_frame = (By.ID, "loginIframe")
     email_input = (By.XPATH, "//input[@id='userName' and not(@readonly)]")
     password_input = (By.XPATH, "//input[@id='password' and not(@readonly)]")
     sign_in_button_active = (By.XPATH, "//button[@id='btnLogin'][not(contains(@class, 'disabled'))]")
