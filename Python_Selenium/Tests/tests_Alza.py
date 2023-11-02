@@ -3,7 +3,7 @@ import pytest
 from Config.test_data import TestData
 from Helpers.helpers import Helpers
 from Page_objects.basket import Basket
-from Page_objects.login_dialog import LoginDialog
+from Page_objects.login_page import LoginPage
 from Page_objects.main_page import MainPage
 from Page_objects.my_account import MyAccount
 from Page_objects.top_section import TopSection
@@ -26,7 +26,7 @@ class TestsAlza:
         At the end logout link is clicked and it is checked that login link is present.
         """
 
-        self.login_dialog = LoginDialog(self.driver)
+        self.login_page = LoginPage(self.driver)
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
 
@@ -39,34 +39,34 @@ class TestsAlza:
 
         # Unsuccessful login:
         # Email and password fields blank.
-        self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
-        actual_blank_email_text = self.login_dialog.login_get_blank_email_text()
+        self.login_page.login_click_signin_button()
+        assert self.login_page.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
+        actual_blank_email_text = self.login_page.login_get_blank_email_text()
         assert actual_blank_email_text == TestData.blank_email_text, f"Wrong message for blank e-mail input field. Current message is {actual_blank_email_text} but it shall be {TestData.blank_email_text}."
-        actual_blank_password_text = self.login_dialog.login_get_blank_password_text()
+        actual_blank_password_text = self.login_page.login_get_blank_password_text()
         assert actual_blank_password_text == TestData.blank_password_text, f"Wrong message for blank password input field. Current message is {actual_blank_password_text} but it shall be {TestData.blank_password_text}."
 
         # Wrong email and correct password provided.
-        self.login_dialog.login_provide_email(TestData.incorrect_user_name)
-        self.login_dialog.login_provide_password(TestData.password)
-        self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
-        actual_disabled_login_button_text = self.login_dialog.login_get_disabled_login_button_text()
+        self.login_page.login_provide_email(TestData.incorrect_user_name)
+        self.login_page.login_provide_password(TestData.password)
+        self.login_page.login_click_signin_button()
+        assert self.login_page.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
+        actual_disabled_login_button_text = self.login_page.login_get_disabled_login_button_text()
         assert actual_disabled_login_button_text == TestData.signin_button_incorrect_user_name_password_text, f"Wrong message at signin button when incorrect email provided. Current message is {actual_disabled_login_button_text} but it shall be {TestData.signin_button_incorrect_user_name_password_text}."
 
         # Correct email and wrong password provided.
-        self.login_dialog.login_provide_email(TestData.user_name)
-        self.login_dialog.login_provide_password(TestData.incorrect_password)
-        self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
-        actual_disabled_login_button_text = self.login_dialog.login_get_disabled_login_button_text()
+        self.login_page.login_provide_email(TestData.user_name)
+        self.login_page.login_provide_password(TestData.incorrect_password)
+        self.login_page.login_click_signin_button()
+        assert self.login_page.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
+        actual_disabled_login_button_text = self.login_page.login_get_disabled_login_button_text()
         assert actual_disabled_login_button_text == TestData.signin_button_incorrect_user_name_password_text, f"Wrong message at signin button when incorrect password provided. Current message is {actual_disabled_login_button_text} but it shall be {TestData.signin_button_incorrect_user_name_password_text}."
 
         # Successful login.
-        self.login_dialog.login_provide_email(TestData.user_name)
-        self.login_dialog.login_provide_password(TestData.password)
-        self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_invisible(), "Login dialog is still visible but shall not be."
+        self.login_page.login_provide_email(TestData.user_name)
+        self.login_page.login_provide_password(TestData.password)
+        self.login_page.login_click_signin_button()
+        assert self.login_page.login_dialog_is_invisible(), "Login dialog is still visible but shall not be."
         actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
         assert actual_signed_in_text == TestData.user_signed_in_text, f"Wrong text in the top menu. Current text is {actual_signed_in_text} but shall be {TestData.user_signed_in_text}. User is not logged in though shall be?"
 
@@ -82,7 +82,7 @@ class TestsAlza:
         At the end logs out.
         """
 
-        self.login_dialog = LoginDialog(self.driver)
+        self.login_page = LoginPage(self.driver)
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
         self.main_page = MainPage(self.driver)
@@ -95,7 +95,7 @@ class TestsAlza:
         # Click login link.
         self.top_section.top_section_click_login_link()
         # Fill in credentials, login, switch back to page.
-        self.login_dialog.login_successful_login(TestData.user_name, TestData.password)
+        self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
         # Putting into basket:
         # Navigate to computers.
@@ -135,7 +135,7 @@ class TestsAlza:
 
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
-        self.login_dialog = LoginDialog(self.driver)
+        self.login_page = LoginPage(self.driver)
         self.main_page = MainPage(self.driver)
 
         # Reject all cookies.
@@ -145,7 +145,7 @@ class TestsAlza:
         # Click login link.
         self.top_section.top_section_click_login_link()
         # Fill in credentials, login, switch back to page.
-        self.login_dialog.login_successful_login(TestData.user_name, TestData.password)
+        self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
         # Search for "jízdní kola" and click search button:
         self.top_section.top_section_search_provide_value(TestData.search_value_via_search_button)
@@ -174,7 +174,7 @@ class TestsAlza:
 
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
-        self.login_dialog = LoginDialog(self.driver)
+        self.login_page = LoginPage(self.driver)
         self.main_page = MainPage(self.driver)
         self.my_account = MyAccount(self.driver)
 
@@ -185,7 +185,7 @@ class TestsAlza:
         # Click login link.
         self.top_section.top_section_click_login_link()
         # Fill in credentials, login, switch back to page.
-        self.login_dialog.login_successful_login(TestData.user_name, TestData.password)
+        self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
         # Navigate to pet supplies, open first pet supply and get its name.
         self.main_page.main_page_hover_click_pet_supplies_menu_item()
@@ -224,7 +224,7 @@ class TestsAlza:
         At the end logs out.
         """
 
-        self.login_dialog = LoginDialog(self.driver)
+        self.login_page = LoginPage(self.driver)
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
         self.my_account = MyAccount(self.driver)
@@ -237,9 +237,9 @@ class TestsAlza:
         # Click login link.
         self.top_section.top_section_click_login_link()
         # Fill in credentials and login.
-        self.login_dialog.login_successful_login(TestData.user_name, TestData.password)
+        self.login_page.login_successful_login(TestData.user_name, TestData.password)
         # Switch from login frame back to page.
-        self.login_dialog.login_switch_back_from_login_frame()
+        self.login_page.login_switch_back_from_login_frame()
 
         # Changes to my account:
         # Navigate to my account page.

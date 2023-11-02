@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from Page_objects.base_page import BasePage
 
 
-class LoginDialog(BasePage):
+class LoginPage(BasePage):
 
     # Identification of objects on login page.
     email_input = (By.XPATH, "//input[@id='userName' and not(@readonly)]")
