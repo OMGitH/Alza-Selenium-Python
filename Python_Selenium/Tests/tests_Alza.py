@@ -40,7 +40,7 @@ class TestsAlza:
         # Unsuccessful login:
         # Email and password fields blank.
         self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_visible_in_frame(), "Login dialog is not visible though it shall be."
+        assert self.login_dialog.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
         actual_blank_email_text = self.login_dialog.login_get_blank_email_text()
         assert actual_blank_email_text == TestData.blank_email_text, f"Wrong message for blank e-mail input field. Current message is {actual_blank_email_text} but it shall be {TestData.blank_email_text}."
         actual_blank_password_text = self.login_dialog.login_get_blank_password_text()
@@ -50,7 +50,7 @@ class TestsAlza:
         self.login_dialog.login_provide_email(TestData.incorrect_user_name)
         self.login_dialog.login_provide_password(TestData.password)
         self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_visible_in_frame(), "Login dialog is not visible though it shall be."
+        assert self.login_dialog.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
         actual_disabled_login_button_text = self.login_dialog.login_get_disabled_login_button_text()
         assert actual_disabled_login_button_text == TestData.signin_button_incorrect_user_name_password_text, f"Wrong message at signin button when incorrect email provided. Current message is {actual_disabled_login_button_text} but it shall be {TestData.signin_button_incorrect_user_name_password_text}."
 
@@ -58,7 +58,7 @@ class TestsAlza:
         self.login_dialog.login_provide_email(TestData.user_name)
         self.login_dialog.login_provide_password(TestData.incorrect_password)
         self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_visible_in_frame(), "Login dialog is not visible though it shall be."
+        assert self.login_dialog.login_dialog_is_visible(), "Login dialog is not visible though it shall be."
         actual_disabled_login_button_text = self.login_dialog.login_get_disabled_login_button_text()
         assert actual_disabled_login_button_text == TestData.signin_button_incorrect_user_name_password_text, f"Wrong message at signin button when incorrect password provided. Current message is {actual_disabled_login_button_text} but it shall be {TestData.signin_button_incorrect_user_name_password_text}."
 
@@ -66,7 +66,7 @@ class TestsAlza:
         self.login_dialog.login_provide_email(TestData.user_name)
         self.login_dialog.login_provide_password(TestData.password)
         self.login_dialog.login_click_signin_button()
-        assert self.login_dialog.login_dialog_is_invisible_out_of_frame(), "Login dialog is still visible but shall not be."
+        assert self.login_dialog.login_dialog_is_invisible(), "Login dialog is still visible but shall not be."
         actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
         assert actual_signed_in_text == TestData.user_signed_in_text, f"Wrong text in the top menu. Current text is {actual_signed_in_text} but shall be {TestData.user_signed_in_text}. User is not logged in though shall be?"
 
