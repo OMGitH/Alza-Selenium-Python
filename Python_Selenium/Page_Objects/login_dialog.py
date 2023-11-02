@@ -21,8 +21,8 @@ class LoginDialog(BasePage):
         super().__init__(driver)
 
     # Actions on login dialog.
-    def login_switch_to_login_frame(self):
-        self.base_switch_to_frame(self.login_frame)
+    # def login_switch_to_login_frame(self):
+    #     self.base_switch_to_frame(self.login_frame)
 
     def login_provide_email(self, username):
         self.base_clear_input(self.email_input)
@@ -35,8 +35,8 @@ class LoginDialog(BasePage):
     def login_click_signin_button(self):
         self.base_click(self.sign_in_button_active)
 
-    def login_switch_back_from_login_frame(self):
-        self.base_switch_back_from_frame()
+    # def login_switch_back_from_login_frame(self):
+    #     self.base_switch_back_from_frame()
 
     def login_dialog_is_visible_in_frame(self):
         flag = self.base_is_visible(self.login_dialog_in_frame)

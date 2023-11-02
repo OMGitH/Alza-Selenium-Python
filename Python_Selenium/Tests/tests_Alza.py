@@ -16,14 +16,14 @@ class TestsAlza:
     def test_login_logout(self):
         """
         Tests log in functionality. First all cookies are rejected, then login is clicked.
-        Credential fields are blank, signin button is pressed and is checked that login dialog stays open and there are corresponding error messages displayed.
-        Then wrong email address is provided with correct password, signin button is clicked and is checked that login stays displayed and there is correct
+        Credential fields are blank, signin button is clicked and it is checked that login dialog stays open and there are corresponding error messages displayed.
+        Then wrong email address is provided with correct password, signin button is clicked and it is checked that login stays displayed and there is correct
         text on signin button.
-        Then correct email address is provided with wrong password, signin button is clicked and is checked that login stays displayed and there is correct
+        Then correct email address is provided with wrong password, signin button is clicked and it is checked that login stays displayed and there is correct
         text on signin button.
-        Then both correct email address and correct password are provided, signin button is clicked and is checked that login disappears and correct
+        Then both correct email address and correct password are provided, signin button is clicked and it is checked that login disappears and correct
         user email is displayed in upper part of the screen.
-        At the end logout link is clicked and is checked that login link is present.
+        At the end logout link is clicked and it is checked that login link is present.
         """
 
         self.login_dialog = LoginDialog(self.driver)
@@ -34,9 +34,8 @@ class TestsAlza:
         self.cookies_pane.cookies_pane_click_reject_all()
         assert self.cookies_pane.cookies_pane_is_invisible(), "Cookies pane is still visible but shall not be."
 
-        # Click login link and switch to login frame.
+        # Click login link.
         self.top_section.top_section_click_login_link()
-        # self.login_dialog.login_switch_to_login_frame()
 
         # Unsuccessful login:
         # Email and password fields blank.
@@ -67,9 +66,7 @@ class TestsAlza:
         self.login_dialog.login_provide_email(TestData.user_name)
         self.login_dialog.login_provide_password(TestData.password)
         self.login_dialog.login_click_signin_button()
-        # self.login_dialog.login_switch_back_from_login_frame()
         assert self.login_dialog.login_dialog_is_invisible_out_of_frame(), "Login dialog is still visible but shall not be."
-        # actual_signed_in_text = self.login_dialog.login_get_signed_in_text()
         actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
         assert actual_signed_in_text == TestData.user_signed_in_text, f"Wrong text in the top menu. Current text is {actual_signed_in_text} but shall be {TestData.user_signed_in_text}. User is not logged in though shall be?"
 
