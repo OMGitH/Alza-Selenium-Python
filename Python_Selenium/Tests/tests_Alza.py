@@ -94,7 +94,7 @@ class TestsAlza:
         # Log into application:
         # Click login link.
         self.top_section.top_section_click_login_link()
-        # Fill in credentials, login, switch back to page.
+        # Fill in credentials and login.
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
         # Putting into basket:
