@@ -104,8 +104,8 @@ class TestsAlza:
         # Get first computer name and price and put it into basket and go there.
         first_computer_name = self.main_page.main_page_get_first_computer_name()
         first_computer_price = self.main_page.main_page_get_first_computer_price()
-        self.main_page.main_page_click_first_computer_buy_button()
-        self.main_page.main_page_click_cont_to_basket_button()
+        self.main_page.main_page_click_first_computer_put_to_basket_button()
+        self.top_section.top_section_click_basket_icon()
 
         # On basket page:
         # Check item name, count and price.
@@ -122,6 +122,7 @@ class TestsAlza:
         assert actual_text_once_basket_empty == TestData.text_once_all_items_removed_from_basket, f"Wrong text once basket is empty. Text is {actual_text_once_basket_empty} but it shall be {TestData.text_once_all_items_removed_from_basket}. Basket is not empty?"
 
         # Logout.
+        self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
 
     def test_search(self):

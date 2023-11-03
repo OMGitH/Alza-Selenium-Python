@@ -14,6 +14,7 @@ class TopSection(BasePage):
     search_button = (By.ID, "btnSearch")
     search_suggestion = (By.XPATH, "//ul[@id='ui-id-1'][not(contains(@style, 'none'))]")
     search_suggestion_1st_article = (By.XPATH, "//li[@class='t6 ui-menu-item'][1]")
+    basket_icon = (By.XPATH, "//a[@data-testid='headerBasketIcon']")
 
     # Initialization.
     def __init__(self, driver):
@@ -54,3 +55,6 @@ class TopSection(BasePage):
 
     def top_section_click_signed_in_user_link(self):
         self.base_click(self.signed_in_user_link)
+
+    def top_section_click_basket_icon(self):
+        self.base_click(self.basket_icon)
