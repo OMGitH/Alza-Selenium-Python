@@ -97,6 +97,12 @@ class TestsAlza:
         # Fill in credentials and login.
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
+        # Empty basket if there are items inside.
+        if not self.top_section.top_section_basket_is_empty():
+            self.top_section.top_section_click_basket_icon()
+            self.basket.basket_remove_all_items_from_basket()
+            self.top_section.top_section_click_alza_icon()
+
         # Putting into basket:
         # Navigate to computers.
         self.main_page.main_page_hover_click_computers_notebooks_menu_item()

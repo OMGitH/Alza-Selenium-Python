@@ -32,8 +32,11 @@ class BasePage:
         self.driver.switch_to.default_content()
 
     def base_is_visible(self, locator, timeout=timeout_default):
-        element = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
-        return bool(element)
+        try:
+            WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+            return True
+        except:
+            return False
 
     def base_is_invisible(self, locator, timeout=timeout_default):
         element = WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))

@@ -43,3 +43,8 @@ class Basket(BasePage):
         if self.base_is_visible(self.text_all_items_removed_from_basket):
             all_items_removed_message = self.base_get_element_text(self.text_all_items_removed_from_basket)
             return all_items_removed_message
+
+    def basket_remove_all_items_from_basket(self):
+        while self.base_is_visible(self.down_arrow_price_button, 1):
+            self.base_click(self.down_arrow_price_button)
+            self.base_click(self.down_arrow_price_remove_menu_item)
