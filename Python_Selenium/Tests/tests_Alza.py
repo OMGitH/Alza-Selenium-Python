@@ -94,8 +94,14 @@ class TestsAlza:
         # Log into application:
         # Click login link.
         self.top_section.top_section_click_login_link()
-        # Fill in credentials, login, switch back to page.
+        # Fill in credentials and login.
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
+
+        # Empty basket if there are items inside.
+        if self.top_section.top_section_basket_is_not_empty():
+            self.top_section.top_section_click_basket_icon()
+            self.basket.basket_remove_all_items_from_basket()
+            self.top_section.top_section_click_alza_icon()
 
         # Putting into basket:
         # Navigate to computers.
@@ -104,8 +110,10 @@ class TestsAlza:
         # Get first computer name and price and put it into basket and go there.
         first_computer_name = self.main_page.main_page_get_first_computer_name()
         first_computer_price = self.main_page.main_page_get_first_computer_price()
-        self.main_page.main_page_click_first_computer_buy_button()
-        self.main_page.main_page_click_cont_to_basket_button()
+        self.main_page.main_page_click_first_computer_put_to_basket_button()
+        # Check there is notification of item added at basket icon and go to basket.
+        assert self.top_section.top_section_basket_is_not_empty(), "Notification of item inside basket shall be present at basket icon but it is not."
+        self.top_section.top_section_click_basket_icon()
 
         # On basket page:
         # Check item name, count and price.
@@ -116,12 +124,12 @@ class TestsAlza:
         actual_computer_price_in_basket = self.basket.basket_get_item_price()
         assert actual_computer_price_in_basket == first_computer_price, f"Wrong computer price in basket. Price is {actual_computer_price_in_basket} but shall be {first_computer_price}."
         # Remove item from basket and check it is empty.
-        self.basket.basket_click_down_arrow_price()
-        self.basket.basket_click_down_arrow_price_remove()
+        self.basket.basket_remove_all_items_from_basket()
         actual_text_once_basket_empty = self.basket.basket_get_text_once_all_items_removed()
         assert actual_text_once_basket_empty == TestData.text_once_all_items_removed_from_basket, f"Wrong text once basket is empty. Text is {actual_text_once_basket_empty} but it shall be {TestData.text_once_all_items_removed_from_basket}. Basket is not empty?"
 
         # Logout.
+        self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
 
     def test_search(self):

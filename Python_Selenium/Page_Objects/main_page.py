@@ -11,7 +11,7 @@ class MainPage(BasePage):
     computers_tile = (By.LINK_TEXT, "Počítače")
     first_computer_name = (By.XPATH, "//div[contains(@class, 'first firstRow')]//a[contains(@class, 'name')]")
     first_computer_price = (By.XPATH, "//div[contains(@class, 'first firstRow')]//span[@class='price-box__price']")
-    first_computer_buy_button = (By.XPATH, "//div[contains(@class, 'first firstRow')]//a[@class='btnk1']")
+    first_computer_put_to_basket_button = (By.XPATH, "//div[contains(@class, 'first firstRow')]//a[@class='btnk1']")
     continue_to_basket_button = (By.ID, "varBToBasketButton")
     search_result_header_text = (By.XPATH, "//h1[@itemprop='name']")
     search_result_number_of_items_found = (By.ID, "lblNumberItem")
@@ -68,8 +68,8 @@ class MainPage(BasePage):
     def main_page_click_cont_to_basket_button(self):
         self.base_click(self.continue_to_basket_button)
 
-    def main_page_click_first_computer_buy_button(self):
-        self.base_click(self.first_computer_buy_button)
+    def main_page_click_first_computer_put_to_basket_button(self):
+        self.base_click(self.first_computer_put_to_basket_button)
 
     def main_page_get_search_result_header(self):
         if self.base_is_visible(self.search_result_header_text):

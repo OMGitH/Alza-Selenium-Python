@@ -6,7 +6,7 @@ class TopSection(BasePage):
 
     # Identification of objects in top section of the page.
     login_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleLogin']")
-    alza_main_page_icon = (By.XPATH, "//a[@title='Alza']")
+    alza_main_page_icon = (By.XPATH, "//a[@data-testid='headerLogo']")
     user_profile_link = (By.ID, "lblUser")
     signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
     logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']")
@@ -14,6 +14,8 @@ class TopSection(BasePage):
     search_button = (By.ID, "btnSearch")
     search_suggestion = (By.XPATH, "//ul[@id='ui-id-1'][not(contains(@style, 'none'))]")
     search_suggestion_1st_article = (By.XPATH, "//li[@class='t6 ui-menu-item'][1]")
+    basket_icon = (By.XPATH, "//a[@data-testid='headerBasketIcon']")
+    basket_icon_item_inside = (By.XPATH, "//a[@data-testid='headerBasketIcon']//span")
 
     # Initialization.
     def __init__(self, driver):
@@ -54,3 +56,10 @@ class TopSection(BasePage):
 
     def top_section_click_signed_in_user_link(self):
         self.base_click(self.signed_in_user_link)
+
+    def top_section_click_basket_icon(self):
+        self.base_click(self.basket_icon)
+
+    def top_section_basket_is_not_empty(self):
+        flag = self.base_is_visible(self.basket_icon_item_inside, 2)
+        return flag
