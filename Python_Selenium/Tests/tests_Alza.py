@@ -98,7 +98,7 @@ class TestsAlza:
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
         # Empty basket if there are items inside.
-        if not self.top_section.top_section_basket_is_empty():
+        if self.top_section.top_section_basket_is_not_empty():
             self.top_section.top_section_click_basket_icon()
             self.basket.basket_remove_all_items_from_basket()
             self.top_section.top_section_click_alza_icon()
@@ -111,6 +111,8 @@ class TestsAlza:
         first_computer_name = self.main_page.main_page_get_first_computer_name()
         first_computer_price = self.main_page.main_page_get_first_computer_price()
         self.main_page.main_page_click_first_computer_put_to_basket_button()
+        # Check there is notification of item added at basket icon and go to basket.
+        assert self.top_section.top_section_basket_is_not_empty(), "Notification of item inside basket shall be present at basket icon but it is not."
         self.top_section.top_section_click_basket_icon()
 
         # On basket page:
