@@ -122,8 +122,7 @@ class TestsAlza:
         actual_computer_price_in_basket = self.basket.basket_get_item_price()
         assert actual_computer_price_in_basket == first_computer_price, f"Wrong computer price in basket. Price is {actual_computer_price_in_basket} but shall be {first_computer_price}."
         # Remove item from basket and check it is empty.
-        self.basket.basket_click_down_arrow_price()
-        self.basket.basket_click_down_arrow_price_remove()
+        self.basket.basket_remove_all_items_from_basket()
         actual_text_once_basket_empty = self.basket.basket_get_text_once_all_items_removed()
         assert actual_text_once_basket_empty == TestData.text_once_all_items_removed_from_basket, f"Wrong text once basket is empty. Text is {actual_text_once_basket_empty} but it shall be {TestData.text_once_all_items_removed_from_basket}. Basket is not empty?"
 
