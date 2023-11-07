@@ -66,3 +66,7 @@ class TopSection(BasePage):
     def top_section_basket_is_not_empty(self):
         flag = self.base_is_visible(self.basket_icon_item_inside, 2)
         return flag
+
+    def top_section_get_number_of_items_at_basket_icon(self):
+        number_of_items = self.base_get_element_text(self.basket_icon_item_inside)
+        return int(number_of_items)
