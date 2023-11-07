@@ -77,8 +77,8 @@ class TestsAlza:
 
     def test_basket_add_remove_item(self):
         """
-        Tests adding and removing item from basket. First all cookies are rejected then logs in, adds computer to basket, then goes to basket,
-        checks name of item present, its count and price. Then removes item from basket and checks basket is empty.
+        Tests adding and removing item from basket. First all cookies are rejected then logs in, if there are items in basket they are removed,
+        then adds computer to basket, goes to basket, checks name of item present, its count and price. Then removes item from basket and checks basket is empty.
         At the end logs out.
         """
 
