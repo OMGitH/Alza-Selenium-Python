@@ -161,16 +161,17 @@ class TestsAlza:
         # Check result.
         actual_search_result_title = self.main_page.main_page_get_search_result_header()
         assert actual_search_result_title == TestData.search_result_header_via_search_button, f"Wrong header of looked up section is displayed. Actual header is {actual_search_result_title} but it shall be {TestData.search_result_header_via_search_button}. Wrong section displayed?"
-        assert self.main_page.main_page_get_search_result_items_amount() > 0, "0 items found."
+        assert self.main_page.main_page_get_search_result_items_amount() > 0, "0 items found, there shall be more items than 0."
 
         # Search for "recenze" and choose from suggestion:
         self.top_section.top_section_search_provide_value(TestData.search_value_via_suggestion)
-        self.top_section.top_section_search_suggestion_click_1st_article()
+        self.top_section.top_section_search_suggestion_click_1st_item()
         # Check result.
         actual_search_result_title = self.main_page.main_page_get_search_result_header().lower()
-        assert TestData.search_result_word_in_title_via_suggestion in actual_search_result_title, f"Found article doesn't contain looked up word in title. Actual article title is {actual_search_result_title}, it does not contain word {TestData.search_result_word_in_title_via_suggestion}."
+        assert TestData.search_result_word_in_title_via_suggestion in actual_search_result_title, f"Result doesn't contain looked up word in title. Actual article title is {actual_search_result_title}, it does not contain word {TestData.search_result_word_in_title_via_suggestion}."
 
         # Logout.
+        self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
 
     def test_watchdog_add_remove_item(self):

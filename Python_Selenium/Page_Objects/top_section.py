@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from Page_objects.base_page import BasePage
+import time
 
 
 class TopSection(BasePage):
@@ -10,10 +11,10 @@ class TopSection(BasePage):
     user_profile_link = (By.ID, "lblUser")
     signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
     logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']")
-    search_input = (By.ID, "edtSearch")
-    search_button = (By.ID, "btnSearch")
-    search_suggestion = (By.XPATH, "//ul[@id='ui-id-1'][not(contains(@style, 'none'))]")
-    search_suggestion_1st_article = (By.XPATH, "//li[@class='t6 ui-menu-item'][1]")
+    search_input = (By.XPATH, "//input[@data-testid='searchInput']")
+    search_button = (By.XPATH, "//button[@data-testid='button-search']")
+    search_suggestion = (By.XPATH, "//div[@data-testid='searchResultsContainer']")
+    search_suggestion_1st_item = (By.XPATH, "//div[contains(@data-testid, 'section')][1]/a[@data-testid='suggestion-item'][1]")
     basket_icon = (By.XPATH, "//a[@data-testid='headerBasketIcon']")
     basket_icon_item_inside = (By.XPATH, "//a[@data-testid='headerBasketIcon']//span")
 
@@ -35,15 +36,17 @@ class TopSection(BasePage):
         self.base_click(self.logout_link)
 
     def top_section_search_provide_value(self, value):
-        self.base_clear_input(self.search_input)
+        self.base_clear_input_by_pressing_backspace(self.search_input, "value")
         self.base_send_keys(self.search_input, value)
+        self.base_is_visible(self.search_suggestion)
+        time.sleep(1)
 
     def top_section_click_search_button(self):
         self.base_click(self.search_button)
 
-    def top_section_search_suggestion_click_1st_article(self):
+    def top_section_search_suggestion_click_1st_item(self):
         self.base_is_visible(self.search_suggestion)
-        self.base_click(self.search_suggestion_1st_article)
+        self.base_click(self.search_suggestion_1st_item)
 
     def top_section_login_link_is_visible(self):
         flag = self.base_is_visible(self.login_link)
