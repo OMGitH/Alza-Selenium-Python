@@ -162,7 +162,7 @@ class TestsAlza:
         # Check result.
         actual_search_result_title = self.main_page.main_page_get_search_result_header()
         assert actual_search_result_title == TestData.search_result_header_via_search_button, f"Wrong header of looked up section is displayed. Actual header is {actual_search_result_title} but it shall be {TestData.search_result_header_via_search_button}. Wrong section displayed?"
-        assert self.main_page.main_page_get_search_result_items_amount() > 0, "0 items found, there shall be more items than 0."
+        assert self.main_page.main_page_get_search_result_items_amount() > 0, "No items found, items shall be found."
 
         # Search for "recenze" and choose from suggestion:
         self.top_section.top_section_search_provide_value(TestData.search_value_via_suggestion)
