@@ -31,7 +31,8 @@ class MyAccount(BasePage):
     watchdog_item_remove_button = (By.XPATH, "//div[@data-testid='page-watchDogs']//button")
     watchdog_item_removal_confirmation_button = (By.XPATH, "//button[contains(@class, 'red')]")
     watchdog_remove_question_dialog = (By.XPATH, "//div[@role='dialog']")
-    text_all_items_removed_from_watchdog_list = (By.XPATH, "//div[@data-testid='noResults']/span")
+    watchdog_checked_alert_price_checkbox = (By.XPATH, "//input[not (@name)]/parent::span/*[name()='svg']/*[name()='g' and @transform]")
+    watchdog_text_all_items_removed_from_watchdog_list = (By.XPATH, "//div[@data-testid='noResults']/span")
 
     # Initialization.
     def __init__(self, driver):
@@ -136,6 +137,9 @@ class MyAccount(BasePage):
         self.base_is_invisible(self.watchdog_remove_question_dialog)
 
     def my_account_watchdog_list_get_text_once_all_items_removed(self):
-        if self.base_is_visible(self.text_all_items_removed_from_watchdog_list):
-            all_items_removed_message = self.base_get_element_text(self.text_all_items_removed_from_watchdog_list)
+        if self.base_is_visible(self.watchdog_text_all_items_removed_from_watchdog_list):
+            all_items_removed_message = self.base_get_element_text(self.watchdog_text_all_items_removed_from_watchdog_list)
             return all_items_removed_message
+
+    def my_account_watchdog_check_alert_price_checked(self):
+        return self.base_is_visible(self.watchdog_checked_alert_price_checkbox, 1)

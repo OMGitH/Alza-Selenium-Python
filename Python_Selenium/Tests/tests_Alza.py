@@ -179,7 +179,8 @@ class TestsAlza:
     def test_watchdog_add_remove_item(self):
         """
         Tests adding and removing item from watchdog list. First all cookies are rejected then logs in, adds watchdog to pet supply item,
-        then goes to watchdog list, checks name of item present and its price limit. Then removes item from watchdog list and checks watchdog list is empty.
+        then goes to watchdog list, checks name of item present, its price limit and that checkbox for alerting when price decreases is checked.
+        Then removes item from watchdog list and checks watchdog list is empty.
         At the end logs out.
         """
 
@@ -203,8 +204,12 @@ class TestsAlza:
         self.main_page.main_page_click_first_pet_suppy_item()
         first_pet_supply_name = self.main_page.main_page_get_first_pet_supply_name()
 
-        # Setting watch price.
+        # Watchdog dialog:
         self.main_page.main_page_click_watch_price()
+        # Check prefilled e-mail address.
+        actual_email = self.main_page.main_page_watchdog_get_email()
+        assert actual_email == TestData.user_name, f"Incorrect e-mail address prefilled. There is {actual_email} but there should be {TestData.user_name}."
+        # Set watch price.
         self.main_page.main_page_watchdog_set_price_limit(TestData.watchdog_price_limit)
         self.main_page.main_page_watchdog_click_confirm_button()
 
@@ -214,11 +219,13 @@ class TestsAlza:
         self.top_section.top_section_click_my_profile_link()
         # self.my_account.my_account_click_account_settings_dropdown()
         self.my_account.my_account_click_watchdogs_link()
-        # Check watched item name and price limit.
+        # Check watched item name and price limit, checkbox alert price is checked.
         actual_pet_supply_name = self.my_account.my_account_watchdog_list_get_watchdog_item_name()
         assert first_pet_supply_name in actual_pet_supply_name, f"Wrong name of pet supply in watchdogs. Actual pet supply name in watchdogs is {actual_pet_supply_name} but it shall be {first_pet_supply_name}. Pet supply that shall be in watchdogs is not?"
         actual_price_limit = self.my_account.my_account_watchdog_get_price_limit_provided()
         assert actual_price_limit == TestData.watchdog_price_limit, f"Wrong price limit displayed in watchdogs. Actual price limit in watchdogs is {actual_price_limit} but it shall be {TestData.watchdog_price_limit}."
+        assert self.my_account.my_account_watchdog_check_alert_price_checked(), f"Checkbox for alert when price is lower then {TestData.watchdog_price_limit} shall be checked but it is not."
+
         # Remove item from watchdog list.
         self.my_account.my_account_watchdog_list_remove_item()
         actual_text_once_watchdog_list_empty = self.my_account.my_account_watchdog_list_get_text_once_all_items_removed()
