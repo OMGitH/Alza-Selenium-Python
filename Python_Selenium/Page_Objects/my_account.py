@@ -25,8 +25,6 @@ class MyAccount(BasePage):
     zip_input_correctly_filled = (By.XPATH, "//input[@name='zip'][contains(@class, 'valid')][not(contains(@class, 'empt'))]")
     city_input = (By.NAME, "city")
     watchdog_item = (By.XPATH, "//div[@data-testid='page-watchDogs']//a")
-    # watchdog_item_1st_checkbox = (By.XPATH, "//div[@class='watchDogInfoItem priceLimit']//span[@class='checkboxBlue checked']")
-    # watchdog_item_2nd_checkbox = (By.XPATH, "//div[@class='watchDogInfoItem inStock']//span[@class='checkboxBlue checked']")
     watchdog_price_limit_provided = (By.NAME, "price")
     watchdog_item_remove_button = (By.XPATH, "//div[@data-testid='page-watchDogs']//button")
     watchdog_item_removal_confirmation_button = (By.XPATH, "//button[contains(@class, 'red')]")
@@ -129,17 +127,17 @@ class MyAccount(BasePage):
             watchdog_price_limit = watchdog_price_limit.replace(",-", "")
             return watchdog_price_limit
 
-    def my_account_watchdog_list_remove_item(self):
-        # self.base_click(self.watchdog_item_1st_checkbox)
-        # self.base_click(self.watchdog_item_2nd_checkbox)
-        self.base_click(self.watchdog_item_remove_button)
-        self.base_click(self.watchdog_item_removal_confirmation_button)
-        self.base_is_invisible(self.watchdog_remove_question_dialog)
-
     def my_account_watchdog_list_get_text_once_all_items_removed(self):
         if self.base_is_visible(self.watchdog_text_all_items_removed_from_watchdog_list):
             all_items_removed_message = self.base_get_element_text(self.watchdog_text_all_items_removed_from_watchdog_list)
             return all_items_removed_message
 
-    def my_account_watchdog_check_alert_price_checked(self):
+    def my_account_watchdog_list_check_alert_price_checked(self):
         return self.base_is_visible(self.watchdog_checked_alert_price_checkbox, 1)
+
+    def my_account_watchdog_list_remove_all_items(self):
+        if self.base_is_visible(self.watchdog_item, 3):
+            while self.base_is_visible(self.watchdog_item_remove_button, 1):
+                self.base_click(self.watchdog_item_remove_button)
+                self.base_click(self.watchdog_item_removal_confirmation_button)
+                self.base_is_invisible(self.watchdog_remove_question_dialog)
