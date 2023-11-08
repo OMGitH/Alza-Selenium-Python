@@ -8,7 +8,7 @@ class TopSection(BasePage):
     # Identification of objects in top section of the page.
     login_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleLogin']")
     alza_main_page_icon = (By.XPATH, "//a[@data-testid='headerLogo']")
-    user_profile_link = (By.ID, "lblUser")
+    my_profile_link = (By.XPATH, "//a[@data-testid='headerNavigationMyProfile']/span")
     signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
     logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']")
     search_input = (By.XPATH, "//input[@data-testid='searchInput']")
@@ -29,8 +29,8 @@ class TopSection(BasePage):
     def top_section_click_alza_icon(self):
         self.base_click(self.alza_main_page_icon)
 
-    def top_section_click_user_profile_link(self):
-        self.base_click(self.user_profile_link)
+    def top_section_click_my_profile_link(self):
+        self.base_click(self.my_profile_link)
 
     def top_section_click_logout_link(self):
         self.base_click(self.logout_link)

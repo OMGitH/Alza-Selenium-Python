@@ -210,20 +210,22 @@ class TestsAlza:
 
         # Check list of watchdogs:
         # Go to list of watchdogs.
-        self.top_section.top_section_click_user_profile_link()
-        self.my_account.my_account_click_account_settings_dropdown()
-        self.my_account.my_account_click_at_watchdog_list_menu_item()
+        self.top_section.top_section_click_signed_in_user_link()
+        self.top_section.top_section_click_my_profile_link()
+        # self.my_account.my_account_click_account_settings_dropdown()
+        self.my_account.my_account_click_watchdogs_link()
         # Check watched item name and price limit.
         actual_pet_supply_name = self.my_account.my_account_watchdog_list_get_watchdog_item_name()
-        assert actual_pet_supply_name == first_pet_supply_name, f"Wrong name of pet supply in watchdogs. Actual pet supply name in watchdogs is {actual_pet_supply_name} but it shall be {first_pet_supply_name}. Pet supply that shall be in watchdogs is not?"
+        assert first_pet_supply_name in actual_pet_supply_name, f"Wrong name of pet supply in watchdogs. Actual pet supply name in watchdogs is {actual_pet_supply_name} but it shall be {first_pet_supply_name}. Pet supply that shall be in watchdogs is not?"
         actual_price_limit = self.my_account.my_account_watchdog_get_price_limit_provided()
         assert actual_price_limit == TestData.watchdog_price_limit, f"Wrong price limit displayed in watchdogs. Actual price limit in watchdogs is {actual_price_limit} but it shall be {TestData.watchdog_price_limit}."
         # Remove item from watchdog list.
-        self.my_account.my_account_watchdog_list_remove_item_close_success_dialog()
+        self.my_account.my_account_watchdog_list_remove_item()
         actual_text_once_watchdog_list_empty = self.my_account.my_account_watchdog_list_get_text_once_all_items_removed()
         assert actual_text_once_watchdog_list_empty == TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchodg list is empty. Acutal text is {actual_text_once_watchdog_list_empty} but it shall be {TestData.text_once_all_items_removed_from_watchdog_list}. Watchdog list is not empty?"
 
         # Logout.
+        self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
 
     def test_additional_account_changes(self):
@@ -254,7 +256,7 @@ class TestsAlza:
 
         # Changes to my account:
         # Navigate to my account page.
-        self.top_section.top_section_click_user_profile_link()
+        self.top_section.top_section_click_my_profile_link()
         self.my_account.my_account_click_account_settings_dropdown()
         self.my_account.my_account_click_my_account_menu_item()
         # Fill in street, zip, city.
@@ -264,7 +266,7 @@ class TestsAlza:
         # Go back to main page.
         self.top_section.top_section_click_alza_icon()
         # Go back to my account page and check provided values are stored.
-        self.top_section.top_section_click_user_profile_link()
+        self.top_section.top_section_click_my_profile_link()
         self.my_account.my_account_click_account_settings_dropdown()
         self.my_account.my_account_click_my_account_menu_item()
         actual_street_and_number = self.my_account.my_account_get_street_value()

@@ -20,7 +20,7 @@ class TestData:
     search_result_word_in_title_via_suggestion = "recenze"
 
     watchdog_price_limit = "10"
-    text_once_all_items_removed_from_watchdog_list = "Vaše bouda s hlídacími psy je prázdná."
+    text_once_all_items_removed_from_watchdog_list = "Momentálně pro vás nehlídáme žádné produkty"
 
     street_and_number = "Ulice 22"
     zip = "130 00"

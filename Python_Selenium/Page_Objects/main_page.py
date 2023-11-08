@@ -16,14 +16,15 @@ class MainPage(BasePage):
     search_result_header_text = (By.XPATH, "//h1[@itemprop='name']")
     search_result_number_of_items_found = (By.ID, "lblNumberItem")
     pet_supplies_menu_item = (By.LINK_TEXT, "Chovatelské potřeby")
-    first_pet_supply_item_link = (By.XPATH, "(//div[@data-react-client-component='carousel'])[1]//div[@data-testid='item'][1]")
+    first_pet_supply_item_link = (By.XPATH, "//div[@data-react-client-component-id='carousel0']//swiper-slide[@class='swiper-slide-active']//a[@data-testid='itemName']")
     first_pet_supply_item_name = (By.XPATH, "//h1[@itemprop='name']")
     watchdog_link = (By.CLASS_NAME, "watchproduct")
     watchdog_email_input = (By.ID, "txtEmail")
-    watchdog_price_limit_input = (By.XPATH, "//div[@id='alzaDialog'][not(contains(@style, 'none'))]//input[@class='priceLimit textbox']")
-    watchdog_confirm_button = (By.XPATH, "//div[@id='alzaDialog'][not(contains(@style, 'none'))]//a[@id='btnConfirm']")
-    watchdog_success_dialog = (By.XPATH, "//div[@id='alzaDialog'][@class='watchDog successDialog'][not(contains(@style, 'none'))]")
-    watchdog_success_dialog_x_close = (By.XPATH, "//div[@id='alzaDialog'][not(contains(@style, 'none'))]//div[@class='close']")
+    watchdog_price_limit_checkbox = (By.XPATH, "//input[contains(@class, 'PrivateSwitchBase')][not(contains(@name, 'isTrackingStock'))]")
+    watchdog_price_limit_input = (By.NAME, "price")
+    watchdog_confirm_button = (By.XPATH, "//button[contains(@class, 'blue')][contains(@class, 'price-box')]")
+    # watchdog_success_dialog = (By.XPATH, "//div[@id='alzaDialog'][@class='watchDog successDialog'][not(contains(@style, 'none'))]")
+    # watchdog_success_dialog_x_close = (By.XPATH, "//div[@id='alzaDialog'][not(contains(@style, 'none'))]//div[@class='close']")
 
     # Initialization.
     def __init__(self, driver):
@@ -82,10 +83,12 @@ class MainPage(BasePage):
             return int(result_items_amount)
 
     def main_page_watchdog_set_price_limit(self, value):
-        self.base_clear_input(self.watchdog_price_limit_input)
+        self.base_hover_click(self.watchdog_price_limit_checkbox)
+        self.base_clear_input_by_pressing_backspace(self.watchdog_price_limit_input, "value")
+        # self.base_clear_input(self.watchdog_price_limit_input)
         self.base_send_keys(self.watchdog_price_limit_input, value)
 
     def main_page_watchdog_click_confirm_button(self):
         self.base_click(self.watchdog_confirm_button)
-        self.base_click(self.watchdog_success_dialog_x_close)
-        self.base_is_invisible(self.watchdog_success_dialog)
+        # self.base_click(self.watchdog_success_dialog_x_close)
+        # self.base_is_invisible(self.watchdog_success_dialog)

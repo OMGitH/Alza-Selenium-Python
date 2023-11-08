@@ -24,13 +24,14 @@ class MyAccount(BasePage):
     zip_input = (By.NAME, "zip")
     zip_input_correctly_filled = (By.XPATH, "//input[@name='zip'][contains(@class, 'valid')][not(contains(@class, 'empt'))]")
     city_input = (By.NAME, "city")
-    watchdog_item = (By.XPATH, "//div[@class='watchDogInfo']/a")
-    watchdog_item_1st_checkbox = (By.XPATH, "//div[@class='watchDogInfoItem priceLimit']//span[@class='checkboxBlue checked']")
-    watchdog_item_2nd_checkbox = (By.XPATH, "//div[@class='watchDogInfoItem inStock']//span[@class='checkboxBlue checked']")
-    watchdog_price_limit_provided = (By.XPATH, "//span[@class='watchDogStatusLabel']/span")
-    watchdog_item_removal_confirmation_button = (By.XPATH, "//div[@id='alzaDialog'][not(contains(@style, 'opacity'))]//span[@class='btnx normal green ok']")
-    watchdog_remove_question_dialog = (By.ID, "alzaDialog")
-    text_all_items_removed_from_watchdog_list = (By.XPATH, "//div[@id='noWatchDogArticle'][not(contains(@style, 'none'))]//div[@class='alzBox warn']")
+    watchdog_item = (By.XPATH, "//div[@data-testid='page-watchDogs']//a")
+    # watchdog_item_1st_checkbox = (By.XPATH, "//div[@class='watchDogInfoItem priceLimit']//span[@class='checkboxBlue checked']")
+    # watchdog_item_2nd_checkbox = (By.XPATH, "//div[@class='watchDogInfoItem inStock']//span[@class='checkboxBlue checked']")
+    watchdog_price_limit_provided = (By.NAME, "price")
+    watchdog_item_remove_button = (By.XPATH, "//div[@data-testid='page-watchDogs']//button")
+    watchdog_item_removal_confirmation_button = (By.XPATH, "//button[contains(@class, 'red')]")
+    watchdog_remove_question_dialog = (By.XPATH, "//div[@role='dialog']")
+    text_all_items_removed_from_watchdog_list = (By.XPATH, "//div[@data-testid='noResults']/span")
 
     # Initialization.
     def __init__(self, driver):
@@ -45,7 +46,7 @@ class MyAccount(BasePage):
         # Following method helps initialize the page as validations there are dynamic.
         self.base_element_exists(self.data_was_saved_text)
 
-    def my_account_click_at_watchdog_list_menu_item(self):
+    def my_account_click_watchdogs_link(self):
         self.base_click(self.my_account_list_of_watchdogs)
 
     def my_account_provide_street(self):
@@ -123,14 +124,14 @@ class MyAccount(BasePage):
 
     def my_account_watchdog_get_price_limit_provided(self):
         if self.base_is_visible(self.watchdog_price_limit_provided):
-            watchdog_price_limit = self.base_get_element_text(self.watchdog_price_limit_provided)
-            watchdog_price_limit = watchdog_price_limit.replace(" ", "")
-            watchdog_price_limit = watchdog_price_limit.replace("Kč", "")
+            watchdog_price_limit = self.base_get_element_attribute_value(self.watchdog_price_limit_provided, "value")
+            watchdog_price_limit = watchdog_price_limit.replace(",-", "")
             return watchdog_price_limit
 
-    def my_account_watchdog_list_remove_item_close_success_dialog(self):
-        self.base_click(self.watchdog_item_1st_checkbox)
-        self.base_click(self.watchdog_item_2nd_checkbox)
+    def my_account_watchdog_list_remove_item(self):
+        # self.base_click(self.watchdog_item_1st_checkbox)
+        # self.base_click(self.watchdog_item_2nd_checkbox)
+        self.base_click(self.watchdog_item_remove_button)
         self.base_click(self.watchdog_item_removal_confirmation_button)
         self.base_is_invisible(self.watchdog_remove_question_dialog)
 
