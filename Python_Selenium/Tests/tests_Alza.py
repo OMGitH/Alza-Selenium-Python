@@ -89,7 +89,7 @@ class TestsAlza:
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
         self.main_page = MainPage(self.driver)
-        self.basket = Basket(self.driver)
+        self.basket_page = Basket(self.driver)
 
         # Reject all cookies.
         self.cookies_pane.cookies_pane_click_reject_all()
@@ -103,7 +103,7 @@ class TestsAlza:
         # Empty basket if there are items inside.
         if self.top_section.top_section_basket_is_not_empty():
             self.top_section.top_section_click_basket_icon()
-            self.basket.basket_remove_all_items_from_basket()
+            self.basket_page.basket_remove_all_items_from_basket()
             self.top_section.top_section_click_alza_icon()
 
         # Putting into basket:
@@ -119,17 +119,17 @@ class TestsAlza:
         assert actual_number_of_items_at_basket_icon == TestData.number_of_items_in_basket, f"Wrong number of items at basket icon. Actual number is {actual_number_of_items_at_basket_icon} but it shall be {TestData.number_of_items_in_basket}."
         self.top_section.top_section_click_basket_icon()
 
-        # On basket page:
+        # On basket_page page:
         # Check item name, count and price.
-        actual_computer_name = self.basket.basket_get_item_name()
-        assert first_computer_name in actual_computer_name, f"Wrong name of computer in basket. Actual name is {actual_computer_name} but it shall be {first_computer_name}. Computer that shall be in basket is not?"
-        actual_number_of_computers_in_basket = self.basket.basket_get_item_count()
+        actual_computer_name = self.basket_page.basket_get_item_name()
+        assert first_computer_name in actual_computer_name, f"Wrong name of computer in basket. Actual name is {actual_computer_name} but it shall be {first_computer_name}. Computer that shall be in basket_page is not?"
+        actual_number_of_computers_in_basket = self.basket_page.basket_get_item_count()
         assert actual_number_of_computers_in_basket == TestData.number_of_items_in_basket, f"Wrong number of computers in basket. There are {actual_number_of_computers_in_basket} computers but there shall be {TestData.number_of_items_in_basket} computer."
-        actual_computer_price_in_basket = self.basket.basket_get_item_price()
+        actual_computer_price_in_basket = self.basket_page.basket_get_item_price()
         assert actual_computer_price_in_basket == first_computer_price, f"Wrong computer price in basket. Price is {actual_computer_price_in_basket} but shall be {first_computer_price}."
         # Remove item from basket and check it is empty.
-        self.basket.basket_remove_all_items_from_basket()
-        actual_text_once_basket_empty = self.basket.basket_get_text_once_all_items_removed()
+        self.basket_page.basket_remove_all_items_from_basket()
+        actual_text_once_basket_empty = self.basket_page.basket_get_text_once_all_items_removed()
         assert actual_text_once_basket_empty == TestData.text_once_all_items_removed_from_basket, f"Wrong text once basket is empty. Text is {actual_text_once_basket_empty} but it shall be {TestData.text_once_all_items_removed_from_basket}. Basket is not empty?"
 
         # Logout.
