@@ -3,7 +3,7 @@ from Page_objects.base_page import BasePage
 
 
 class Watchdogs(BasePage):
-	# Identification of objects on watchdogs_page page.
+	# Identification of objects on watchdogs page.
 	watchdog_item = (By.XPATH, "//div[@data-testid='page-watchDogs']//a")
 	watchdog_item_remove_button = (By.XPATH, "//div[@data-testid='page-watchDogs']//button")
 	watchdog_item_removal_confirmation_button = (By.XPATH, "//button[contains(@class, 'red')]")
@@ -16,7 +16,7 @@ class Watchdogs(BasePage):
 	def __init__(self, driver):
 		super().__init__(driver)
 
-	# Actions on watchdogs_page page.
+	# Actions on watchdogs page.
 	def watchdogs_remove_all_items(self):
 		if self.base_is_visible(self.watchdog_item, 3):
 			while self.base_is_visible(self.watchdog_item_remove_button, 1):
