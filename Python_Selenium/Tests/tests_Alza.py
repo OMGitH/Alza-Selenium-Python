@@ -8,6 +8,8 @@ from Page_objects.main_page import MainPage
 from Page_objects.my_account import MyAccount
 from Page_objects.top_section import TopSection
 from Page_objects.cookies_pane import CookiesPane
+from Page_objects.watchdogs_page import Watchdogs
+from Page_objects.watchdog_add_dialog import WatchdogAdd
 
 
 @pytest.mark.usefixtures("initialize_driver")
@@ -188,7 +190,9 @@ class TestsAlza:
         self.top_section = TopSection(self.driver)
         self.login_page = LoginPage(self.driver)
         self.main_page = MainPage(self.driver)
-        self.my_account = MyAccount(self.driver)
+        self.my_account_page = MyAccount(self.driver)
+        self.watchdogs_page = Watchdogs(self.driver)
+        self.watchdog_add_dialog = WatchdogAdd(self.driver)
 
         # Reject all cookies.
         self.cookies_pane.cookies_pane_click_reject_all()
@@ -202,8 +206,8 @@ class TestsAlza:
         # Empty watchdog list if there are watched items.
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_my_profile_link()
-        self.my_account.my_account_click_watchdogs_link()
-        self.my_account.my_account_watchdog_list_remove_all_items()
+        self.my_account_page.my_account_click_watchdogs_link()
+        self.watchdogs_page.watchdogs_remove_all_items()
         self.top_section.top_section_click_alza_icon()
 
         # Navigate to pet supplies, open first pet supply and get its name.
@@ -214,27 +218,26 @@ class TestsAlza:
         # Watchdog dialog:
         self.main_page.main_page_click_watch_price()
         # Check prefilled e-mail address.
-        actual_email = self.main_page.main_page_watchdog_get_email()
+        actual_email = self.watchdog_add_dialog.watchdog_add_dialog_get_email()
         assert actual_email == TestData.user_name, f"Incorrect e-mail address prefilled. There is {actual_email} but there should be {TestData.user_name}."
         # Set watch price.
-        self.main_page.main_page_watchdog_set_price_limit(TestData.watchdog_price_limit)
-        self.main_page.main_page_watchdog_click_confirm_button()
+        self.watchdog_add_dialog.watchdog_add_dialog_set_price_limit(TestData.watchdog_price_limit)
+        self.watchdog_add_dialog.watchdog_add_dialog_click_confirm_button()
 
-        # Check list of watchdogs:
-        # Go to list of watchdogs.
+        # Check watchdogs page:
+        # Go to watchdogs page.
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_my_profile_link()
-        self.my_account.my_account_click_watchdogs_link()
+        self.my_account_page.my_account_click_watchdogs_link()
         # Check watched item name and price limit, checkbox alert price is checked.
-        actual_pet_supply_name = self.my_account.my_account_watchdog_list_get_watchdog_item_name()
+        actual_pet_supply_name = self.watchdogs_page.watchdogs_get_watchdog_item_name()
         assert first_pet_supply_name in actual_pet_supply_name, f"Wrong name of pet supply in watchdogs. Actual pet supply name in watchdogs is {actual_pet_supply_name} but it shall be {first_pet_supply_name}. Pet supply that shall be in watchdogs is not?"
-        actual_price_limit = self.my_account.my_account_watchdog_get_price_limit_provided()
+        actual_price_limit = self.watchdogs_page.watchdogs_get_price_limit_provided()
         assert actual_price_limit == TestData.watchdog_price_limit, f"Wrong price limit displayed in watchdogs. Actual price limit in watchdogs is {actual_price_limit} but it shall be {TestData.watchdog_price_limit}."
-        assert self.my_account.my_account_watchdog_list_check_alert_price_checked(), f"Checkbox for alert when price is lower then {TestData.watchdog_price_limit} shall be checked but it is not."
-
+        assert self.watchdogs_page.watchdogs_check_alert_price_is_checked(), f"Checkbox for alert when price is lower than {TestData.watchdog_price_limit} shall be checked but it is not."
         # Remove item from watchdog list.
-        self.my_account.my_account_watchdog_list_remove_all_items()
-        actual_text_once_watchdog_list_empty = self.my_account.my_account_watchdog_list_get_text_once_all_items_removed()
+        self.watchdogs_page.watchdogs_remove_all_items()
+        actual_text_once_watchdog_list_empty = self.watchdogs_page.watchdogs_get_text_once_all_items_removed()
         assert actual_text_once_watchdog_list_empty == TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchodg list is empty. Acutal text is {actual_text_once_watchdog_list_empty} but it shall be {TestData.text_once_all_items_removed_from_watchdog_list}. Watchdog list is not empty?"
 
         # Logout.
@@ -253,7 +256,7 @@ class TestsAlza:
         self.login_page = LoginPage(self.driver)
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
-        self.my_account = MyAccount(self.driver)
+        self.my_account_page = MyAccount(self.driver)
         self.helpers = Helpers(self.driver)
 
         # Reject all cookies.
@@ -270,34 +273,34 @@ class TestsAlza:
         # Changes to my account:
         # Navigate to my account page.
         self.top_section.top_section_click_my_profile_link()
-        self.my_account.my_account_click_account_settings_dropdown()
-        self.my_account.my_account_click_my_account_menu_item()
+        self.my_account_page.my_account_click_account_settings_dropdown()
+        self.my_account_page.my_account_click_my_account_menu_item()
         # Fill in street, zip, city.
-        self.my_account.my_account_provide_street()
-        self.my_account.my_account_provide_zip()
-        self.my_account.my_account_provide_city()
+        self.my_account_page.my_account_provide_street()
+        self.my_account_page.my_account_provide_zip()
+        self.my_account_page.my_account_provide_city()
         # Go back to main page.
         self.top_section.top_section_click_alza_icon()
         # Go back to my account page and check provided values are stored.
         self.top_section.top_section_click_my_profile_link()
-        self.my_account.my_account_click_account_settings_dropdown()
-        self.my_account.my_account_click_my_account_menu_item()
-        actual_street_and_number = self.my_account.my_account_get_street_value()
+        self.my_account_page.my_account_click_account_settings_dropdown()
+        self.my_account_page.my_account_click_my_account_menu_item()
+        actual_street_and_number = self.my_account_page.my_account_get_street_value()
         assert actual_street_and_number == TestData.street_and_number, f"Wrong street and number. Actual street and number is {actual_street_and_number} but it shall be {TestData.street_and_number}."
-        actual_zip = self.my_account.my_account_get_zip_value()
+        actual_zip = self.my_account_page.my_account_get_zip_value()
         assert actual_zip == TestData.zip, f"Wrong zip. Actual zip is {actual_zip} but it shall be {TestData.zip}."
-        actual_city = self.my_account.my_account_get_city_value()
+        actual_city = self.my_account_page.my_account_get_city_value()
         assert actual_city == TestData.city, f"Wrong city. Actual city is {actual_city} but it shall be {TestData.city}."
 
         # Clear street, zip, city.
-        self.my_account.my_account_clear_street_input()
-        self.my_account.my_account_clear_zip_input()
-        self.my_account.my_account_clear_city_input()
+        self.my_account_page.my_account_clear_street_input()
+        self.my_account_page.my_account_clear_zip_input()
+        self.my_account_page.my_account_clear_city_input()
         # Refresh page to refresh values for assertions.
         self.helpers.helpers_refresh_page()
-        assert self.my_account.my_account_get_street_value() == "", "Street input field is not empty though it shall be."
-        assert self.my_account.my_account_get_zip_value() == "", "Zip input field is not empty though it shall be."
-        assert self.my_account.my_account_get_city_value() == "", "City input field is not empty though it shall be."
+        assert self.my_account_page.my_account_get_street_value() == "", "Street input field is not empty though it shall be."
+        assert self.my_account_page.my_account_get_zip_value() == "", "Zip input field is not empty though it shall be."
+        assert self.my_account_page.my_account_get_city_value() == "", "City input field is not empty though it shall be."
 
         # Logout.
         self.top_section.top_section_click_logout_link()

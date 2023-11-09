@@ -8,7 +8,7 @@ class MyAccount(BasePage):
     # Identification of objects on my account page.
     account_settings_dropdown = (By.XPATH, "//div[@data-testid='menuSection-MyAccount']")
     my_account_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserSettings']")
-    my_account_list_of_watchdogs = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
+    my_account_watchdogs_link = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
 
     data_is_saving_text = (By.XPATH, "//span[@class='saving']/span[@class='text']")
     data_was_saved_text = (By.XPATH, "//span[@class='saved']/span[@class='text']")
@@ -24,13 +24,6 @@ class MyAccount(BasePage):
     zip_input = (By.NAME, "zip")
     zip_input_correctly_filled = (By.XPATH, "//input[@name='zip'][contains(@class, 'valid')][not(contains(@class, 'empt'))]")
     city_input = (By.NAME, "city")
-    watchdog_item = (By.XPATH, "//div[@data-testid='page-watchDogs']//a")
-    watchdog_price_limit_provided = (By.NAME, "price")
-    watchdog_item_remove_button = (By.XPATH, "//div[@data-testid='page-watchDogs']//button")
-    watchdog_item_removal_confirmation_button = (By.XPATH, "//button[contains(@class, 'red')]")
-    watchdog_remove_question_dialog = (By.XPATH, "//div[@role='dialog']")
-    watchdog_checked_alert_price_checkbox = (By.XPATH, "//input[not (@name)]/parent::span/*[name()='svg']/*[name()='g' and @transform]")
-    watchdog_text_all_items_removed_from_watchdog_list = (By.XPATH, "//div[@data-testid='noResults']/span")
 
     # Initialization.
     def __init__(self, driver):
@@ -46,7 +39,7 @@ class MyAccount(BasePage):
         self.base_element_exists(self.data_was_saved_text)
 
     def my_account_click_watchdogs_link(self):
-        self.base_click(self.my_account_list_of_watchdogs)
+        self.base_click(self.my_account_watchdogs_link)
 
     def my_account_provide_street(self):
         self.base_clear_input(self.street_input)
@@ -115,29 +108,3 @@ class MyAccount(BasePage):
         self.base_send_keys(self.city_input, Keys.TAB)
         self.base_is_visible(self.data_is_saving_text)
         self.base_is_visible(self.data_was_saved_text)
-
-    def my_account_watchdog_list_get_watchdog_item_name(self):
-        if self.base_is_visible(self.watchdog_item):
-            watchdog_item_name = self.base_get_element_text(self.watchdog_item)
-            return watchdog_item_name
-
-    def my_account_watchdog_get_price_limit_provided(self):
-        if self.base_is_visible(self.watchdog_price_limit_provided):
-            watchdog_price_limit = self.base_get_element_attribute_value(self.watchdog_price_limit_provided, "value")
-            watchdog_price_limit = watchdog_price_limit.replace(",-", "")
-            return watchdog_price_limit
-
-    def my_account_watchdog_list_get_text_once_all_items_removed(self):
-        if self.base_is_visible(self.watchdog_text_all_items_removed_from_watchdog_list):
-            all_items_removed_message = self.base_get_element_text(self.watchdog_text_all_items_removed_from_watchdog_list)
-            return all_items_removed_message
-
-    def my_account_watchdog_list_check_alert_price_checked(self):
-        return self.base_is_visible(self.watchdog_checked_alert_price_checkbox, 1)
-
-    def my_account_watchdog_list_remove_all_items(self):
-        if self.base_is_visible(self.watchdog_item, 3):
-            while self.base_is_visible(self.watchdog_item_remove_button, 1):
-                self.base_click(self.watchdog_item_remove_button)
-                self.base_click(self.watchdog_item_removal_confirmation_button)
-                self.base_is_invisible(self.watchdog_remove_question_dialog)

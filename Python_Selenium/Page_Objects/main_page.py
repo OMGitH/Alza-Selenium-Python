@@ -19,10 +19,6 @@ class MainPage(BasePage):
     first_pet_supply_item_link = (By.XPATH, "//div[@data-react-client-component-id='carousel0']//swiper-slide[@class='swiper-slide-active']//a[@data-testid='itemName']")
     first_pet_supply_item_name = (By.XPATH, "//h1[@itemprop='name']")
     watchdog_link = (By.CLASS_NAME, "watchproduct")
-    watchdog_email_input = (By.NAME, "email")
-    watchdog_price_limit_checkbox = (By.XPATH, "//input[contains(@class, 'PrivateSwitchBase')][not(contains(@name, 'isTrackingStock'))]")
-    watchdog_price_limit_input = (By.NAME, "price")
-    watchdog_confirm_button = (By.XPATH, "//button[contains(@class, 'blue')][contains(@class, 'price-box')]")
 
     # Initialization.
     def __init__(self, driver):
@@ -79,17 +75,3 @@ class MainPage(BasePage):
         if self.base_is_visible(self.search_result_number_of_items_found):
             result_items_amount = self.base_get_element_text(self.search_result_number_of_items_found)
             return int(result_items_amount)
-
-    def main_page_watchdog_get_email(self):
-        if self.base_is_visible(self.watchdog_email_input):
-            email_address = self.base_get_element_attribute_value(self.watchdog_email_input, "value")
-            return email_address
-
-    def main_page_watchdog_set_price_limit(self, value):
-        self.base_hover_click(self.watchdog_price_limit_checkbox)
-        self.base_clear_input_by_pressing_backspace(self.watchdog_price_limit_input, "value")
-        self.base_send_keys(self.watchdog_price_limit_input, value)
-
-    def main_page_watchdog_click_confirm_button(self):
-        self.base_click(self.watchdog_confirm_button)
-        self.base_is_invisible(self.watchdog_email_input)
