@@ -101,7 +101,7 @@ class TestsAlza:
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
         # Empty basket if there are items inside.
-        if self.top_section.top_section_basket_is_not_empty():
+        if self.top_section.top_section_check_if_basket_not_empty():
             self.top_section.top_section_click_basket_icon()
             self.basket_page.basket_remove_all_items_from_basket()
             self.top_section.top_section_click_alza_icon()

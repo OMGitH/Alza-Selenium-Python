@@ -79,7 +79,7 @@ class BasePage:
 
     """
     Can be used for checking which of 2 possible states is actual without having to wait for timeout when checking whether an element is present or not.
-    Can be used only if each state has an element that is not present in the other state.
+    Can be used only if each state has an element that is not present in the other state as the state is identified based on presence of an element.
     """
     def base_get_state(self, locator1, locator2, no_checks=40, check_wait=0.25):
         for check in range(no_checks):
