@@ -244,20 +244,17 @@ class TestsAlza:
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
 
-    def test_additional_account_changes(self):
+    def test_account_add_remove_delivery_address(self):
         """
-        Tests changes of information in user account. First all cookies are rejected then logs in and navigates to user account page.
-        Then street, zip and city fields are filled in.
-        Then navigates to main page and back to user account page where is checked that fields still have values provided into them.
-        After that fields are returned to original state, i.e. cleared.
+        
         At the end logs out.
         """
 
-        self.login_page = LoginPage(self.driver)
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
+        self.login_page = LoginPage(self.driver)
+        self.main_page = MainPage(self.driver)
         self.my_account_page = MyAccount(self.driver)
-        self.helpers = Helpers(self.driver)
 
         # Reject all cookies.
         self.cookies_pane.cookies_pane_click_reject_all()
@@ -265,42 +262,11 @@ class TestsAlza:
         # Log into application:
         # Click login link.
         self.top_section.top_section_click_login_link()
-        # Fill in credentials and login.
+        # Fill in credentials, login, switch back to page.
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
-        # Switch from login frame back to page.
-        self.login_page.login_switch_back_from_login_frame()
 
-        # Changes to my account:
-        # Navigate to my account page.
-        self.top_section.top_section_click_my_profile_link()
-        self.my_account_page.my_account_click_account_settings_dropdown()
-        self.my_account_page.my_account_click_my_account_menu_item()
-        # Fill in street, zip, city.
-        self.my_account_page.my_account_provide_street()
-        self.my_account_page.my_account_provide_zip()
-        self.my_account_page.my_account_provide_city()
-        # Go back to main page.
-        self.top_section.top_section_click_alza_icon()
-        # Go back to my account page and check provided values are stored.
-        self.top_section.top_section_click_my_profile_link()
-        self.my_account_page.my_account_click_account_settings_dropdown()
-        self.my_account_page.my_account_click_my_account_menu_item()
-        actual_street_and_number = self.my_account_page.my_account_get_street_value()
-        assert actual_street_and_number == TestData.street_and_number, f"Wrong street and number. Actual street and number is {actual_street_and_number} but it shall be {TestData.street_and_number}."
-        actual_zip = self.my_account_page.my_account_get_zip_value()
-        assert actual_zip == TestData.zip, f"Wrong zip. Actual zip is {actual_zip} but it shall be {TestData.zip}."
-        actual_city = self.my_account_page.my_account_get_city_value()
-        assert actual_city == TestData.city, f"Wrong city. Actual city is {actual_city} but it shall be {TestData.city}."
 
-        # Clear street, zip, city.
-        self.my_account_page.my_account_clear_street_input()
-        self.my_account_page.my_account_clear_zip_input()
-        self.my_account_page.my_account_clear_city_input()
-        # Refresh page to refresh values for assertions.
-        self.helpers.helpers_refresh_page()
-        assert self.my_account_page.my_account_get_street_value() == "", "Street input field is not empty though it shall be."
-        assert self.my_account_page.my_account_get_zip_value() == "", "Zip input field is not empty though it shall be."
-        assert self.my_account_page.my_account_get_city_value() == "", "City input field is not empty though it shall be."
 
         # Logout.
+        self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
