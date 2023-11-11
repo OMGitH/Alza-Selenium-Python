@@ -245,7 +245,7 @@ class TestsAlza:
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
 
-    def test_account_add_remove_delivery_address(self):
+    def test_account_add_remove_2_delivery_addresses(self):
         """
 
         At the end logs out.
@@ -266,12 +266,17 @@ class TestsAlza:
         # Fill in credentials, login, switch back to page.
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
-        # Go to delivery addresses page.
+        # Delivery addresses page:
+        # Go to delivery addresses page:
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_my_profile_link()
         self.my_account_page.my_account_click_delivery_addresses_link()
         # Empty delivery addresses list if there are items.
         self.delivery_addresses_page.delivery_addresses_remove_all_items()
+        # Add 2 delivery addresses:
+        self.delivery_addresses_page.delivery_addresses_add_2_addresses()
+
+
 
         self.top_section.top_section_click_alza_icon()
 
