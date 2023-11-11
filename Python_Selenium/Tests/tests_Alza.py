@@ -10,6 +10,7 @@ from Page_objects.top_section import TopSection
 from Page_objects.cookies_pane import CookiesPane
 from Page_objects.watchdogs_page import Watchdogs
 from Page_objects.watchdog_add_dialog import WatchdogAdd
+from Page_objects.delivery_addresses_page import DeliveryAddresses
 
 
 @pytest.mark.usefixtures("initialize_driver")
@@ -246,14 +247,14 @@ class TestsAlza:
 
     def test_account_add_remove_delivery_address(self):
         """
-        
+
         At the end logs out.
         """
 
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
         self.login_page = LoginPage(self.driver)
-        self.main_page = MainPage(self.driver)
+        self.delivery_addresses_page = DeliveryAddresses(self.driver)
         self.my_account_page = MyAccount(self.driver)
 
         # Reject all cookies.
@@ -265,7 +266,14 @@ class TestsAlza:
         # Fill in credentials, login, switch back to page.
         self.login_page.login_successful_login(TestData.user_name, TestData.password)
 
+        # Go to delivery addresses page.
+        self.top_section.top_section_click_signed_in_user_link()
+        self.top_section.top_section_click_my_profile_link()
+        self.my_account_page.my_account_click_delivery_addresses_link()
+        # Empty delivery addresses list if there are items.
+        self.delivery_addresses_page.delivery_addresses_remove_all_items()
 
+        self.top_section.top_section_click_alza_icon()
 
         # Logout.
         self.top_section.top_section_click_signed_in_user_link()

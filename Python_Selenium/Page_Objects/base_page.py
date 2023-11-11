@@ -1,6 +1,6 @@
 import time
 
-from selenium.common import TimeoutException
+from selenium.common import StaleElementReferenceException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,7 +16,7 @@ class BasePage:
         self.driver = driver
 
     def base_click(self, locator, timeout=timeout_default):
-        WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).click()
+        WebDriverWait(self.driver, timeout, 0.5, [StaleElementReferenceException]).until(EC.element_to_be_clickable(locator)).click()
 
     def base_hover_click(self, locator, timeout=timeout_default):
         element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))

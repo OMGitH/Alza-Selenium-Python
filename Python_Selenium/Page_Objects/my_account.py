@@ -9,6 +9,7 @@ class MyAccount(BasePage):
     account_settings_dropdown = (By.XPATH, "//div[@data-testid='menuSection-MyAccount']")
     my_account_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserSettings']")
     my_account_watchdogs_link = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
+    my_account_delivery_addresses_link = (By.XPATH, "//a[@data-testid='menuButton-DeliveryAddresses']")
 
     data_is_saving_text = (By.XPATH, "//span[@class='saving']/span[@class='text']")
     data_was_saved_text = (By.XPATH, "//span[@class='saved']/span[@class='text']")
@@ -40,3 +41,6 @@ class MyAccount(BasePage):
 
     def my_account_click_watchdogs_link(self):
         self.base_click(self.my_account_watchdogs_link)
+
+    def my_account_click_delivery_addresses_link(self):
+        self.base_click(self.my_account_delivery_addresses_link)
