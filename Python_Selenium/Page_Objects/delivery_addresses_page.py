@@ -37,3 +37,7 @@ class DeliveryAddresses(BasePage):
 			self.base_send_keys(self.delivery_address_add_dialog_zip_input, data["zip"])
 			self.base_send_keys(self.delivery_address_add_dialog_cíty_input, data["city"])
 			self.base_click(self.delivery_address_add_dialog_save_button)
+
+	def delivery_addresses_get_number_of_addresses(self):
+		number_of_addresses = self.base_get_number_of_elements(self.delivery_address_item)
+		return number_of_addresses

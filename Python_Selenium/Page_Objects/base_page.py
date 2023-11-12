@@ -1,6 +1,5 @@
 import time
 
-from selenium.common import StaleElementReferenceException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,7 +15,7 @@ class BasePage:
         self.driver = driver
 
     def base_click(self, locator, timeout=timeout_default):
-        WebDriverWait(self.driver, timeout, 0.5, [StaleElementReferenceException]).until(EC.element_to_be_clickable(locator)).click()
+        WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).click()
 
     def base_hover_click(self, locator, timeout=timeout_default):
         element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
@@ -76,6 +75,10 @@ class BasePage:
         element_attribute_value = self.base_get_element_attribute_value(locator, attribute, timeout)
         number_of_hits = len(element_attribute_value)
         WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).send_keys(number_of_hits * Keys.BACKSPACE)
+
+    def base_get_number_of_elements(self, locator, timeout=timeout_default):
+        number_of_elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
+        return len(number_of_elements)
 
     """
     Can be used for checking which of 2 possible states is actual without having to wait for timeout when checking whether an element is present or not.

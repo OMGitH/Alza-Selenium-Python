@@ -276,9 +276,17 @@ class TestsAlza:
         # Add 2 delivery addresses:
         self.delivery_addresses_page.delivery_addresses_add_2_addresses()
 
-
-
+        # Go to Alza main page and back to delivery addresses and check added addresses are present with correct info:
         self.top_section.top_section_click_alza_icon()
+        # Go to delivery addresses page:
+        self.top_section.top_section_click_signed_in_user_link()
+        self.top_section.top_section_click_my_profile_link()
+        self.my_account_page.my_account_click_delivery_addresses_link()
+        actual_number_of_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
+        expected_number_of_delivery_addresses = len(TestData.delivery_addresses)
+        assert actual_number_of_addresses == expected_number_of_delivery_addresses, f"Incorrect number of delivery addresses. Actual number is {actual_number_of_addresses} but it should be {expected_number_of_delivery_addresses}."
+
+
 
         # Logout.
         self.top_section.top_section_click_signed_in_user_link()
