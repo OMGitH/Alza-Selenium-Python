@@ -22,12 +22,12 @@ class TestData:
     watchdog_price_limit = "10"
     text_once_all_items_removed_from_watchdog_list = "Momentálně pro vás nehlídáme žádné produkty"
 
-    delivery_address1 = {"name surname": "Jarda Starý",
+    delivery_address_1 = {"name surname": "Jarda Starý",
                         "street and number": "Ulice 4",
                         "zip": "10000",
                         "city": "Praha"}
-    delivery_address2 = {"name surname": "Petr Nový",
+    delivery_address_2 = {"name surname": "Petr Nový",
                         "street and number": "Jarní 20",
                         "zip": "11000",
                         "city": "Ostrava"}
-    delivery_addresses = [delivery_address1, delivery_address2]
+    delivery_addresses = [delivery_address_1, delivery_address_2]

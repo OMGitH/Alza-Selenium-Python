@@ -247,7 +247,7 @@ class TestsAlza:
 
     def test_account_add_remove_2_delivery_addresses(self):
         """
-
+        Number of addresses can be changed by simply changing number of dictionaries in TestData.delivery_addresses.
         At the end logs out.
         """
 
@@ -276,7 +276,7 @@ class TestsAlza:
         # Add 2 delivery addresses:
         self.delivery_addresses_page.delivery_addresses_add_2_addresses()
 
-        # Go to Alza main page and back to delivery addresses and check added addresses are present with correct info:
+        # Go to Alza main page and back to delivery addresses and check added addresses are present with correct data:
         self.top_section.top_section_click_alza_icon()
         # Go to delivery addresses page:
         self.top_section.top_section_click_signed_in_user_link()
@@ -285,6 +285,8 @@ class TestsAlza:
         actual_number_of_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
         expected_number_of_delivery_addresses = len(TestData.delivery_addresses)
         assert actual_number_of_addresses == expected_number_of_delivery_addresses, f"Incorrect number of delivery addresses. Actual number is {actual_number_of_addresses} but it should be {expected_number_of_delivery_addresses}."
+        actuat_delivery_addresses = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_addresses)
+        assert actuat_delivery_addresses == TestData.delivery_addresses, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actuat_delivery_addresses}, expected delivery addresses {TestData.delivery_addresses}."
 
 
 

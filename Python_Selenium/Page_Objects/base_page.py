@@ -49,6 +49,13 @@ class BasePage:
         element_text = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).text
         return element_text
 
+    def base_get_multiple_elements_text(self, locator, timeout=timeout_default):
+        elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
+        elements_text = []
+        for element in elements:
+            elements_text.append(element.text)
+        return elements_text
+
     def base_get_element_attribute_value(self, locator, attribute, timeout=timeout_default):
         element_attribute_value = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).get_attribute(attribute)
         return element_attribute_value
