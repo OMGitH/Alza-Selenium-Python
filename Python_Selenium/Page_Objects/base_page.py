@@ -87,6 +87,10 @@ class BasePage:
         number_of_elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
         return len(number_of_elements)
 
+    def base_get_multiple_elements(self, locator, timeout=timeout_default):
+        elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
+        return elements
+
     """
     Can be used for checking which of 2 possible states is actual without having to wait for timeout when checking whether an element is present or not.
     Can be used only if each state has an element that is not present in the other state as the state is identified based on presence of an element.

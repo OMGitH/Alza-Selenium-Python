@@ -32,8 +32,8 @@ class DeliveryAddresses(BasePage):
 				self.base_click(self.delivery_address_item_removal_confirmation_button)
 				self.base_is_invisible(self.delivery_address_remove_question_dialog)
 
-	def delivery_addresses_add_2_addresses(self):
-		for data in TestData.delivery_addresses:
+	def delivery_addresses_add_addresses(self):
+		for data in TestData.delivery_addresses_original:
 			self.base_click(self.delivery_address_add_new_address_button)
 			self.base_send_keys(self.delivery_address_add_dialog_name_surname_input, data["name surname"])
 			self.base_send_keys(self.delivery_address_add_dialog_street_input, data["street and number"])
@@ -63,8 +63,16 @@ class DeliveryAddresses(BasePage):
 			delivery_addresses[index]["city"] = zip_city[1]
 		return delivery_addresses
 
-
-
-
-
-
+	def delivery_addresses_edit_addresses(self):
+		addresses = self.base_get_multiple_elements(self.delivery_address_item)
+		for index, address in enumerate(addresses):
+			self.base_click(address)
+			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_name_surname_input, "value")
+			self.base_send_keys(self.delivery_address_add_dialog_name_surname_input, TestData.delivery_addresses_edited[index]["name surname"])
+			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_street_input, "value")
+			self.base_send_keys(self.delivery_address_add_dialog_street_input, TestData.delivery_addresses_edited[index]["street and number"])
+			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_zip_input, "value")
+			self.base_send_keys(self.delivery_address_add_dialog_zip_input, TestData.delivery_addresses_edited[index]["zip"])
+			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_cíty_input, "value")
+			self.base_send_keys(self.delivery_address_add_dialog_cíty_input, TestData.delivery_addresses_edited[index]["city"])
+			self.base_click(self.delivery_address_add_dialog_save_button)
