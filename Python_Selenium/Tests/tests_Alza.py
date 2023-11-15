@@ -247,8 +247,12 @@ class TestsAlza:
 
     def test_account_add_remove_delivery_addresses(self):
         """
-        Number of addresses can be changed by simply changing number of dictionaries in TestData.delivery_addresses_original.
+        Tests adding and removing addresses from delivery addresses list. First all cookies are rejected then logs in, if there are addresses in
+        delivery addresses list they are removed. Then adds 2 delivery addresses, goes to main page, then back to delivery addresses list, checks number of
+        delivery addresses and at both all provided data. Then edits data at both addresses, goes to main page, then back to delivery addresses list
+        and checks at both all edited data. Then removes both addresses from delivery addresses list and checks delivery addresses list is empty.
         At the end logs out.
+        Number of addresses can be changed by adding or removing dictionaries from TestData.delivery_addresses_original and TestData.delivery_addresses_edited.
         """
 
         self.cookies_pane = CookiesPane(self.driver)
@@ -271,9 +275,9 @@ class TestsAlza:
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_my_profile_link()
         self.my_account_page.my_account_click_delivery_addresses_link()
-        # Empty delivery addresses list if there are items.
+        # Empty delivery addresses list if there are addresses.
         self.delivery_addresses_page.delivery_addresses_remove_all_items()
-        # Add 2 delivery addresses:
+        # Add 2 delivery addresses.
         self.delivery_addresses_page.delivery_addresses_add_addresses()
 
         # Go to Alza main page and back to delivery addresses and check added addresses are present with correct data:
@@ -301,8 +305,11 @@ class TestsAlza:
         actuat_delivery_addresses_data = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_addresses)
         assert actuat_delivery_addresses_data == TestData.delivery_addresses_edited, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actuat_delivery_addresses_data}, expected delivery addresses {TestData.delivery_addresses_edited}."
 
-
-
+        # Remove delivery addresses:
+        self.delivery_addresses_page.delivery_addresses_remove_all_items()
+        # Check there are no addresses.
+        actual_number_of_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
+        assert actual_number_of_addresses == 0, f"There are delivery addresses present though there shall not be any. There are {actual_number_of_addresses} addresses."
 
         # Logout.
         self.top_section.top_section_click_signed_in_user_link()
