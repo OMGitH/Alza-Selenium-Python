@@ -65,7 +65,7 @@ class TopSection(BasePage):
         self.base_click(self.basket_icon)
 
     def top_section_check_if_basket_not_empty(self):
-        flag = self.base_is_visible(self.basket_icon_item_inside, 2)
+        flag = self.base_is_visible(self.basket_icon_item_inside, 2, True)
         return flag
 
     """

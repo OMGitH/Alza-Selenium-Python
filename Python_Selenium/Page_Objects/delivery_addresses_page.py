@@ -28,8 +28,8 @@ class DeliveryAddresses(BasePage):
 
 	# Actions on delivery addresses page.
 	def delivery_addresses_remove_all_items_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
-		if self.base_is_visible(self.delivery_address_item, 3):
-			while self.base_is_visible(self.delivery_address_item_remove_button, 1):
+		if self.base_is_visible(self.delivery_address_item, 3, True):
+			while self.base_is_visible(self.delivery_address_item_remove_button, 1, True):
 				number_of_items = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
 				self.base_click(self.delivery_address_item_remove_button, True)
 				self.base_click(self.delivery_address_item_removal_confirmation_button)
@@ -94,7 +94,7 @@ class DeliveryAddresses(BasePage):
 		return delivery_addresses
 
 	def delivery_addresses_edit_addresses(self):
-		addresses = self.base_get_multiple_elements(self.delivery_address_item)
+		addresses = self.base_get_multiple_visible_elements(self.delivery_address_item)
 		for index, address in enumerate(addresses):
 			self.base_click(address)
 			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_name_surname_input, "value")

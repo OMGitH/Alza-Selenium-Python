@@ -245,7 +245,7 @@ class TestsAlza:
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_logout_link()
 
-    def test_account_add_remove_delivery_addresses(self):
+    def test_add_remove_delivery_addresses(self):
         """
         Tests adding and removing addresses from delivery addresses list. First all cookies are rejected then logs in, if there are addresses in
         delivery addresses list they are removed. Then adds 2 delivery addresses, goes to main page, then back to delivery addresses list, checks number of

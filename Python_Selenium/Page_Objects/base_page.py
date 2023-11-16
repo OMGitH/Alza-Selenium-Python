@@ -40,19 +40,27 @@ class BasePage:
     def base_switch_back_from_frame(self):
         self.driver.switch_to.default_content()
 
-    def base_is_visible(self, locator, timeout=timeout_default):
-        try:
-            WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
-            return True
-        except TimeoutException:
-            return False
+    def base_is_visible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
+        if handle_TimeoutException == False:
+            element = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+            return element
+        else:
+            try:
+                WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+                return True
+            except TimeoutException:
+                return False
 
-    def base_is_invisible(self, locator, timeout=timeout_default):
-        try:
-            WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
-            return True
-        except TimeoutException:
-            return False
+    def base_is_invisible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
+        if handle_TimeoutException == False:
+            flag = WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+            return flag
+        else:
+            try:
+                WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+                return True
+            except TimeoutException:
+                return False
 
     def base_get_element_text(self, locator, timeout=timeout_default):
         element_text = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).text
@@ -94,12 +102,14 @@ class BasePage:
 
     def base_get_number_of_visible_elements(self, locator, timeout=2):
         try:
-            number_of_elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
-            return len(number_of_elements)
+            elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
+            number_of_elements = len(elements)
+            return number_of_elements
         except TimeoutException:
-            return 0
+            number_of_elements = 0
+            return number_of_elements
 
-    def base_get_multiple_elements(self, locator, timeout=timeout_default):
+    def base_get_multiple_visible_elements(self, locator, timeout=timeout_default):
         elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
         return elements
 

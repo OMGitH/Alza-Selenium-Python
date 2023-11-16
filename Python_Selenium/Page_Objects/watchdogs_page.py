@@ -18,8 +18,8 @@ class Watchdogs(BasePage):
 
 	# Actions on watchdogs page.
 	def watchdogs_remove_all_items_from_watchdogs_list(self):
-		if self.base_is_visible(self.watchdog_item, 3):
-			while self.base_is_visible(self.watchdog_item_remove_button, 1):
+		if self.base_is_visible(self.watchdog_item, 3, True):
+			while self.base_is_visible(self.watchdog_item_remove_button, 1, True):
 				self.base_click(self.watchdog_item_remove_button)
 				self.base_click(self.watchdog_item_removal_confirmation_button)
 				self.base_is_invisible(self.watchdog_remove_question_dialog)
