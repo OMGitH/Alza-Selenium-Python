@@ -44,14 +44,14 @@ class BasePage:
         try:
             WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
             return True
-        except:
+        except TimeoutException:
             return False
 
     def base_is_invisible(self, locator, timeout=timeout_default):
         try:
             WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
             return True
-        except:
+        except TimeoutException:
             return False
 
     def base_get_element_text(self, locator, timeout=timeout_default):
@@ -92,7 +92,7 @@ class BasePage:
         number_of_hits = len(element_attribute_value)
         WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).send_keys(number_of_hits * Keys.BACKSPACE)
 
-    def base_get_number_of_elements(self, locator, timeout=2):
+    def base_get_number_of_visible_elements(self, locator, timeout=2):
         try:
             number_of_elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
             return len(number_of_elements)
@@ -112,11 +112,11 @@ class BasePage:
             try:
                 WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_1))
                 return True
-            except:
+            except TimeoutException:
                 pass
             try:
                 WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_2))
                 return False
-            except:
+            except TimeoutException:
                 pass
             time.sleep(check_wait)
