@@ -15,7 +15,7 @@ class BasePage:
         self.driver = driver
 
     def base_click(self, locator, handle_StaleElementReferenceException=False, timeout=timeout_default):
-        if handle_StaleElementReferenceException == False:
+        if not handle_StaleElementReferenceException:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).click()
         else:
             end_time = time.monotonic() + timeout
@@ -41,7 +41,7 @@ class BasePage:
         self.driver.switch_to.default_content()
 
     def base_is_visible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
-        if handle_TimeoutException == False:
+        if not handle_TimeoutException:
             element = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
             return element
         else:
@@ -52,7 +52,7 @@ class BasePage:
                 return False
 
     def base_is_invisible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
-        if handle_TimeoutException == False:
+        if not handle_TimeoutException:
             flag = WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
             return flag
         else:

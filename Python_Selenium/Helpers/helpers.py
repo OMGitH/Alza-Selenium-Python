@@ -8,6 +8,3 @@ class Helpers:
 
     def helpers_refresh_page(self):
         self.driver.refresh()
-
-
-

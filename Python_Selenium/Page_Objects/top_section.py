@@ -73,8 +73,8 @@ class TopSection(BasePage):
     identifying a state (if there is a number at basket icon, True is returned, if not, False is returned).
     """
     # def top_section_check_if_basket_not_empty(self):
-        # flag = self.base_get_state(self.basket_icon_item_inside, self.basket_icon_empty)
-        # return flag
+    #     flag = self.base_get_state(self.basket_icon_item_inside, self.basket_icon_empty)
+    #     return flag
 
     def top_section_get_number_of_items_at_basket_icon(self):
         number_of_items = self.base_get_element_text(self.basket_icon_item_inside)

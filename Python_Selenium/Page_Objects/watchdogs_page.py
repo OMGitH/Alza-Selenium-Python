@@ -29,11 +29,11 @@ class Watchdogs(BasePage):
 	identifying a state (if there is an item in watchdog list, True is returned, if not, False is returned).
 	"""
 	# def watchdogs_remove_all_items_from_watchdogs_list(self):
-		# if self.base_get_state(self.watchdog_item, self.watchdog_text_all_items_removed_from_watchdog_list):
-		# 	while self.base_is_visible(self.watchdog_item_remove_button, 1):
-		# 		self.base_click(self.watchdog_item_remove_button)
-		# 		self.base_click(self.watchdog_item_removal_confirmation_button)
-		# 		self.base_is_invisible(self.watchdog_remove_question_dialog)
+	# 	if self.base_get_state(self.watchdog_item, self.watchdog_text_all_items_removed_from_watchdog_list):
+	# 		while self.base_is_visible(self.watchdog_item_remove_button, 1):
+	# 			self.base_click(self.watchdog_item_remove_button)
+	# 			self.base_click(self.watchdog_item_removal_confirmation_button)
+	# 			self.base_is_invisible(self.watchdog_remove_question_dialog)
 
 	def watchdogs_get_watchdog_item_name(self):
 		if self.base_is_visible(self.watchdog_item):

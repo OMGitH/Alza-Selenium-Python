@@ -1,7 +1,4 @@
-import pytest
-
 from Config.test_data import TestData
-from Helpers.helpers import Helpers
 from Page_objects.basket import Basket
 from Page_objects.login_page import LoginPage
 from Page_objects.main_page import MainPage
@@ -11,6 +8,7 @@ from Page_objects.cookies_pane import CookiesPane
 from Page_objects.watchdogs_page import Watchdogs
 from Page_objects.watchdog_add_dialog import WatchdogAdd
 from Page_objects.delivery_addresses_page import DeliveryAddresses
+import pytest
 
 
 @pytest.mark.usefixtures("initialize_driver")
@@ -239,7 +237,7 @@ class TestsAlza:
         # Remove item from watchdog list.
         self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
         actual_text_once_watchdog_list_empty = self.watchdogs_page.watchdogs_get_text_once_all_items_removed()
-        assert actual_text_once_watchdog_list_empty == TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchodg list is empty. Acutal text is {actual_text_once_watchdog_list_empty} but it shall be {TestData.text_once_all_items_removed_from_watchdog_list}. Watchdog list is not empty?"
+        assert actual_text_once_watchdog_list_empty == TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchdog list is empty. Actual text is {actual_text_once_watchdog_list_empty} but it shall be {TestData.text_once_all_items_removed_from_watchdog_list}. Watchdog list is not empty?"
 
         # Logout.
         self.top_section.top_section_click_signed_in_user_link()
@@ -290,8 +288,8 @@ class TestsAlza:
         actual_number_of_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
         expected_number_of_delivery_addresses = len(TestData.delivery_addresses_original)
         assert actual_number_of_addresses == expected_number_of_delivery_addresses, f"Incorrect number of delivery addresses. Actual number is {actual_number_of_addresses} but it should be {expected_number_of_delivery_addresses}."
-        actuat_delivery_addresses_data = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_addresses)
-        assert actuat_delivery_addresses_data == TestData.delivery_addresses_original, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actuat_delivery_addresses_data}, expected delivery addresses {TestData.delivery_addresses_original}."
+        actual_delivery_addresses_data = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_addresses)
+        assert actual_delivery_addresses_data == TestData.delivery_addresses_original, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actual_delivery_addresses_data}, expected delivery addresses {TestData.delivery_addresses_original}."
 
         # Editing delivery addresses:
         self.delivery_addresses_page.delivery_addresses_edit_addresses()
@@ -302,8 +300,8 @@ class TestsAlza:
         self.top_section.top_section_click_my_profile_link()
         self.my_account_page.my_account_click_delivery_addresses_link()
         # Check addresses have correct edited data.
-        actuat_delivery_addresses_data = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_addresses)
-        assert actuat_delivery_addresses_data == TestData.delivery_addresses_edited, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actuat_delivery_addresses_data}, expected delivery addresses {TestData.delivery_addresses_edited}."
+        actual_delivery_addresses_data = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_addresses)
+        assert actual_delivery_addresses_data == TestData.delivery_addresses_edited, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actual_delivery_addresses_data}, expected delivery addresses {TestData.delivery_addresses_edited}."
 
         # Remove delivery addresses:
         self.delivery_addresses_page.delivery_addresses_remove_all_items_from_delivery_addresses_list()

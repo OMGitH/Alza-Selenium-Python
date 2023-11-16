@@ -1,6 +1,4 @@
-from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from Config.test_data import TestData
 from Page_objects.base_page import BasePage
 
 
