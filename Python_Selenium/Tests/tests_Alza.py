@@ -208,7 +208,7 @@ class TestsAlza:
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_my_profile_link()
         self.my_account_page.my_account_click_watchdogs_link()
-        self.watchdogs_page.watchdogs_remove_all_items()
+        self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
         self.top_section.top_section_click_alza_icon()
 
         # Navigate to pet supplies, open first pet supply and get its name.
@@ -237,7 +237,7 @@ class TestsAlza:
         assert actual_price_limit == TestData.watchdog_price_limit, f"Wrong price limit displayed in watchdogs. Actual price limit in watchdogs is {actual_price_limit} but it shall be {TestData.watchdog_price_limit}."
         assert self.watchdogs_page.watchdogs_check_alert_price_is_checked(), f"Checkbox for alert when price is lower than {TestData.watchdog_price_limit} shall be checked but it is not."
         # Remove item from watchdog list.
-        self.watchdogs_page.watchdogs_remove_all_items()
+        self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
         actual_text_once_watchdog_list_empty = self.watchdogs_page.watchdogs_get_text_once_all_items_removed()
         assert actual_text_once_watchdog_list_empty == TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchodg list is empty. Acutal text is {actual_text_once_watchdog_list_empty} but it shall be {TestData.text_once_all_items_removed_from_watchdog_list}. Watchdog list is not empty?"
 
@@ -276,7 +276,7 @@ class TestsAlza:
         self.top_section.top_section_click_my_profile_link()
         self.my_account_page.my_account_click_delivery_addresses_link()
         # Empty delivery addresses list if there are addresses.
-        self.delivery_addresses_page.delivery_addresses_remove_all_items()
+        self.delivery_addresses_page.delivery_addresses_remove_all_items_from_delivery_addresses_list()
         # Add 2 delivery addresses.
         self.delivery_addresses_page.delivery_addresses_add_addresses()
 
@@ -306,7 +306,7 @@ class TestsAlza:
         assert actuat_delivery_addresses_data == TestData.delivery_addresses_edited, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actuat_delivery_addresses_data}, expected delivery addresses {TestData.delivery_addresses_edited}."
 
         # Remove delivery addresses:
-        self.delivery_addresses_page.delivery_addresses_remove_all_items()
+        self.delivery_addresses_page.delivery_addresses_remove_all_items_from_delivery_addresses_list()
         # Check there are no addresses.
         actual_number_of_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
         assert actual_number_of_addresses == 0, f"There are delivery addresses present though there shall not be any. There are {actual_number_of_addresses} addresses."

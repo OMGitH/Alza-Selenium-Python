@@ -104,18 +104,18 @@ class BasePage:
         return elements
 
     """
-    Can be used for checking which of 2 possible states is actual without having to wait for timeout when checking whether an element is present or not.
+    Can be used for checking which of 2 possible states is true without having to wait for timeout when checking whether an element is present or not.
     Can be used only if each state has an element that is not present in the other state as the state is identified based on presence of an element.
     """
-    def base_get_state(self, locator1, locator2, number_of_checks=40, check_wait=0.25):
+    def base_get_state(self, locator_state_1, locator_state_2, number_of_checks=40, check_wait=0.25):
         for check in range(number_of_checks):
             try:
-                WebDriverWait(self.driver, 0.1).until(EC.visibility_of_element_located(locator1))
+                WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_1))
                 return True
             except:
                 pass
             try:
-                WebDriverWait(self.driver, 0.1).until(EC.visibility_of_element_located(locator2))
+                WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_2))
                 return False
             except:
                 pass
