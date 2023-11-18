@@ -18,11 +18,17 @@ class Watchdogs(BasePage):
 
 	# Actions on watchdogs page.
 	def watchdogs_remove_all_items_from_watchdogs_list(self):
-		if self.base_is_visible(self.watchdog_item, 3, True):
-			while self.base_is_visible(self.watchdog_item_remove_button, 1, True):
-				self.base_click(self.watchdog_item_remove_button)
-				self.base_click(self.watchdog_item_removal_confirmation_button)
-				self.base_is_invisible(self.watchdog_remove_question_dialog)
+		while self.base_get_state(self.watchdog_item_remove_button, self.watchdog_text_all_items_removed_from_watchdog_list) == self.watchdog_item_remove_button:
+			self.base_click(self.watchdog_item_remove_button)
+			self.base_click(self.watchdog_item_removal_confirmation_button)
+			self.base_is_invisible(self.watchdog_remove_question_dialog)
+
+	# def watchdogs_remove_all_items_from_watchdogs_list(self):
+	# 	if self.base_is_visible(self.watchdog_item, 3, True):
+	# 		while self.base_is_visible(self.watchdog_item_remove_button, 1, True):
+	# 			self.base_click(self.watchdog_item_remove_button)
+	# 			self.base_click(self.watchdog_item_removal_confirmation_button)
+	# 			self.base_is_invisible(self.watchdog_remove_question_dialog)
 
 	"""
 	Code below uses get state method that is faster as it doesn't wait for timeout to make sure whether or not there is an item

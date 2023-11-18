@@ -64,17 +64,21 @@ class TopSection(BasePage):
     def top_section_click_basket_icon(self):
         self.base_click(self.basket_icon)
 
-    def top_section_check_if_basket_not_empty(self):
-        flag = self.base_is_visible(self.basket_icon_item_inside, 2, True)
-        return flag
+    # def top_section_check_if_basket_not_empty(self):
+    #     flag = self.base_is_visible(self.basket_icon_item_inside, 2, True)
+    #     return flag
 
     """
     Code below uses get state method that is faster as it doesn't wait for timeout to make sure whether or not there is an item
     identifying a state (if there is a number at basket icon, True is returned, if not, False is returned).
     """
-    # def top_section_check_if_basket_not_empty(self):
-    #     flag = self.base_get_state(self.basket_icon_item_inside, self.basket_icon_empty)
-    #     return flag
+    def top_section_check_if_basket_not_empty(self):
+        locator = self.base_get_state(self.basket_icon_item_inside, self.basket_icon_empty)
+        if locator == self.basket_icon_item_inside:
+            flag = True
+        else:
+            flag = False
+        return flag
 
     def top_section_get_number_of_items_at_basket_icon(self):
         number_of_items = self.base_get_element_text(self.basket_icon_item_inside)

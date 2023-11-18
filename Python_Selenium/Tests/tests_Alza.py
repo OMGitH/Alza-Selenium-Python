@@ -223,7 +223,7 @@ class TestsAlza:
         self.watchdog_add_dialog.watchdog_add_dialog_set_price_limit(TestData.watchdog_price_limit)
         self.watchdog_add_dialog.watchdog_add_dialog_click_confirm_button()
 
-        # Check watchdogs page:
+        # Check watchdogs page and remove item:
         # Go to watchdogs page.
         self.top_section.top_section_click_signed_in_user_link()
         self.top_section.top_section_click_my_profile_link()

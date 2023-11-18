@@ -114,19 +114,35 @@ class BasePage:
         return elements
 
     """
+    Is used for checking which of multiple possible states is true without having to wait for timeout when checking whether an element is present or not.
+    Can be used only if each state has an element that is not present in the other state as the state is identified based on presence of an element.
+    In general speeds up process of checking state and adds reliability (for example can be used instead of checking if item is in basket or not
+    using visibility_of_element_located with timeout of 2 seconds and if it doesn't appear in 2 seconds, assuming that there is no item in basket).
+    """
+    def base_get_state(self, *locators, number_of_checks=40, check_wait=0.25):
+        for check in range(number_of_checks):
+            for locator in locators:
+                try:
+                    WebDriverWait(self.driver, 0.1).until(EC.visibility_of_element_located(locator))
+                    return locator
+                except TimeoutException:
+                    pass
+            time.sleep(check_wait)
+
+    """
     Can be used for checking which of 2 possible states is true without having to wait for timeout when checking whether an element is present or not.
     Can be used only if each state has an element that is not present in the other state as the state is identified based on presence of an element.
     """
-    def base_get_state(self, locator_state_1, locator_state_2, number_of_checks=40, check_wait=0.25):
-        for check in range(number_of_checks):
-            try:
-                WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_1))
-                return True
-            except TimeoutException:
-                pass
-            try:
-                WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_2))
-                return False
-            except TimeoutException:
-                pass
-            time.sleep(check_wait)
+    # def base_get_state(self, locator_state_1, locator_state_2, number_of_checks=40, check_wait=0.25):
+    #     for check in range(number_of_checks):
+    #         try:
+    #             WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_1))
+    #             return True
+    #         except TimeoutException:
+    #             pass
+    #         try:
+    #             WebDriverWait(self.driver, 0.1).until(EC.presence_of_element_located(locator_state_2))
+    #             return False
+    #         except TimeoutException:
+    #             pass
+    #         time.sleep(check_wait)
