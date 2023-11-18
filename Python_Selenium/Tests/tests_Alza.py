@@ -80,7 +80,7 @@ class TestsAlza:
         """
         Tests adding and removing item from basket. First all cookies are rejected then logs in, if there are items in basket they are removed,
         then adds computer to basket, checks number of items at basket icon, goes to basket, checks name of item present, its count and price.
-        Then removes item from basket and checks basket is empty.
+        Then removes item from basket, checks basket is empty and that there is no number at basket icon.
         At the end logs out.
         """
 

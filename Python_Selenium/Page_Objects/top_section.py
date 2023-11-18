@@ -10,6 +10,7 @@ class TopSection(BasePage):
     alza_main_page_icon = (By.XPATH, "//a[@data-testid='headerLogo']")
     my_profile_link = (By.XPATH, "//a[@data-testid='headerNavigationMyProfile']/span")
     signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
+    signed_in_user_dialog = (By.XPATH, "//div[@data-testid='headerContextMenu']")
     logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']")
     search_input = (By.XPATH, "//input[@data-testid='searchInput']")
     search_button = (By.XPATH, "//button[@data-testid='button-search']")
@@ -60,6 +61,7 @@ class TopSection(BasePage):
 
     def top_section_click_signed_in_user_link(self):
         self.base_click(self.signed_in_user_link)
+        self.base_is_visible(self.signed_in_user_dialog)
 
     def top_section_click_basket_icon(self):
         self.base_click(self.basket_icon)
