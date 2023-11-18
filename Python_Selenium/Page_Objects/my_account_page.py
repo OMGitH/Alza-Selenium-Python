@@ -3,6 +3,7 @@ from Page_objects.base_page import BasePage
 
 
 class MyAccount(BasePage):
+
     # Identification of objects on my account page.
     account_settings_dropdown = (By.XPATH, "//div[@data-testid='menuSection-MyAccount']")
     my_account_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserSettings']")

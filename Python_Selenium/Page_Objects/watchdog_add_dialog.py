@@ -3,6 +3,7 @@ from Page_objects.base_page import BasePage
 
 
 class WatchdogAdd(BasePage):
+
 	# Identification of objects on watchdog add dialog.
 	watchdog_email_input = (By.NAME, "email")
 	watchdog_price_limit_checkbox = (By.XPATH, "//input[contains(@class, 'PrivateSwitchBase')][not(contains(@name, 'isTrackingStock'))]")

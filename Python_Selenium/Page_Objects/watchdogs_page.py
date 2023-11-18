@@ -3,6 +3,7 @@ from Page_objects.base_page import BasePage
 
 
 class Watchdogs(BasePage):
+
 	# Identification of objects on watchdogs page.
 	watchdog_item = (By.XPATH, "//div[@data-testid='page-watchDogs']//a")
 	watchdog_item_remove_button = (By.XPATH, "//div[@data-testid='page-watchDogs']//button")

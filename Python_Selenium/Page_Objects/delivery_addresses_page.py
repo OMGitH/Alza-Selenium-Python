@@ -5,6 +5,7 @@ import time
 
 
 class DeliveryAddresses(BasePage):
+
 	# Identification of objects on delivery addresses page.
 	delivery_address_item = (By.XPATH, "//div[@data-testid='address']")
 	delivery_address_without_items = (By.XPATH, "//div[@data-testid='deliveryAddressesRoot'][not(descendant::div[@data-testid='address'])]")
@@ -26,7 +27,6 @@ class DeliveryAddresses(BasePage):
 		super().__init__(driver)
 
 	# Actions on delivery addresses page.
-
 	def delivery_addresses_remove_all_addresses_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
 		while self.base_get_state(self.delivery_address_item_remove_button, self.delivery_address_without_items) == self.delivery_address_item_remove_button:
 			number_of_items = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
