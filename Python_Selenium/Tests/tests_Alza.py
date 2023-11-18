@@ -130,6 +130,9 @@ class TestsAlza:
         self.basket_page.basket_remove_all_items_from_basket()
         actual_text_once_basket_empty = self.basket_page.basket_get_text_once_all_items_removed()
         assert actual_text_once_basket_empty == TestData.text_once_all_items_removed_from_basket, f"Wrong text once basket is empty. Text is {actual_text_once_basket_empty} but it shall be {TestData.text_once_all_items_removed_from_basket}. Basket is not empty?"
+        # Check there is no number at basket icon.
+        actual_number_of_items_at_basket_icon = self.top_section.top_section_get_number_of_items_at_basket_icon()
+        assert actual_number_of_items_at_basket_icon == "No items", f"Wrong number of items at basket icon. Actual number is {actual_number_of_items_at_basket_icon} but there shall be no items."
 
         # Logout.
         self.top_section.top_section_click_signed_in_user_link()
@@ -274,7 +277,7 @@ class TestsAlza:
         self.top_section.top_section_click_my_profile_link()
         self.my_account_page.my_account_click_delivery_addresses_link()
         # Empty delivery addresses list if there are addresses.
-        self.delivery_addresses_page.delivery_addresses_remove_all_items_from_delivery_addresses_list()
+        self.delivery_addresses_page.delivery_addresses_remove_all_addresses_from_delivery_addresses_list()
         # Add 2 delivery addresses.
         self.delivery_addresses_page.delivery_addresses_add_addresses()
 
@@ -304,7 +307,7 @@ class TestsAlza:
         assert actual_delivery_addresses_data == TestData.delivery_addresses_edited, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses {actual_delivery_addresses_data}, expected delivery addresses {TestData.delivery_addresses_edited}."
 
         # Remove delivery addresses:
-        self.delivery_addresses_page.delivery_addresses_remove_all_items_from_delivery_addresses_list()
+        self.delivery_addresses_page.delivery_addresses_remove_all_addresses_from_delivery_addresses_list()
         # Check there are no addresses.
         actual_number_of_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
         assert actual_number_of_addresses == 0, f"There are delivery addresses present though there shall not be any. There are {actual_number_of_addresses} addresses."

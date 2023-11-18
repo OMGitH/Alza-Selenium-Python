@@ -27,7 +27,7 @@ class DeliveryAddresses(BasePage):
 
 	# Actions on delivery addresses page.
 
-	def delivery_addresses_remove_all_items_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
+	def delivery_addresses_remove_all_addresses_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
 		while self.base_get_state(self.delivery_address_item_remove_button, self.delivery_address_without_items) == self.delivery_address_item_remove_button:
 			number_of_items = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
 			self.base_click(self.delivery_address_item_remove_button, True)
