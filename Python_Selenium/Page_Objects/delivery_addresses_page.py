@@ -29,15 +29,15 @@ class DeliveryAddresses(BasePage):
 	# Actions on delivery addresses page.
 	def delivery_addresses_remove_all_addresses_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
 		while self.base_get_state(self.delivery_address_item_remove_button, self.delivery_address_without_items) == self.delivery_address_item_remove_button:
-			number_of_items = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
+			number_of_addresses = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
 			self.base_click(self.delivery_address_item_remove_button, True)
 			self.base_click(self.delivery_address_item_removal_confirmation_button)
 			self.base_is_invisible(self.delivery_address_remove_question_dialog)
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for it to get refreshed.
-			if number_of_items != 0:
+			if number_of_addresses != 0:
 				for check in range(number_of_checks):
-					number_of_items_after_removal = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
-					if number_of_items_after_removal == 0 or number_of_items_after_removal == number_of_items - 1:
+					number_of_addresses_after_removal = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
+					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break
 					time.sleep(check_wait)
 
