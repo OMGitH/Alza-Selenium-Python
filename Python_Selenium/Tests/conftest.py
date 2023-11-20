@@ -1,8 +1,6 @@
-import pytest
-
 from selenium import webdriver
-
 from Config.test_data import TestData
+import pytest
 
 
 @pytest.fixture
