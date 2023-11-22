@@ -30,11 +30,11 @@ class LoginPage(BasePage):
         self.base_click(self.sign_in_button_active)
 
     def login_dialog_is_visible(self):
-        flag = self.base_is_visible(self.login_dialog)
+        flag = self.base_is_visible(self.login_dialog, handle_TimeoutException=True)
         return flag
 
     def login_dialog_is_invisible(self):
-        flag = self.base_is_invisible(self.login_dialog)
+        flag = self.base_is_invisible(self.login_dialog, handle_TimeoutException=True)
         return flag
 
     def login_get_blank_email_text(self):

@@ -17,5 +17,5 @@ class CookiesPane(BasePage):
         self.base_click(self.reject_all_button)
 
     def cookies_pane_is_invisible(self):
-        flag = self.base_is_invisible(self.cookies_pane)
+        flag = self.base_is_invisible(self.cookies_pane, handle_TimeoutException=True)
         return flag

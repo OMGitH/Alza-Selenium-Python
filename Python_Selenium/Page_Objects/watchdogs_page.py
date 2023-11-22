@@ -54,7 +54,7 @@ class Watchdogs(BasePage):
 			return watchdog_price_limit
 
 	def watchdogs_check_alert_price_is_checked(self):
-		flag = self.base_is_visible(self.watchdog_checked_alert_price_checkbox, 1)
+		flag = self.base_is_visible(self.watchdog_checked_alert_price_checkbox, handle_TimeoutException=True)
 		return flag
 
 	def watchdogs_get_text_once_all_items_removed(self):

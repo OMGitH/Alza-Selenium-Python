@@ -51,7 +51,7 @@ class TopSection(BasePage):
         self.base_click(self.search_suggestion_1st_item)
 
     def top_section_login_link_is_visible(self):
-        flag = self.base_is_visible(self.login_link)
+        flag = self.base_is_visible(self.login_link, handle_TimeoutException=True)
         return flag
 
     def top_section_get_signed_in_user_text(self):
