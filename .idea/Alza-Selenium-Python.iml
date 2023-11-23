@@ -10,6 +10,8 @@
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="D:\Alza-Selenium-Python\Python_Selenium\Config\requirements.txt" />
+    <option name="versionSpecifier" value="Greater or equal (&gt;=x.y.z)" />
+    <option name="keepMatchingSpecifier" value="false" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="py.test" />
