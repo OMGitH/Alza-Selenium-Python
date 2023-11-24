@@ -46,6 +46,11 @@ class MainPage(BasePage):
     def main_page_get_first_computer_name(self):
         if self.base_is_visible(self.first_computer_name):
             first_computer_name = self.base_get_element_text(self.first_computer_name)
+            # It may happen there is a note inside () in name. It is needed to remove this note as it is not present in item name inside basket.
+            opening_bracket_index = str(first_computer_name).find("(")
+            if opening_bracket_index != -1:
+                first_computer_name = str(first_computer_name)[:opening_bracket_index]
+                first_computer_name = first_computer_name.strip()
             return first_computer_name
 
     def main_page_get_first_pet_supply_name(self):
