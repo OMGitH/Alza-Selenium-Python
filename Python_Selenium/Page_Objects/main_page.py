@@ -16,6 +16,7 @@ class MainPage(BasePage):
     search_result_header_text = (By.XPATH, "//h1[@itemprop='name']")
     search_result_number_of_items_found = (By.ID, "lblNumberItem")
     pet_supplies_menu_item = (By.LINK_TEXT, "Chovatelské potřeby")
+    pet_supply_dialog_agree_button = (By.XPATH, "//button[@data-testid='dialogRestrictedAgeAcceptButton']")
     first_pet_supply_item_link = (By.XPATH, "//div[@data-react-client-component-id='carousel0']//swiper-slide[@class='swiper-slide-active']//a[@data-testid='itemName']")
     first_pet_supply_item_name = (By.XPATH, "//h1[@itemprop='name']")
     watchdog_link = (By.CLASS_NAME, "watchproduct")
@@ -80,3 +81,7 @@ class MainPage(BasePage):
         if self.base_is_visible(self.search_result_number_of_items_found):
             result_items_amount = self.base_get_element_text(self.search_result_number_of_items_found)
             return int(result_items_amount)
+
+    def main_page_pet_supply_close_dialog(self):
+        if self.base_is_visible(self.pet_supply_dialog_agree_button, 2, True):
+            self.base_click(self.pet_supply_dialog_agree_button)

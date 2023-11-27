@@ -9,7 +9,6 @@ from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.watchdog_add_dialog import WatchdogAdd
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
 import pytest
-from pytest_check import check as soft_assert
 import mixed_assertions as mixed_assert
 
 
@@ -212,9 +211,10 @@ class TestsAlza:
         self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
         self.top_section.top_section_click_alza_icon()
 
-        # Navigate to pet supplies, open first pet supply and get its name.
+        # Navigate to pet supplies, open first pet supply, handle dialog if appears and get supply name.
         self.main_page.main_page_hover_click_pet_supplies_menu_item()
         self.main_page.main_page_click_first_pet_suppy_item()
+        self.main_page.main_page_pet_supply_close_dialog()
         first_pet_supply_name = self.main_page.main_page_get_first_pet_supply_name()
 
         # Watchdog dialog:
