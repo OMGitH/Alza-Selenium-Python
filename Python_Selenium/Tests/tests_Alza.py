@@ -93,17 +93,14 @@ class TestsAlza:
         # Reject all cookies and log into application.
         self.alza_module.reject_cookies_and_login()
 
-        # Empty basket if there are items inside.
-        if self.top_section.top_section_check_if_basket_not_empty():
-            self.top_section.top_section_click_basket_icon()
-            self.basket_page.basket_remove_all_items_from_basket()
-            self.top_section.top_section_click_alza_icon()
+        # Precondition: Empty basket if there are items inside and go back to Alza main page.
+        self.alza_module.empty_basket_if_items_inside()
 
         # Putting into basket:
         # Navigate to computers.
         self.main_page.main_page_hover_click_computers_notebooks_menu_item()
         self.main_page.main_page_click_computers_tile()
-        # Get first computer name and price and put it into basket and go there.
+        # Get first computer name and price, put it into basket and go there.
         first_computer_name = self.main_page.main_page_get_first_computer_name()
         first_computer_price = self.main_page.main_page_get_first_computer_price()
         self.main_page.main_page_click_first_computer_put_to_basket_button()
@@ -187,12 +184,8 @@ class TestsAlza:
         # Reject all cookies and log into application.
         self.alza_module.reject_cookies_and_login()
 
-        # Empty watchdog list if there are watched items.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_my_profile_link()
-        self.my_account_page.my_account_click_watchdogs_link()
-        self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
-        self.top_section.top_section_click_alza_icon()
+        # Precondition: Empty watchdog list if there are watched items and go back to Alza main page.
+        self.alza_module.empty_watchdog_list_if_watched_items()
 
         # Navigate to pet supplies, open first pet supply, handle dialog if appears and get supply name.
         self.main_page.main_page_hover_click_pet_supplies_menu_item()
