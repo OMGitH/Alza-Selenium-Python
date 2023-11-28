@@ -8,6 +8,7 @@ from Page_Objects.cookies_pane import CookiesPane
 from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.watchdog_add_dialog import WatchdogAdd
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
+from alza_module import AlzaModule
 import pytest
 import mixed_assertions as mixed_assert
 
@@ -31,6 +32,7 @@ class TestsAlza:
         self.login_page = LoginPage(self.driver)
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
+        self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies.
         self.cookies_pane.cookies_pane_click_reject_all()
@@ -71,9 +73,7 @@ class TestsAlza:
         mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.")
 
         # Logout.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_logout_link()
-        mixed_assert.is_true(self.top_section.top_section_login_link_is_visible(), "Login link is not visible though it shall be.")
+        self.alza_module.logout()
 
     def test_basket_add_remove_item(self):
         """
@@ -88,15 +88,10 @@ class TestsAlza:
         self.top_section = TopSection(self.driver)
         self.main_page = MainPage(self.driver)
         self.basket_page = Basket(self.driver)
+        self.alza_module = AlzaModule(self.driver)
 
-        # Reject all cookies.
-        self.cookies_pane.cookies_pane_click_reject_all()
-
-        # Log into application:
-        # Click login link.
-        self.top_section.top_section_click_login_link()
-        # Fill in credentials and login.
-        self.login_page.login_successful_login(TestData.user_name, TestData.password)
+        # Reject all cookies and log into application.
+        self.alza_module.reject_cookies_and_login()
 
         # Empty basket if there are items inside.
         if self.top_section.top_section_check_if_basket_not_empty():
@@ -134,8 +129,7 @@ class TestsAlza:
         mixed_assert.equal(actual_number_of_items_at_basket_icon, "No items", f"Wrong number of items at basket icon. Actual number is '{actual_number_of_items_at_basket_icon}' but there shall be no items.")
 
         # Logout.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_logout_link()
+        self.alza_module.logout()
 
     def test_search(self):
         """
@@ -150,15 +144,10 @@ class TestsAlza:
         self.top_section = TopSection(self.driver)
         self.login_page = LoginPage(self.driver)
         self.main_page = MainPage(self.driver)
+        self.alza_module = AlzaModule(self.driver)
 
-        # Reject all cookies.
-        self.cookies_pane.cookies_pane_click_reject_all()
-
-        # Log into application:
-        # Click login link.
-        self.top_section.top_section_click_login_link()
-        # Fill in credentials, login, switch back to page.
-        self.login_page.login_successful_login(TestData.user_name, TestData.password)
+        # Reject all cookies and log into application.
+        self.alza_module.reject_cookies_and_login()
 
         # Search for "jízdní kola" and click search button:
         self.top_section.top_section_search_provide_value(TestData.search_value_via_search_button)
@@ -176,8 +165,7 @@ class TestsAlza:
         mixed_assert.is_in(TestData.search_result_word_in_title_via_suggestion, actual_search_result_title, f"Result doesn't contain looked up word in title. Actual title is '{actual_search_result_title}', it does not contain word '{TestData.search_result_word_in_title_via_suggestion}' though it shall.")
 
         # Logout.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_logout_link()
+        self.alza_module.logout()
 
     def test_watchdog_add_remove_item(self):
         """
@@ -194,15 +182,10 @@ class TestsAlza:
         self.my_account_page = MyAccount(self.driver)
         self.watchdogs_page = Watchdogs(self.driver)
         self.watchdog_add_dialog = WatchdogAdd(self.driver)
+        self.alza_module = AlzaModule(self.driver)
 
-        # Reject all cookies.
-        self.cookies_pane.cookies_pane_click_reject_all()
-
-        # Log into application:
-        # Click login link.
-        self.top_section.top_section_click_login_link()
-        # Fill in credentials, login, switch back to page.
-        self.login_page.login_successful_login(TestData.user_name, TestData.password)
+        # Reject all cookies and log into application.
+        self.alza_module.reject_cookies_and_login()
 
         # Empty watchdog list if there are watched items.
         self.top_section.top_section_click_signed_in_user_link()
@@ -243,8 +226,7 @@ class TestsAlza:
         mixed_assert.equal(actual_text_once_watchdog_list_empty, TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchdog list is empty. Actual text is '{actual_text_once_watchdog_list_empty}' but it shall be '{TestData.text_once_all_items_removed_from_watchdog_list}'. Seems watchdog list is not empty.")
 
         # Logout.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_logout_link()
+        self.alza_module.logout()
 
     def test_add_remove_delivery_addresses(self):
         """
@@ -261,15 +243,10 @@ class TestsAlza:
         self.login_page = LoginPage(self.driver)
         self.delivery_addresses_page = DeliveryAddresses(self.driver)
         self.my_account_page = MyAccount(self.driver)
+        self.alza_module = AlzaModule(self.driver)
 
-        # Reject all cookies.
-        self.cookies_pane.cookies_pane_click_reject_all()
-
-        # Log into application:
-        # Click login link.
-        self.top_section.top_section_click_login_link()
-        # Fill in credentials, login, switch back to page.
-        self.login_page.login_successful_login(TestData.user_name, TestData.password)
+        # Reject all cookies and log into application.
+        self.alza_module.reject_cookies_and_login()
 
         # Adding delivery addresses:
         # Go to delivery addresses page:
@@ -313,5 +290,4 @@ class TestsAlza:
         mixed_assert.equal(actual_number_of_delivery_addresses, 0, f"There are delivery addresses present though there shall not be any. There are '{actual_number_of_delivery_addresses}' delivery addresses.")
 
         # Logout.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_logout_link()
+        self.alza_module.logout()
