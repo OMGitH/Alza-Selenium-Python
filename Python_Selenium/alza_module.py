@@ -4,6 +4,8 @@ from Page_Objects.top_section import TopSection
 from Page_Objects.basket_page import Basket
 from Page_Objects.my_account_page import MyAccount
 from Page_Objects.watchdogs_page import Watchdogs
+from Page_Objects.delivery_addresses_page import DeliveryAddresses
+from Page_Objects.delivery_addresses_details_dialog import DeliveryAddressesDetails
 from Config.test_data import TestData
 import mixed_assertions as mixed_assert
 
@@ -19,6 +21,8 @@ class AlzaModule:
 		self.basket_page = Basket(self.driver)
 		self.my_account_page = MyAccount(self.driver)
 		self.watchdogs_page = Watchdogs(self.driver)
+		self.delivery_addresses_page = DeliveryAddresses(self.driver)
+		self.delivery_addresses_details_dialog = DeliveryAddressesDetails(self.driver)
 
 	# Login and logout:
 	def reject_cookies_and_login(self):
@@ -49,3 +53,16 @@ class AlzaModule:
 		self.my_account_page.my_account_click_watchdogs_link()
 		self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
 		self.top_section.top_section_click_alza_icon()
+
+	# test_add_remove_delivery_addresses: Add delivery addresses.
+	def delivery_addresses_add_addresses(self):
+		for data in TestData.delivery_addresses_original:
+			self.delivery_addresses_page.delivery_addresses_click_add_new_address()
+			self.delivery_addresses_details_dialog.delivery_address_details_dialog_fill_in_new_address_details(data)
+
+	# test_add_remove_delivery_addresses: Edit delivery addresses.
+	def delivery_addresses_edit_addresses(self):
+		addresses = self.delivery_addresses_page.delivery_addresses_get_addresses()
+		for index, address in enumerate(addresses):
+			self.delivery_addresses_page.delivery_addresses_click_address_as_argument(address)
+			self.delivery_addresses_details_dialog.delivery_address_details_dialog_edit_address_details(index)

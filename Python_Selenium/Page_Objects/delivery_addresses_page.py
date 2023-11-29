@@ -16,11 +16,6 @@ class DeliveryAddresses(BasePage):
 	delivery_address_street_and_number_text = (By.XPATH, "//span[@data-testid='street']")
 	delivery_address_zip_and_city_text = (By.XPATH, "//span[@data-testid='postCodeAndCityContainer']")
 	delivery_address_add_new_address_button = (By.XPATH, "//button[@data-testid='button-addAddress']")
-	delivery_address_add_dialog_name_surname_input = (By.NAME, "name")
-	delivery_address_add_dialog_street_input = (By.NAME, "street")
-	delivery_address_add_dialog_zip_input = (By.NAME, "zip")
-	delivery_address_add_dialog_cíty_input = (By.NAME, "city")
-	delivery_address_add_dialog_save_button = (By.XPATH, "//button[@data-testid='button-submit']")
 
 	# Initialization.
 	def __init__(self, driver):
@@ -75,15 +70,8 @@ class DeliveryAddresses(BasePage):
 	# 						break
 	# 					time.sleep(check_wait)
 
-	def delivery_addresses_add_addresses(self):
-		for data in TestData.delivery_addresses_original:
-			self.base_click(self.delivery_address_add_new_address_button)
-			self.base_send_keys(self.delivery_address_add_dialog_name_surname_input, data["name surname"])
-			self.base_send_keys(self.delivery_address_add_dialog_street_input, data["street and number"])
-			self.base_send_keys(self.delivery_address_add_dialog_zip_input, data["zip"])
-			self.base_send_keys(self.delivery_address_add_dialog_cíty_input, data["city"])
-			self.base_click(self.delivery_address_add_dialog_save_button)
-			self.base_is_invisible(self.delivery_address_add_dialog_save_button)
+	def delivery_addresses_click_add_new_address(self):
+		self.base_click(self.delivery_address_add_new_address_button)
 
 	def delivery_addresses_get_number_of_addresses(self):
 		number_of_addresses = self.base_get_number_of_visible_elements(self.delivery_address_item)
@@ -107,16 +95,9 @@ class DeliveryAddresses(BasePage):
 			delivery_addresses[index]["city"] = zip_city[1]
 		return delivery_addresses
 
-	def delivery_addresses_edit_addresses(self):
+	def delivery_addresses_get_addresses(self):
 		addresses = self.base_get_multiple_visible_elements(self.delivery_address_item)
-		for index, address in enumerate(addresses):
-			self.base_click(address)
-			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_name_surname_input, "value")
-			self.base_send_keys(self.delivery_address_add_dialog_name_surname_input, TestData.delivery_addresses_edited[index]["name surname"])
-			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_street_input, "value")
-			self.base_send_keys(self.delivery_address_add_dialog_street_input, TestData.delivery_addresses_edited[index]["street and number"])
-			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_zip_input, "value")
-			self.base_send_keys(self.delivery_address_add_dialog_zip_input, TestData.delivery_addresses_edited[index]["zip"])
-			self.base_clear_input_by_pressing_backspace(self.delivery_address_add_dialog_cíty_input, "value")
-			self.base_send_keys(self.delivery_address_add_dialog_cíty_input, TestData.delivery_addresses_edited[index]["city"])
-			self.base_click(self.delivery_address_add_dialog_save_button)
+		return addresses
+
+	def delivery_addresses_click_address_as_argument(self, address):
+		self.base_click(address)

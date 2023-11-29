@@ -249,7 +249,7 @@ class TestsAlza:
         # Empty delivery addresses list if there are addresses.
         self.delivery_addresses_page.delivery_addresses_remove_all_addresses_from_delivery_addresses_list()
         # Add 2 delivery addresses.
-        self.delivery_addresses_page.delivery_addresses_add_addresses()
+        self.alza_module.delivery_addresses_add_addresses()
 
         # Go to Alza main page and back to delivery addresses and check added addresses are present with correct data:
         self.top_section.top_section_click_alza_icon()
@@ -265,7 +265,7 @@ class TestsAlza:
         mixed_assert.equal(actual_delivery_addresses_data, TestData.delivery_addresses_original, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses are '{actual_delivery_addresses_data}', expected delivery addresses are '{TestData.delivery_addresses_original}'.")
 
         # Editing delivery addresses:
-        self.delivery_addresses_page.delivery_addresses_edit_addresses()
+        self.alza_module.delivery_addresses_edit_addresses()
         # Go to Alza main page.
         self.top_section.top_section_click_alza_icon()
         # Go to delivery addresses page.
