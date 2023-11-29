@@ -9,6 +9,9 @@ from Page_Objects.delivery_addresses_details_dialog import DeliveryAddressesDeta
 from Config.test_data import TestData
 import mixed_assertions as mixed_assert
 
+# Additional layer in which various methods can be defined, for example those used in more tests, that are just preconditions for test
+# or which combines more page objects. Can serve also for extraction of complexity from test level.
+
 
 class AlzaModule:
 
@@ -24,6 +27,7 @@ class AlzaModule:
 		self.delivery_addresses_page = DeliveryAddresses(self.driver)
 		self.delivery_addresses_details_dialog = DeliveryAddressesDetails(self.driver)
 
+	# Methods:
 	# Login and logout:
 	def reject_cookies_and_login(self):
 		# Reject all cookies.
