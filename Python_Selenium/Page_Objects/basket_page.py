@@ -9,6 +9,7 @@ class Basket(ObjectHandler):
     item_count_text = (By.XPATH, "//div[@class='countInput']//input")
     item_price_text = (By.XPATH, "//span[contains(@class, 'item-options') and not(text())]//ancestor::tr/td[@class='c5']")
     down_arrow_price_button = (By.XPATH, "//span[contains(@class, 'item-options') and not(text())]")
+    down_arrow_price_menu = (By.XPATH, "//div[contains(@class, 'item-options')][@style='']")
     down_arrow_price_remove_menu_item = (By.XPATH, "//div[@style='']//li[contains(@class, '-del')]")
     text_all_items_removed_from_basket = (By.XPATH, "//div[@id='blocke'][not(contains(@style, 'none'))]//span")
 
@@ -48,6 +49,7 @@ class Basket(ObjectHandler):
         while self.object_handler_get_state(self.down_arrow_price_button, self.text_all_items_removed_from_basket) == self.down_arrow_price_button:
             self.object_handler_click(self.down_arrow_price_button)
             self.object_handler_click(self.down_arrow_price_remove_menu_item)
+            self.object_handler_is_invisible(self.down_arrow_price_menu)
 
     # def basket_remove_all_items_from_basket(self):
     #     while self.base_is_visible(self.down_arrow_price_button, 1, True):
