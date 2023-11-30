@@ -4,17 +4,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-# This is a base page class that contains methods that can be used at any page and thus is a parent of all pages.
+# Contains basic methods for handling web page elements that are used at all page object and thus is a parent of all page objects.
 
 timeout_default = 20
 
 
-class BasePage:
+class ObjectHandler:
 
     def __init__(self, driver):
         self.driver = driver
 
-    def base_click(self, locator, handle_StaleElementReferenceException=False, timeout=timeout_default):
+    def object_handler_click(self, locator, handle_StaleElementReferenceException=False, timeout=timeout_default):
         if not handle_StaleElementReferenceException:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).click()
         else:
@@ -26,21 +26,21 @@ class BasePage:
                 except StaleElementReferenceException:
                     pass
 
-    def base_hover_click(self, locator, timeout=timeout_default):
+    def object_handler_hover_click(self, locator, timeout=timeout_default):
         element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
         action = ActionChains(self.driver)
         action.move_to_element(element).click().perform()
 
-    def base_send_keys(self, locator, value, timeout=timeout_default):
+    def object_handler_send_keys(self, locator, value, timeout=timeout_default):
         WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).send_keys(value)
 
-    def base_switch_to_frame(self, locator, timeout=timeout_default):
+    def object_handler_switch_to_frame(self, locator, timeout=timeout_default):
         WebDriverWait(self.driver, timeout).until(EC.frame_to_be_available_and_switch_to_it(locator))
 
-    def base_switch_back_from_frame(self):
+    def object_handler_switch_back_from_frame(self):
         self.driver.switch_to.default_content()
 
-    def base_is_visible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
+    def object_handler_is_visible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
         if not handle_TimeoutException:
             element = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
             return element
@@ -51,7 +51,7 @@ class BasePage:
             except TimeoutException:
                 return False
 
-    def base_is_invisible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
+    def object_handler_is_invisible(self, locator, timeout=timeout_default, handle_TimeoutException=False):
         if not handle_TimeoutException:
             flag = WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
             return flag
@@ -62,25 +62,25 @@ class BasePage:
             except TimeoutException:
                 return False
 
-    def base_get_element_text(self, locator, timeout=timeout_default):
+    def object_handler_get_element_text(self, locator, timeout=timeout_default):
         element_text = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).text
         return element_text
 
-    def base_get_multiple_elements_text(self, locator, timeout=timeout_default):
+    def object_handler_get_multiple_elements_text(self, locator, timeout=timeout_default):
         elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
         elements_text = []
         for element in elements:
             elements_text.append(element.text)
         return elements_text
 
-    def base_get_element_attribute_value(self, locator, attribute, timeout=timeout_default):
+    def object_handler_get_element_attribute_value(self, locator, attribute, timeout=timeout_default):
         element_attribute_value = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).get_attribute(attribute)
         return element_attribute_value
 
-    def base_clear_input(self, locator, timeout=timeout_default):
+    def object_handler_clear_input(self, locator, timeout=timeout_default):
         WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).clear()
 
-    def base_element_exists(self, locator, timeout=timeout_default):
+    def object_handler_element_exists(self, locator, timeout=timeout_default):
         WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
 
     """
@@ -95,12 +95,12 @@ class BasePage:
         return flag
     """
 
-    def base_clear_input_by_pressing_backspace(self, locator, attribute, timeout=timeout_default):
-        element_attribute_value = self.base_get_element_attribute_value(locator, attribute, timeout)
+    def object_handler_clear_input_by_pressing_backspace(self, locator, attribute, timeout=timeout_default):
+        element_attribute_value = self.object_handler_get_element_attribute_value(locator, attribute, timeout)
         number_of_hits = len(element_attribute_value)
         WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).send_keys(number_of_hits * Keys.BACKSPACE)
 
-    def base_get_number_of_visible_elements(self, locator, timeout=2):
+    def object_handler_get_number_of_visible_elements(self, locator, timeout=2):
         try:
             elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
             number_of_elements = len(elements)
@@ -109,7 +109,7 @@ class BasePage:
             number_of_elements = 0
             return number_of_elements
 
-    def base_get_multiple_visible_elements(self, locator, timeout=timeout_default):
+    def object_handler_get_multiple_visible_elements(self, locator, timeout=timeout_default):
         elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
         return elements
 
@@ -119,7 +119,7 @@ class BasePage:
     In general speeds up process of checking state and adds reliability (for example can be used instead of checking if item is in basket or not
     using visibility_of_element_located with timeout of 2 seconds and if it doesn't appear in 2 seconds, assuming that there is no item in basket).
     """
-    def base_get_state(self, *locators, number_of_checks=40, check_wait=0.25):
+    def object_handler_get_state(self, *locators, number_of_checks=40, check_wait=0.25):
         for check in range(number_of_checks):
             for locator in locators:
                 try:

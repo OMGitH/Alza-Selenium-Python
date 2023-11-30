@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
-from Page_Objects.base_page import BasePage
+from object_handler import ObjectHandler
 
 
-class WatchdogAdd(BasePage):
+class WatchdogAdd(ObjectHandler):
 
 	# Identification of objects on watchdog add dialog.
 	watchdog_email_input = (By.NAME, "email")
@@ -16,15 +16,15 @@ class WatchdogAdd(BasePage):
 
 	# Actions on watchdog add dialog.
 	def watchdog_add_dialog_get_email(self):
-		if self.base_is_visible(self.watchdog_email_input):
-			email_address = self.base_get_element_attribute_value(self.watchdog_email_input, "value")
+		if self.object_handler_is_visible(self.watchdog_email_input):
+			email_address = self.object_handler_get_element_attribute_value(self.watchdog_email_input, "value")
 			return email_address
 
 	def watchdog_add_dialog_set_price_limit(self, value):
-		self.base_hover_click(self.watchdog_price_limit_checkbox)
-		self.base_clear_input_by_pressing_backspace(self.watchdog_price_limit_input, "value")
-		self.base_send_keys(self.watchdog_price_limit_input, value)
+		self.object_handler_hover_click(self.watchdog_price_limit_checkbox)
+		self.object_handler_clear_input_by_pressing_backspace(self.watchdog_price_limit_input, "value")
+		self.object_handler_send_keys(self.watchdog_price_limit_input, value)
 
 	def watchdog_add_dialog_click_confirm_button(self):
-		self.base_click(self.watchdog_confirm_button)
-		self.base_is_invisible(self.watchdog_email_input)
+		self.object_handler_click(self.watchdog_confirm_button)
+		self.object_handler_is_invisible(self.watchdog_email_input)

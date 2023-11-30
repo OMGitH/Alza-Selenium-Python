@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
-from Page_Objects.base_page import BasePage
+from object_handler import ObjectHandler
 
 
-class Watchdogs(BasePage):
+class Watchdogs(ObjectHandler):
 
 	# Identification of objects on watchdogs page.
 	watchdog_item = (By.XPATH, "//div[@data-testid='page-watchDogs']//a")
@@ -19,10 +19,10 @@ class Watchdogs(BasePage):
 
 	# Actions on watchdogs page.
 	def watchdogs_remove_all_items_from_watchdogs_list(self):
-		while self.base_get_state(self.watchdog_item_remove_button, self.watchdog_text_all_items_removed_from_watchdog_list) == self.watchdog_item_remove_button:
-			self.base_click(self.watchdog_item_remove_button)
-			self.base_click(self.watchdog_item_removal_confirmation_button)
-			self.base_is_invisible(self.watchdog_remove_question_dialog)
+		while self.object_handler_get_state(self.watchdog_item_remove_button, self.watchdog_text_all_items_removed_from_watchdog_list) == self.watchdog_item_remove_button:
+			self.object_handler_click(self.watchdog_item_remove_button)
+			self.object_handler_click(self.watchdog_item_removal_confirmation_button)
+			self.object_handler_is_invisible(self.watchdog_remove_question_dialog)
 
 	# def watchdogs_remove_all_items_from_watchdogs_list(self):
 	# 	if self.base_is_visible(self.watchdog_item, 3, True):
@@ -43,21 +43,21 @@ class Watchdogs(BasePage):
 	# 			self.base_is_invisible(self.watchdog_remove_question_dialog)
 
 	def watchdogs_get_watchdog_item_name(self):
-		if self.base_is_visible(self.watchdog_item):
-			watchdog_item_name = self.base_get_element_text(self.watchdog_item)
+		if self.object_handler_is_visible(self.watchdog_item):
+			watchdog_item_name = self.object_handler_get_element_text(self.watchdog_item)
 			return watchdog_item_name
 
 	def watchdogs_get_price_limit_provided(self):
-		if self.base_is_visible(self.watchdog_price_limit_provided):
-			watchdog_price_limit = self.base_get_element_attribute_value(self.watchdog_price_limit_provided, "value")
+		if self.object_handler_is_visible(self.watchdog_price_limit_provided):
+			watchdog_price_limit = self.object_handler_get_element_attribute_value(self.watchdog_price_limit_provided, "value")
 			watchdog_price_limit = watchdog_price_limit.replace(",-", "")
 			return watchdog_price_limit
 
 	def watchdogs_check_alert_price_is_checked(self):
-		flag = self.base_is_visible(self.watchdog_checked_alert_price_checkbox, handle_TimeoutException=True)
+		flag = self.object_handler_is_visible(self.watchdog_checked_alert_price_checkbox, handle_TimeoutException=True)
 		return flag
 
 	def watchdogs_get_text_once_all_items_removed(self):
-		if self.base_is_visible(self.watchdog_text_all_items_removed_from_watchdog_list):
-			all_items_removed_message = self.base_get_element_text(self.watchdog_text_all_items_removed_from_watchdog_list)
+		if self.object_handler_is_visible(self.watchdog_text_all_items_removed_from_watchdog_list):
+			all_items_removed_message = self.object_handler_get_element_text(self.watchdog_text_all_items_removed_from_watchdog_list)
 			return all_items_removed_message

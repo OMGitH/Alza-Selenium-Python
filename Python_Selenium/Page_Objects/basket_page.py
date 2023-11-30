@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
-from Page_Objects.base_page import BasePage
+from object_handler import ObjectHandler
 
 
-class Basket(BasePage):
+class Basket(ObjectHandler):
 
     # Identification of objects on basket page.
     item = (By.CLASS_NAME, "mainItem")
@@ -18,36 +18,36 @@ class Basket(BasePage):
 
     # Actions on basket page.
     def basket_get_item_name(self):
-        if self.base_is_visible(self.item):
-            item_name = self.base_get_element_text(self.item)
+        if self.object_handler_is_visible(self.item):
+            item_name = self.object_handler_get_element_text(self.item)
             return item_name
 
     def basket_get_item_count(self):
-        if self.base_is_visible(self.item_count_text):
-            item_count = self.base_get_element_attribute_value(self.item_count_text, "value")
+        if self.object_handler_is_visible(self.item_count_text):
+            item_count = self.object_handler_get_element_attribute_value(self.item_count_text, "value")
             return int(item_count)
 
     def basket_get_item_price(self):
-        if self.base_is_visible(self.item_price_text):
-            item_price = self.base_get_element_text(self.item_price_text)
+        if self.object_handler_is_visible(self.item_price_text):
+            item_price = self.object_handler_get_element_text(self.item_price_text)
             item_price = item_price.replace(" ", "")
             return item_price
 
     def basket_click_down_arrow_price(self):
-        self.base_click(self.down_arrow_price_button)
+        self.object_handler_click(self.down_arrow_price_button)
 
     def basket_click_down_arrow_price_remove(self):
-        self.base_click(self.down_arrow_price_remove_menu_item)
+        self.object_handler_click(self.down_arrow_price_remove_menu_item)
 
     def basket_get_text_once_all_items_removed(self):
-        if self.base_is_visible(self.text_all_items_removed_from_basket):
-            all_items_removed_message = self.base_get_element_text(self.text_all_items_removed_from_basket)
+        if self.object_handler_is_visible(self.text_all_items_removed_from_basket):
+            all_items_removed_message = self.object_handler_get_element_text(self.text_all_items_removed_from_basket)
             return all_items_removed_message
 
     def basket_remove_all_items_from_basket(self):
-        while self.base_get_state(self.down_arrow_price_button, self.text_all_items_removed_from_basket) == self.down_arrow_price_button:
-            self.base_click(self.down_arrow_price_button)
-            self.base_click(self.down_arrow_price_remove_menu_item)
+        while self.object_handler_get_state(self.down_arrow_price_button, self.text_all_items_removed_from_basket) == self.down_arrow_price_button:
+            self.object_handler_click(self.down_arrow_price_button)
+            self.object_handler_click(self.down_arrow_price_remove_menu_item)
 
     # def basket_remove_all_items_from_basket(self):
     #     while self.base_is_visible(self.down_arrow_price_button, 1, True):

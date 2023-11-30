@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
-from Page_Objects.base_page import BasePage
+from object_handler import ObjectHandler
 import time
 
 
-class TopSection(BasePage):
+class TopSection(ObjectHandler):
 
     # Identification of objects in top section of the page.
     login_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleLogin']")
@@ -26,48 +26,48 @@ class TopSection(BasePage):
 
     # Actions in top section of the page.
     def top_section_click_login_link(self):
-        self.base_click(self.login_link)
+        self.object_handler_click(self.login_link)
 
     def top_section_click_alza_icon(self):
-        self.base_click(self.alza_main_page_icon)
+        self.object_handler_click(self.alza_main_page_icon)
 
     def top_section_click_my_profile_link(self):
-        self.base_click(self.my_profile_link)
+        self.object_handler_click(self.my_profile_link)
 
     def top_section_click_logout_link(self):
-        self.base_click(self.logout_link)
+        self.object_handler_click(self.logout_link)
 
     def top_section_search_provide_value(self, value):
-        self.base_clear_input_by_pressing_backspace(self.search_input, "value")
-        self.base_send_keys(self.search_input, value)
-        self.base_is_visible(self.search_suggestion)
+        self.object_handler_clear_input_by_pressing_backspace(self.search_input, "value")
+        self.object_handler_send_keys(self.search_input, value)
+        self.object_handler_is_visible(self.search_suggestion)
         time.sleep(1)
 
     def top_section_click_search_button(self):
-        self.base_click(self.search_button)
+        self.object_handler_click(self.search_button)
 
     def top_section_search_suggestion_click_1st_item(self):
-        self.base_is_visible(self.search_suggestion)
-        self.base_click(self.search_suggestion_1st_item)
+        self.object_handler_is_visible(self.search_suggestion)
+        self.object_handler_click(self.search_suggestion_1st_item)
 
     def top_section_login_link_is_visible(self):
-        flag = self.base_is_visible(self.login_link, handle_TimeoutException=True)
+        flag = self.object_handler_is_visible(self.login_link, handle_TimeoutException=True)
         return flag
 
     def top_section_get_signed_in_user_text(self):
-        if self.base_is_visible(self.signed_in_user_link):
-            signed_in_user_text = self.base_get_element_text(self.signed_in_user_link)
+        if self.object_handler_is_visible(self.signed_in_user_link):
+            signed_in_user_text = self.object_handler_get_element_text(self.signed_in_user_link)
             return signed_in_user_text
 
     def top_section_click_signed_in_user_link(self):
-        self.base_click(self.signed_in_user_link)
-        self.base_is_visible(self.signed_in_user_dialog)
+        self.object_handler_click(self.signed_in_user_link)
+        self.object_handler_is_visible(self.signed_in_user_dialog)
 
     def top_section_click_basket_icon(self):
-        self.base_click(self.basket_icon)
+        self.object_handler_click(self.basket_icon)
 
     def top_section_check_if_basket_not_empty(self):
-        flag = self.base_is_visible(self.basket_icon_item_inside, 2, True)
+        flag = self.object_handler_is_visible(self.basket_icon_item_inside, 2, True)
         return flag
 
     """
@@ -84,7 +84,7 @@ class TopSection(BasePage):
 
     def top_section_get_number_of_items_at_basket_icon(self):
         if self.top_section_check_if_basket_not_empty():
-            number_of_items = self.base_get_element_text(self.basket_icon_item_inside)
+            number_of_items = self.object_handler_get_element_text(self.basket_icon_item_inside)
             return int(number_of_items)
         else:
             return "No items"

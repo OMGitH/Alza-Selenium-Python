@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
-from Page_Objects.base_page import BasePage
+from object_handler import ObjectHandler
 
 
-class MyAccount(BasePage):
+class MyAccount(ObjectHandler):
 
     # Identification of objects on my account page.
     account_settings_dropdown = (By.XPATH, "//div[@data-testid='menuSection-MyAccount']")
@@ -31,15 +31,15 @@ class MyAccount(BasePage):
 
     # Actions on my account page.
     def my_account_click_account_settings_dropdown(self):
-        self.base_click(self.account_settings_dropdown)
+        self.object_handler_click(self.account_settings_dropdown)
 
     def my_account_click_my_account_menu_item(self):
-        self.base_click(self.my_account_menu_item)
+        self.object_handler_click(self.my_account_menu_item)
         # Following method helps initialize the page as validations there are dynamic.
-        self.base_element_exists(self.data_was_saved_text)
+        self.object_handler_element_exists(self.data_was_saved_text)
 
     def my_account_click_watchdogs_link(self):
-        self.base_click(self.my_account_watchdogs_link)
+        self.object_handler_click(self.my_account_watchdogs_link)
 
     def my_account_click_delivery_addresses_link(self):
-        self.base_click(self.my_account_delivery_addresses_link)
+        self.object_handler_click(self.my_account_delivery_addresses_link)

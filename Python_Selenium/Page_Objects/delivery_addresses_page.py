@@ -1,10 +1,9 @@
 from selenium.webdriver.common.by import By
-from Config.test_data import TestData
-from Page_Objects.base_page import BasePage
+from object_handler import ObjectHandler
 import time
 
 
-class DeliveryAddresses(BasePage):
+class DeliveryAddresses(ObjectHandler):
 
 	# Identification of objects on delivery addresses page.
 	delivery_address_item = (By.XPATH, "//div[@data-testid='address']")
@@ -23,15 +22,15 @@ class DeliveryAddresses(BasePage):
 
 	# Actions on delivery addresses page.
 	def delivery_addresses_remove_all_addresses_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
-		while self.base_get_state(self.delivery_address_item_remove_button, self.delivery_address_without_items) == self.delivery_address_item_remove_button:
-			number_of_addresses = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
-			self.base_click(self.delivery_address_item_remove_button, True)
-			self.base_click(self.delivery_address_item_removal_confirmation_button)
-			self.base_is_invisible(self.delivery_address_remove_question_dialog)
+		while self.object_handler_get_state(self.delivery_address_item_remove_button, self.delivery_address_without_items) == self.delivery_address_item_remove_button:
+			number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_item_remove_button)
+			self.object_handler_click(self.delivery_address_item_remove_button, True)
+			self.object_handler_click(self.delivery_address_item_removal_confirmation_button)
+			self.object_handler_is_invisible(self.delivery_address_remove_question_dialog)
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for it to get refreshed.
 			if number_of_addresses != 0:
 				for check in range(number_of_checks):
-					number_of_addresses_after_removal = self.base_get_number_of_visible_elements(self.delivery_address_item_remove_button)
+					number_of_addresses_after_removal = self.object_handler_get_number_of_visible_elements(self.delivery_address_item_remove_button)
 					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break
 					time.sleep(check_wait)
@@ -71,18 +70,18 @@ class DeliveryAddresses(BasePage):
 	# 					time.sleep(check_wait)
 
 	def delivery_addresses_click_add_new_address(self):
-		self.base_click(self.delivery_address_add_new_address_button)
+		self.object_handler_click(self.delivery_address_add_new_address_button)
 
 	def delivery_addresses_get_number_of_addresses(self):
-		number_of_addresses = self.base_get_number_of_visible_elements(self.delivery_address_item)
+		number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_item)
 		return number_of_addresses
 
 	def delivery_addresses_get_addresses_data(self, number_of_addresses):
 		delivery_addresses = []
 		# Get name and surname, street and number, zip and city for all delivery addresses.
-		addresses_names_surnames = self.base_get_multiple_elements_text(self.delivery_address_name_text)
-		addresses_street_and_number = self.base_get_multiple_elements_text(self.delivery_address_street_and_number_text)
-		addresses_zip_and_city = self.base_get_multiple_elements_text(self.delivery_address_zip_and_city_text)
+		addresses_names_surnames = self.object_handler_get_multiple_elements_text(self.delivery_address_name_text)
+		addresses_street_and_number = self.object_handler_get_multiple_elements_text(self.delivery_address_street_and_number_text)
+		addresses_zip_and_city = self.object_handler_get_multiple_elements_text(self.delivery_address_zip_and_city_text)
 		# Fill list with dictionary per delivery address with data so that it is similar to the list in TestData and return it.
 		for index in range(number_of_addresses):
 			address = {}
@@ -96,8 +95,8 @@ class DeliveryAddresses(BasePage):
 		return delivery_addresses
 
 	def delivery_addresses_get_addresses(self):
-		addresses = self.base_get_multiple_visible_elements(self.delivery_address_item)
+		addresses = self.object_handler_get_multiple_visible_elements(self.delivery_address_item)
 		return addresses
 
 	def delivery_addresses_click_address_as_argument(self, address):
-		self.base_click(address)
+		self.object_handler_click(address)
