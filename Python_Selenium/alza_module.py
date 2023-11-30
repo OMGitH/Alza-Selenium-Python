@@ -42,11 +42,11 @@ class AlzaModule:
 		actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
 		mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.",	interrupt_test=interrupt_test)
 
-	def logout(self, interrupt_test=False):
+	def logout(self):
 		self.top_section.top_section_click_signed_in_user_link()
 		self.top_section.top_section_click_logout_link()
 		# Check successful logout.
-		mixed_assert.is_true(self.top_section.top_section_login_link_is_visible(), "Login link is not visible though it shall be.", interrupt_test=interrupt_test)
+		mixed_assert.is_true(self.top_section.top_section_login_link_is_visible(), "Login link is not visible though it shall be.")
 
 	# test_basket_add_remove_item: Empty basket if there are items inside and go back to Alza main page.
 	def empty_basket_if_items_inside(self):
