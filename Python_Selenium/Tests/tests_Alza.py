@@ -70,7 +70,7 @@ class TestsAlza:
         self.login_page.login_click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_invisible(), "Login dialog is still visible but shall not be.", True)
         actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
-        mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.")
+        mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.", True)
 
         # Logout.
         self.alza_module.logout()
@@ -181,8 +181,8 @@ class TestsAlza:
         self.watchdog_add_dialog = WatchdogAdd(self.driver)
         self.alza_module = AlzaModule(self.driver)
 
-        # Reject all cookies and log into application.
-        self.alza_module.reject_cookies_and_login()
+        # Reject all cookies and log into application and stop test execution if login failed.
+        self.alza_module.reject_cookies_and_login(True)
 
         # Precondition: Empty watchdog list if there are watched items and go back to Alza main page.
         self.alza_module.empty_watchdog_list_if_watched_items()
@@ -238,8 +238,8 @@ class TestsAlza:
         self.my_account_page = MyAccount(self.driver)
         self.alza_module = AlzaModule(self.driver)
 
-        # Reject all cookies and log into application.
-        self.alza_module.reject_cookies_and_login()
+        # Reject all cookies and log into application and stop test execution if login failed.
+        self.alza_module.reject_cookies_and_login(True)
 
         # Adding delivery addresses:
         # Go to delivery addresses page:

@@ -29,7 +29,7 @@ class AlzaModule:
 
 	# Methods:
 	# Login and logout:
-	def reject_cookies_and_login(self):
+	def reject_cookies_and_login(self, interrupt_test=False):
 		# Reject all cookies.
 		self.cookies_pane.cookies_pane_click_reject_all()
 		# Log into application:
@@ -37,10 +37,15 @@ class AlzaModule:
 		self.top_section.top_section_click_login_link()
 		# Fill in credentials and login.
 		self.login_page.login_successful_login(TestData.user_name, TestData.password)
+		# Check successful login.
+		mixed_assert.is_true(self.login_page.login_dialog_is_invisible(), "Login dialog is still visible but shall not be.", interrupt_test=interrupt_test)
+		actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
+		mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.",	interrupt_test=interrupt_test)
 
 	def logout(self):
 		self.top_section.top_section_click_signed_in_user_link()
 		self.top_section.top_section_click_logout_link()
+		# Check successful logout.
 		mixed_assert.is_true(self.top_section.top_section_login_link_is_visible(), "Login link is not visible though it shall be.")
 
 	# test_basket_add_remove_item: Empty basket if there are items inside and go back to Alza main page.

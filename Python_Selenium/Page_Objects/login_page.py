@@ -53,9 +53,6 @@ class LoginPage(BasePage):
             return disabled_button_text
 
     def login_successful_login(self, username, password):
-        self.base_clear_input(self.email_input)
-        self.base_send_keys(self.email_input, username)
-        self.base_clear_input(self.password_input)
-        self.base_send_keys(self.password_input, password)
-        self.base_click(self.sign_in_button_active)
-        self.base_is_invisible(self.login_dialog)
+        self.login_provide_email(username)
+        self.login_provide_password(password)
+        self.login_click_signin_button()
