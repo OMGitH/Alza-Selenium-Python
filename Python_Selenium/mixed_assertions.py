@@ -8,7 +8,7 @@ behaves as a hard assertion.
 Contains only assertions actually used. If other assertion is needed it has to be added into this file.
 """
 
-interrupt_message = "Rest of test skipped as interrupt_test is set to True."
+interrupt_message = "Rest of the test skipped as interrupt_test is set to True."
 
 
 def equal(value_1, value_2, assertion_message="", interrupt_test=False):

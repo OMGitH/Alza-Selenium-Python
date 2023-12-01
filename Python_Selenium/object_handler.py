@@ -14,6 +14,7 @@ class ObjectHandler:
     def __init__(self, driver):
         self.driver = driver
 
+    # Methods:
     def object_handler_click(self, locator, handle_StaleElementReferenceException=False, timeout=timeout_default):
         if not handle_StaleElementReferenceException:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).click()

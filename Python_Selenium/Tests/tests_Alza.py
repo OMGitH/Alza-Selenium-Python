@@ -35,48 +35,48 @@ class TestsAlza:
         self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies.
-        self.cookies_pane.cookies_pane_click_reject_all()
+        self.cookies_pane.click_reject_all_link()
         mixed_assert.is_true(self.cookies_pane.cookies_pane_is_invisible(), "Cookies pane is still visible but shall not be.")
 
         # Click login link.
-        self.top_section.top_section_click_login_link()
+        self.top_section.click_login_link()
 
         # Unsuccessful login:
         # Email and password fields blank.
-        self.login_page.login_click_signin_button()
+        self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is not visible though it shall be.", True)
-        actual_blank_email_text = self.login_page.login_get_blank_email_text()
+        actual_blank_email_text = self.login_page.get_blank_email_text()
         mixed_assert.equal(actual_blank_email_text, TestData.blank_email_text, f"Wrong message for blank e-mail input field. Actual message is '{actual_blank_email_text}' but it shall be '{TestData.blank_email_text}'.")
-        actual_blank_password_text = self.login_page.login_get_blank_password_text()
+        actual_blank_password_text = self.login_page.get_blank_password_text()
         mixed_assert.equal(actual_blank_password_text, TestData.blank_password_text, f"Wrong message for blank password input field. Actual message is '{actual_blank_password_text}' but it shall be '{TestData.blank_password_text}'.")
         # Wrong email and correct password provided.
-        self.login_page.login_provide_email(TestData.incorrect_user_name)
-        self.login_page.login_provide_password(TestData.password)
-        self.login_page.login_click_signin_button()
+        self.login_page.provide_email(TestData.incorrect_user_name)
+        self.login_page.provide_password(TestData.password)
+        self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is not visible though it shall be.", True)
-        actual_disabled_login_button_text = self.login_page.login_get_disabled_login_button_text()
+        actual_disabled_login_button_text = self.login_page.get_disabled_login_button_text()
         mixed_assert.equal(actual_disabled_login_button_text, TestData.signin_button_incorrect_user_name_password_text, f"Wrong message at signin button when incorrect e-mail provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{TestData.signin_button_incorrect_user_name_password_text}'.")
         # Correct email and wrong password provided.
-        self.login_page.login_provide_email(TestData.user_name)
-        self.login_page.login_provide_password(TestData.incorrect_password)
-        self.login_page.login_click_signin_button()
+        self.login_page.provide_email(TestData.user_name)
+        self.login_page.provide_password(TestData.incorrect_password)
+        self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is not visible though it shall be.", True)
-        actual_disabled_login_button_text = self.login_page.login_get_disabled_login_button_text()
+        actual_disabled_login_button_text = self.login_page.get_disabled_login_button_text()
         mixed_assert.equal(actual_disabled_login_button_text, TestData.signin_button_incorrect_user_name_password_text, f"Wrong message at signin button when incorrect password provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{TestData.signin_button_incorrect_user_name_password_text}'.")
 
         # Successful login.
-        self.login_page.login_provide_email(TestData.user_name)
-        self.login_page.login_provide_password(TestData.password)
-        self.login_page.login_click_signin_button()
+        self.login_page.provide_email(TestData.user_name)
+        self.login_page.provide_password(TestData.password)
+        self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_invisible(), "Login dialog is still visible but shall not be.", True)
-        actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
+        actual_signed_in_text = self.top_section.get_signed_in_user_text()
         mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.", True)
 
         # Logout.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_logout_link()
+        self.top_section.click_signed_in_user_link()
+        self.top_section.click_logout_link()
         # Check successful logout.
-        mixed_assert.is_true(self.top_section.top_section_login_link_is_visible(), "Login link is not visible though it shall be.", True)
+        mixed_assert.is_true(self.top_section.login_link_is_visible(), "Login link is not visible though it shall be.", True)
 
     def test_basket_add_remove_item(self):
         """
@@ -101,31 +101,31 @@ class TestsAlza:
 
         # Putting into basket:
         # Navigate to computers.
-        self.main_page.main_page_hover_click_computers_notebooks_menu_item()
-        self.main_page.main_page_click_computers_tile()
+        self.main_page.hover_click_computers_notebooks_menu_item()
+        self.main_page.click_computers_tile()
         # Get first computer name and price, put it into basket and go there.
-        first_computer_name = self.main_page.main_page_get_first_computer_name()
-        first_computer_price = self.main_page.main_page_get_first_computer_price()
-        self.main_page.main_page_click_first_computer_put_to_basket_button()
+        first_computer_name = self.main_page.get_first_computer_name()
+        first_computer_price = self.main_page.get_first_computer_price()
+        self.main_page.click_first_computer_put_to_basket_button()
         # Check there is correct number at basket icon and go to basket.
-        actual_number_of_items_at_basket_icon = self.top_section.top_section_get_number_of_items_at_basket_icon()
+        actual_number_of_items_at_basket_icon = self.top_section.get_number_of_items_at_basket_icon()
         mixed_assert.equal(actual_number_of_items_at_basket_icon, TestData.number_of_items_in_basket, f"Wrong number of items at basket icon. Actual number is '{actual_number_of_items_at_basket_icon}' but it shall be '{TestData.number_of_items_in_basket}'.")
-        self.top_section.top_section_click_basket_icon()
+        self.top_section.click_basket_icon()
 
         # On basket_page page:
         # Check item name, count and price.
-        actual_computer_name = self.basket_page.basket_get_item_name()
+        actual_computer_name = self.basket_page.get_item_name()
         mixed_assert.is_in(first_computer_name, actual_computer_name, f"Wrong name of computer in basket. Actual name is '{actual_computer_name}' but it shall be '{first_computer_name}'. Seems computer that shall be in basket is not.")
-        actual_number_of_computers_in_basket = self.basket_page.basket_get_item_count()
+        actual_number_of_computers_in_basket = self.basket_page.get_item_count()
         mixed_assert.equal(actual_number_of_computers_in_basket, TestData.number_of_items_in_basket, f"Wrong number of computers in basket. There are '{actual_number_of_computers_in_basket}' computers but there shall be '{TestData.number_of_items_in_basket}' computer.")
-        actual_computer_price_in_basket = self.basket_page.basket_get_item_price()
+        actual_computer_price_in_basket = self.basket_page.get_item_price()
         mixed_assert.equal(actual_computer_price_in_basket, first_computer_price, f"Wrong computer price in basket. Actual price is '{actual_computer_price_in_basket}' but shall be '{first_computer_price}'.")
         # Remove item from basket and check it is empty.
-        self.basket_page.basket_remove_all_items_from_basket()
-        actual_text_once_basket_empty = self.basket_page.basket_get_text_once_all_items_removed()
+        self.basket_page.remove_all_items_from_basket()
+        actual_text_once_basket_empty = self.basket_page.get_text_once_all_items_removed()
         mixed_assert.equal(actual_text_once_basket_empty, TestData.text_once_all_items_removed_from_basket, f"Wrong text once basket is empty. Actual text is '{actual_text_once_basket_empty}' but it shall be '{TestData.text_once_all_items_removed_from_basket}'. Seems basket is not empty.")
         # Check there is no number at basket icon.
-        actual_number_of_items_at_basket_icon = self.top_section.top_section_get_number_of_items_at_basket_icon()
+        actual_number_of_items_at_basket_icon = self.top_section.get_number_of_items_at_basket_icon()
         mixed_assert.equal(actual_number_of_items_at_basket_icon, "No items", f"Wrong number of items at basket icon. Actual number is '{actual_number_of_items_at_basket_icon}' but there shall be no items.")
 
         # Logout.
@@ -150,18 +150,18 @@ class TestsAlza:
         self.alza_module.reject_cookies_and_login()
 
         # Search for "jízdní kola" and click search button:
-        self.top_section.top_section_search_provide_value(TestData.search_value_via_search_button)
-        self.top_section.top_section_click_search_button()
+        self.top_section.search_provide_value(TestData.search_value_via_search_button)
+        self.top_section.click_search_button()
         # Check result.
-        actual_search_result_title = self.main_page.main_page_get_search_result_header()
+        actual_search_result_title = self.main_page.get_search_result_header()
         mixed_assert.equal(actual_search_result_title, TestData.search_result_header_via_search_button, f"Wrong header of looked up section is displayed. Actual header is '{actual_search_result_title}' but it shall be '{TestData.search_result_header_via_search_button}'. Seems wrong section is displayed.")
-        mixed_assert.greater(self.main_page.main_page_get_search_result_items_amount(), 0, "No items found, items shall be found.")
+        mixed_assert.greater(self.main_page.get_search_result_items_amount(), 0, "No items found, items shall be found.")
 
         # Search for "recenze" and choose from suggestion:
-        self.top_section.top_section_search_provide_value(TestData.search_value_via_suggestion)
-        self.top_section.top_section_search_suggestion_click_1st_item()
+        self.top_section.search_provide_value(TestData.search_value_via_suggestion)
+        self.top_section.search_suggestion_click_1st_item()
         # Check result.
-        actual_search_result_title = self.main_page.main_page_get_search_result_header().lower()
+        actual_search_result_title = self.main_page.get_search_result_header().lower()
         mixed_assert.is_in(TestData.search_result_word_in_title_via_suggestion, actual_search_result_title, f"Result doesn't contain looked up word in title. Actual title is '{actual_search_result_title}', it does not contain word '{TestData.search_result_word_in_title_via_suggestion}' though it shall.")
 
         # Logout.
@@ -191,34 +191,34 @@ class TestsAlza:
         self.alza_module.empty_watchdog_list_if_watched_items()
 
         # Navigate to pet supplies, open first pet supply, handle dialog if appears and get supply name.
-        self.main_page.main_page_hover_click_pet_supplies_menu_item()
-        self.main_page.main_page_click_first_pet_suppy_item()
-        self.main_page.main_page_pet_supply_close_dialog()
-        first_pet_supply_name = self.main_page.main_page_get_first_pet_supply_name()
+        self.main_page.hover_click_pet_supplies_menu_item()
+        self.main_page.click_first_pet_suppy_item()
+        self.main_page.pet_supply_close_dialog()
+        first_pet_supply_name = self.main_page.get_first_pet_supply_name()
 
         # Watchdog dialog:
-        self.main_page.main_page_click_watch_price()
+        self.main_page.click_watch_price_link()
         # Check prefilled e-mail address.
-        actual_email = self.watchdog_add_dialog.watchdog_add_dialog_get_email()
+        actual_email = self.watchdog_add_dialog.get_email()
         mixed_assert.equal(actual_email, TestData.user_name, f"Incorrect e-mail address prefilled. There is '{actual_email}' but there shall be '{TestData.user_name}'.")
         # Set watch price.
-        self.watchdog_add_dialog.watchdog_add_dialog_set_price_limit(TestData.watchdog_price_limit)
-        self.watchdog_add_dialog.watchdog_add_dialog_click_confirm_button()
+        self.watchdog_add_dialog.set_price_limit(TestData.watchdog_price_limit)
+        self.watchdog_add_dialog.click_confirm_button()
 
         # Check watchdogs page and remove item:
         # Go to watchdogs page.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_my_profile_link()
-        self.my_account_page.my_account_click_watchdogs_link()
+        self.top_section.click_signed_in_user_link()
+        self.top_section.click_my_profile_link()
+        self.my_account_page.click_watchdogs_menu_item()
         # Check watched item name and price limit, checkbox alert price is checked.
-        actual_pet_supply_name = self.watchdogs_page.watchdogs_get_watchdog_item_name()
+        actual_pet_supply_name = self.watchdogs_page.get_watchdog_item_name()
         mixed_assert.is_in(first_pet_supply_name, actual_pet_supply_name, f"Wrong name of pet supply in watchdogs. Actual pet supply name is '{actual_pet_supply_name}' but it shall be '{first_pet_supply_name}'. Seems pet supply that shall be in watchdogs is not.")
-        actual_price_limit = self.watchdogs_page.watchdogs_get_price_limit_provided()
+        actual_price_limit = self.watchdogs_page.get_price_limit_provided()
         mixed_assert.equal(actual_price_limit, TestData.watchdog_price_limit, f"Wrong price limit displayed in watchdogs. Actual price limit is '{actual_price_limit}' but it shall be '{TestData.watchdog_price_limit}'.")
-        mixed_assert.is_true(self.watchdogs_page.watchdogs_check_alert_price_is_checked(), f"Checkbox for alert when price is lower than '{TestData.watchdog_price_limit}' shall be checked but it is not.")
+        mixed_assert.is_true(self.watchdogs_page.check_alert_price_is_checked(), f"Checkbox for alert when price is lower than '{TestData.watchdog_price_limit}' shall be checked but it is not.")
         # Remove item from watchdog list.
-        self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
-        actual_text_once_watchdog_list_empty = self.watchdogs_page.watchdogs_get_text_once_all_items_removed()
+        self.watchdogs_page.remove_all_items_from_watchdogs_list()
+        actual_text_once_watchdog_list_empty = self.watchdogs_page.get_text_once_all_items_removed()
         mixed_assert.equal(actual_text_once_watchdog_list_empty, TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchdog list is empty. Actual text is '{actual_text_once_watchdog_list_empty}' but it shall be '{TestData.text_once_all_items_removed_from_watchdog_list}'. Seems watchdog list is not empty.")
 
         # Logout.
@@ -246,43 +246,43 @@ class TestsAlza:
 
         # Adding delivery addresses:
         # Go to delivery addresses page:
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_my_profile_link()
-        self.my_account_page.my_account_click_delivery_addresses_link()
+        self.top_section.click_signed_in_user_link()
+        self.top_section.click_my_profile_link()
+        self.my_account_page.click_delivery_addresses_menu_item()
         # Empty delivery addresses list if there are addresses.
-        self.delivery_addresses_page.delivery_addresses_remove_all_addresses_from_delivery_addresses_list()
+        self.delivery_addresses_page.remove_all_addresses_from_delivery_addresses_list()
         # Add 2 delivery addresses.
         self.alza_module.delivery_addresses_add_addresses()
 
         # Go to Alza main page and back to delivery addresses and check added addresses are present with correct data:
-        self.top_section.top_section_click_alza_icon()
+        self.top_section.click_alza_icon()
         # Go to delivery addresses page.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_my_profile_link()
-        self.my_account_page.my_account_click_delivery_addresses_link()
+        self.top_section.click_signed_in_user_link()
+        self.top_section.click_my_profile_link()
+        self.my_account_page.click_delivery_addresses_menu_item()
         # Check number of addresses and their data.
-        actual_number_of_delivery_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
+        actual_number_of_delivery_addresses = self.delivery_addresses_page.get_number_of_addresses()
         expected_number_of_delivery_addresses = len(TestData.delivery_addresses_original)
         mixed_assert.equal(actual_number_of_delivery_addresses, expected_number_of_delivery_addresses, f"Incorrect number of delivery addresses. Actual number is '{actual_number_of_delivery_addresses}' but it shall be '{expected_number_of_delivery_addresses}'.")
-        actual_delivery_addresses_data = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_delivery_addresses)
+        actual_delivery_addresses_data = self.delivery_addresses_page.get_addresses_data(actual_number_of_delivery_addresses)
         mixed_assert.equal(actual_delivery_addresses_data, TestData.delivery_addresses_original, f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses are '{actual_delivery_addresses_data}', expected delivery addresses are '{TestData.delivery_addresses_original}'.")
 
         # Editing delivery addresses:
         self.alza_module.delivery_addresses_edit_addresses()
         # Go to Alza main page.
-        self.top_section.top_section_click_alza_icon()
+        self.top_section.click_alza_icon()
         # Go to delivery addresses page.
-        self.top_section.top_section_click_signed_in_user_link()
-        self.top_section.top_section_click_my_profile_link()
-        self.my_account_page.my_account_click_delivery_addresses_link()
+        self.top_section.click_signed_in_user_link()
+        self.top_section.click_my_profile_link()
+        self.my_account_page.click_delivery_addresses_menu_item()
         # Check addresses have correct edited data.
-        actual_delivery_addresses_data = self.delivery_addresses_page.delivery_addresses_get_addresses_data(actual_number_of_delivery_addresses)
+        actual_delivery_addresses_data = self.delivery_addresses_page.get_addresses_data(actual_number_of_delivery_addresses)
         mixed_assert.equal(actual_delivery_addresses_data, TestData.delivery_addresses_edited, f"Actual delivery addresses are not the same as updated delivery addresses. Actual delivery addresses are '{actual_delivery_addresses_data}', expected delivery addresses are '{TestData.delivery_addresses_edited}'.")
 
         # Remove delivery addresses:
-        self.delivery_addresses_page.delivery_addresses_remove_all_addresses_from_delivery_addresses_list()
+        self.delivery_addresses_page.remove_all_addresses_from_delivery_addresses_list()
         # Check there are no addresses.
-        actual_number_of_delivery_addresses = self.delivery_addresses_page.delivery_addresses_get_number_of_addresses()
+        actual_number_of_delivery_addresses = self.delivery_addresses_page.get_number_of_addresses()
         mixed_assert.equal(actual_number_of_delivery_addresses, 0, f"There are delivery addresses present though there shall not be any. There are '{actual_number_of_delivery_addresses}' delivery addresses.")
 
         # Logout.

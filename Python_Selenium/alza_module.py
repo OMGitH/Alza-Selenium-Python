@@ -31,47 +31,47 @@ class AlzaModule:
 	# Login and logout:
 	def reject_cookies_and_login(self, interrupt_test=False):
 		# Reject all cookies.
-		self.cookies_pane.cookies_pane_click_reject_all()
+		self.cookies_pane.click_reject_all_link()
 		# Log into application:
 		# Click login link.
-		self.top_section.top_section_click_login_link()
+		self.top_section.click_login_link()
 		# Fill in credentials and login.
-		self.login_page.login_successful_login(TestData.user_name, TestData.password)
+		self.login_page.successful_login(TestData.user_name, TestData.password)
 		# Check successful login.
 		mixed_assert.is_true(self.login_page.login_dialog_is_invisible(), "Login dialog is still visible but shall not be.", interrupt_test=interrupt_test)
-		actual_signed_in_text = self.top_section.top_section_get_signed_in_user_text()
+		actual_signed_in_text = self.top_section.get_signed_in_user_text()
 		mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.",	interrupt_test=interrupt_test)
 
 	def logout(self):
-		self.top_section.top_section_click_signed_in_user_link()
-		self.top_section.top_section_click_logout_link()
+		self.top_section.click_signed_in_user_link()
+		self.top_section.click_logout_link()
 		# Check successful logout.
-		mixed_assert.is_true(self.top_section.top_section_login_link_is_visible(), "Login link is not visible though it shall be.")
+		mixed_assert.is_true(self.top_section.login_link_is_visible(), "Login link is not visible though it shall be.")
 
 	# test_basket_add_remove_item: Empty basket if there are items inside and go back to Alza main page.
 	def empty_basket_if_items_inside(self):
-		if self.top_section.top_section_check_if_basket_not_empty():
-			self.top_section.top_section_click_basket_icon()
-			self.basket_page.basket_remove_all_items_from_basket()
-			self.top_section.top_section_click_alza_icon()
+		if self.top_section.check_if_basket_is_not_empty():
+			self.top_section.click_basket_icon()
+			self.basket_page.remove_all_items_from_basket()
+			self.top_section.click_alza_icon()
 
 	# test_watchdog_add_remove_item: Empty watchdog list if there are watched items and go back to Alza main page.
 	def empty_watchdog_list_if_watched_items(self):
-		self.top_section.top_section_click_signed_in_user_link()
-		self.top_section.top_section_click_my_profile_link()
-		self.my_account_page.my_account_click_watchdogs_link()
-		self.watchdogs_page.watchdogs_remove_all_items_from_watchdogs_list()
-		self.top_section.top_section_click_alza_icon()
+		self.top_section.click_signed_in_user_link()
+		self.top_section.click_my_profile_link()
+		self.my_account_page.click_watchdogs_menu_item()
+		self.watchdogs_page.remove_all_items_from_watchdogs_list()
+		self.top_section.click_alza_icon()
 
 	# test_add_remove_delivery_addresses: Add delivery addresses.
 	def delivery_addresses_add_addresses(self):
 		for data in TestData.delivery_addresses_original:
-			self.delivery_addresses_page.delivery_addresses_click_add_new_address()
-			self.delivery_addresses_details_dialog.delivery_address_details_dialog_fill_in_new_address_details(data)
+			self.delivery_addresses_page.click_add_new_address_button()
+			self.delivery_addresses_details_dialog.fill_in_new_address_details(data)
 
 	# test_add_remove_delivery_addresses: Edit delivery addresses.
 	def delivery_addresses_edit_addresses(self):
-		addresses = self.delivery_addresses_page.delivery_addresses_get_addresses()
+		addresses = self.delivery_addresses_page.get_addresses()
 		for index, address in enumerate(addresses):
-			self.delivery_addresses_page.delivery_addresses_click_address_as_argument(address)
-			self.delivery_addresses_details_dialog.delivery_address_details_dialog_edit_address_details(index)
+			self.delivery_addresses_page.click_address_item_as_argument(address)
+			self.delivery_addresses_details_dialog.edit_address_details(index)

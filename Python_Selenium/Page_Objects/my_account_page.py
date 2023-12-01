@@ -7,8 +7,8 @@ class MyAccount(ObjectHandler):
     # Identification of objects on my account page.
     account_settings_dropdown = (By.XPATH, "//div[@data-testid='menuSection-MyAccount']")
     my_account_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserSettings']")
-    my_account_watchdogs_link = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
-    my_account_delivery_addresses_link = (By.XPATH, "//a[@data-testid='menuButton-DeliveryAddresses']")
+    watchdogs_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
+    delivery_addresses_menu_item = (By.XPATH, "//a[@data-testid='menuButton-DeliveryAddresses']")
 
     data_is_saving_text = (By.XPATH, "//span[@class='saving']/span[@class='text']")
     data_was_saved_text = (By.XPATH, "//span[@class='saved']/span[@class='text']")
@@ -30,16 +30,16 @@ class MyAccount(ObjectHandler):
         super().__init__(driver)
 
     # Actions on my account page.
-    def my_account_click_account_settings_dropdown(self):
+    def click_account_settings_dropdown(self):
         self.object_handler_click(self.account_settings_dropdown)
 
-    def my_account_click_my_account_menu_item(self):
+    def click_my_account_menu_item(self):
         self.object_handler_click(self.my_account_menu_item)
         # Following method helps initialize the page as validations there are dynamic.
         self.object_handler_element_exists(self.data_was_saved_text)
 
-    def my_account_click_watchdogs_link(self):
-        self.object_handler_click(self.my_account_watchdogs_link)
+    def click_watchdogs_menu_item(self):
+        self.object_handler_click(self.watchdogs_menu_item)
 
-    def my_account_click_delivery_addresses_link(self):
-        self.object_handler_click(self.my_account_delivery_addresses_link)
+    def click_delivery_addresses_menu_item(self):
+        self.object_handler_click(self.delivery_addresses_menu_item)

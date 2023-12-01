@@ -25,48 +25,48 @@ class TopSection(ObjectHandler):
         super().__init__(driver)
 
     # Actions in top section of the page.
-    def top_section_click_login_link(self):
+    def click_login_link(self):
         self.object_handler_click(self.login_link)
 
-    def top_section_click_alza_icon(self):
+    def click_alza_icon(self):
         self.object_handler_click(self.alza_main_page_icon)
 
-    def top_section_click_my_profile_link(self):
+    def click_my_profile_link(self):
         self.object_handler_click(self.my_profile_link)
 
-    def top_section_click_logout_link(self):
+    def click_logout_link(self):
         self.object_handler_click(self.logout_link)
 
-    def top_section_search_provide_value(self, value):
+    def search_provide_value(self, value):
         self.object_handler_clear_input_by_pressing_backspace(self.search_input, "value")
         self.object_handler_send_keys(self.search_input, value)
         self.object_handler_is_visible(self.search_suggestion)
         time.sleep(1)
 
-    def top_section_click_search_button(self):
+    def click_search_button(self):
         self.object_handler_click(self.search_button)
 
-    def top_section_search_suggestion_click_1st_item(self):
+    def search_suggestion_click_1st_item(self):
         self.object_handler_is_visible(self.search_suggestion)
         self.object_handler_click(self.search_suggestion_1st_item)
 
-    def top_section_login_link_is_visible(self):
+    def login_link_is_visible(self):
         flag = self.object_handler_is_visible(self.login_link, handle_TimeoutException=True)
         return flag
 
-    def top_section_get_signed_in_user_text(self):
+    def get_signed_in_user_text(self):
         if self.object_handler_is_visible(self.signed_in_user_link):
             signed_in_user_text = self.object_handler_get_element_text(self.signed_in_user_link)
             return signed_in_user_text
 
-    def top_section_click_signed_in_user_link(self):
+    def click_signed_in_user_link(self):
         self.object_handler_click(self.signed_in_user_link)
         self.object_handler_is_visible(self.signed_in_user_dialog)
 
-    def top_section_click_basket_icon(self):
+    def click_basket_icon(self):
         self.object_handler_click(self.basket_icon)
 
-    def top_section_check_if_basket_not_empty(self):
+    def check_if_basket_is_not_empty(self):
         flag = self.object_handler_is_visible(self.basket_icon_item_inside, 2, True)
         return flag
 
@@ -82,8 +82,8 @@ class TopSection(ObjectHandler):
     #         flag = False
     #     return flag
 
-    def top_section_get_number_of_items_at_basket_icon(self):
-        if self.top_section_check_if_basket_not_empty():
+    def get_number_of_items_at_basket_icon(self):
+        if self.check_if_basket_is_not_empty():
             number_of_items = self.object_handler_get_element_text(self.basket_icon_item_inside)
             return int(number_of_items)
         else:
