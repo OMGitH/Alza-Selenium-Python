@@ -22,12 +22,12 @@ class DeliveryAddresses(ObjectHandler):
 
 	# Actions on delivery addresses page.
 	def remove_all_addresses_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
-		while self.object_handler_get_state(self.delivery_address_remove_button, self.without_delivery_address_items) == self.delivery_address_remove_button:
+		while self.object_handler_is_visible(self.delivery_address_remove_button, 2, True):
 			number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
 			self.object_handler_click(self.delivery_address_remove_button, True)
 			self.object_handler_click(self.delivery_address_removal_confirmation_button)
 			self.object_handler_is_invisible(self.remove_question_dialog)
-			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for it to get refreshed.
+			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for page to get refreshed.
 			if number_of_addresses != 0:
 				for check in range(number_of_checks):
 					number_of_addresses_after_removal = self.object_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
