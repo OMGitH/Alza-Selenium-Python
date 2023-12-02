@@ -27,6 +27,12 @@ class ObjectHandler:
                 except StaleElementReferenceException:
                     pass
 
+    def object_handler_click_until_appears(self, locator_click, locator_to_appear, number_of_clicks=10, click_wait=0.5):
+        for click in range(number_of_clicks):
+            self.object_handler_click(locator_click)
+            if self.object_handler_is_visible(locator_to_appear, click_wait, True):
+                break
+
     def object_handler_hover_click(self, locator, timeout=timeout_default):
         element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
         action = ActionChains(self.driver)
