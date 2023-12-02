@@ -5,9 +5,12 @@ import os
 from datetime import datetime
 
 
-@pytest.fixture
+@pytest.fixture(params=["chrome", "firefox"])
 def initialize_driver(request):
-    driver = webdriver.Chrome()
+    if request.param == "chrome":
+        driver = webdriver.Chrome()
+    if request.param == "firefox":
+        driver = webdriver.Firefox()
     driver.maximize_window()
     driver.get(TestData.url)
     request.cls.driver = driver
