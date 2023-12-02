@@ -59,7 +59,7 @@ class TopSection(ObjectHandler):
             signed_in_user_text = self.object_handler_get_element_text(self.signed_in_user_link)
             return signed_in_user_text
 
-    # It seems in Firefox sometimes signed in user link is clicked before page is loaded and dialog does not get displayed,
+    # It seems in Firefox sometimes signed in user link is clicked before page is fully loaded and dialog does not get displayed,
     # therefore method click until appears is used.
     def click_signed_in_user_link(self):
         self.object_handler_click_until_appears(self.signed_in_user_link, self.signed_in_user_dialog)

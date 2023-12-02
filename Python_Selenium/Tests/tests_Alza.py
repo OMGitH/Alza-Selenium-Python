@@ -167,7 +167,7 @@ class TestsAlza:
         # Logout.
         self.alza_module.logout()
 
-    def test_watchdog_add_remove_item(self):
+    def test_watchdogs_add_remove_item(self):
         """
         Tests adding and removing item from watchdog list. First all cookies are rejected then logs in, if there are items in watchdog list they
         are removed. Then adds watchdog to pet supply item, goes to watchdog list, checks name of item present, its price limit and that checkbox
@@ -201,9 +201,10 @@ class TestsAlza:
         # Check prefilled e-mail address.
         actual_email = self.watchdog_add_dialog.get_email()
         mixed_assert.equal(actual_email, TestData.user_name, f"Incorrect e-mail address prefilled. There is '{actual_email}' but there shall be '{TestData.user_name}'.")
-        # Set watch price.
+        # Set watch price, confirm and close success popup.
         self.watchdog_add_dialog.set_price_limit(TestData.watchdog_price_limit)
         self.watchdog_add_dialog.click_confirm_button()
+        self.watchdogs_page.close_success_popup()
 
         # Check watchdogs page and remove item:
         # Go to watchdogs page.
@@ -216,7 +217,7 @@ class TestsAlza:
         actual_price_limit = self.watchdogs_page.get_price_limit_provided()
         mixed_assert.equal(actual_price_limit, TestData.watchdog_price_limit, f"Wrong price limit displayed in watchdogs. Actual price limit is '{actual_price_limit}' but it shall be '{TestData.watchdog_price_limit}'.")
         mixed_assert.is_true(self.watchdogs_page.check_alert_price_is_checked(), f"Checkbox for alert when price is lower than '{TestData.watchdog_price_limit}' shall be checked but it is not.")
-        # Remove item from watchdog list.
+        # Remove item from watchdogs list.
         self.watchdogs_page.remove_all_items_from_watchdogs_list()
         actual_text_once_watchdog_list_empty = self.watchdogs_page.get_text_once_all_items_removed()
         mixed_assert.equal(actual_text_once_watchdog_list_empty, TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchdog list is empty. Actual text is '{actual_text_once_watchdog_list_empty}' but it shall be '{TestData.text_once_all_items_removed_from_watchdog_list}'. Seems watchdog list is not empty.")
@@ -224,7 +225,7 @@ class TestsAlza:
         # Logout.
         self.alza_module.logout()
 
-    def test_add_remove_delivery_addresses(self):
+    def test_delivery_addresses_add_remove_addresses(self):
         """
         Tests adding and removing addresses from delivery addresses list. First all cookies are rejected then logs in, if there are addresses in
         delivery addresses list they are removed. Then adds 2 delivery addresses, goes to main page, then back to delivery addresses list, checks number of
@@ -249,7 +250,7 @@ class TestsAlza:
         self.top_section.click_signed_in_user_link()
         self.top_section.click_my_profile_link()
         self.my_account_page.click_delivery_addresses_menu_item()
-        # Empty delivery addresses list if there are addresses.
+        # Precondition: Empty delivery addresses list if there are addresses.
         self.delivery_addresses_page.remove_all_addresses_from_delivery_addresses_list()
         # Add 2 delivery addresses.
         self.alza_module.delivery_addresses_add_addresses()

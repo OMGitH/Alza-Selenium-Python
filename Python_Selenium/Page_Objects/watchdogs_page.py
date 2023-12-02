@@ -12,6 +12,8 @@ class Watchdogs(ObjectHandler):
 	price_limit_provided = (By.NAME, "price")
 	alert_price_checkbox_checked = (By.XPATH, "//input[not (@name)]/parent::span/*[name()='svg']/*[name()='g' and @transform]")
 	all_items_removed_from_watchdog_list_text = (By.XPATH, "//div[@data-testid='noResults']/span")
+	success_add_popup_close_button = (By.XPATH, "//*[name()='svg' and contains(@class, 'priceBoxProcessorProxy')]/*[name()='path']")
+	success_remove_popup_close_button = (By.XPATH, "//div[contains(@class, 'react-page')]//*[name()='svg' and @xmlns]")
 
 	# Initialization.
 	def __init__(self, driver):
@@ -23,6 +25,7 @@ class Watchdogs(ObjectHandler):
 			self.object_handler_click(self.item_remove_button)
 			self.object_handler_click(self.item_removal_confirmation_button)
 			self.object_handler_is_invisible(self.remove_question_dialog)
+			self.object_handler_click(self.success_remove_popup_close_button)
 
 	# def watchdogs_remove_all_items_from_watchdogs_list(self):
 	# 	if self.base_is_visible(self.item, 3, True):
@@ -61,3 +64,6 @@ class Watchdogs(ObjectHandler):
 		if self.object_handler_is_visible(self.all_items_removed_from_watchdog_list_text):
 			all_items_removed_message = self.object_handler_get_element_text(self.all_items_removed_from_watchdog_list_text)
 			return all_items_removed_message
+
+	def close_success_popup(self):
+		self.object_handler_click(self.success_add_popup_close_button)
