@@ -11,7 +11,7 @@ class Watchdogs(ObjectHandler):
 	remove_question_dialog = (By.XPATH, "//div[@role='dialog']")
 	price_limit_provided = (By.NAME, "price")
 	alert_price_checkbox_checked = (By.XPATH, "//input[not (@name)]/parent::span/*[name()='svg']/*[name()='g' and @transform]")
-	all_items_removed_from_watchdog_list_text = (By.XPATH, "//div[@data-testid='noResults']/span")
+	all_items_removed_from_watchdogs_list_text = (By.XPATH, "//div[@data-testid='noResults']/span")
 	success_add_popup_close_button = (By.XPATH, "//*[name()='svg' and contains(@class, 'priceBoxProcessorProxy')]/*[name()='path']")
 	success_remove_popup_close_button = (By.XPATH, "//div[contains(@class, 'react-page')]//*[name()='svg' and @xmlns]")
 
@@ -21,7 +21,7 @@ class Watchdogs(ObjectHandler):
 
 	# Actions on watchdogs page.
 	def remove_all_items_from_watchdogs_list(self):
-		while self.object_handler_get_state(self.item_remove_button, self.all_items_removed_from_watchdog_list_text) == self.item_remove_button:
+		while self.object_handler_get_state(self.item_remove_button, self.all_items_removed_from_watchdogs_list_text) == self.item_remove_button:
 			self.object_handler_click(self.item_remove_button)
 			self.object_handler_click(self.item_removal_confirmation_button)
 			self.object_handler_is_invisible(self.remove_question_dialog)
@@ -36,10 +36,10 @@ class Watchdogs(ObjectHandler):
 
 	"""
 	Code below uses get state method that is faster as it doesn't wait for timeout to make sure whether or not there is an item
-	identifying a state (if there is an item in watchdog list, True is returned, if not, False is returned).
+	identifying a state (if there is an item in watchdogs list, True is returned, if not, False is returned).
 	"""
 	# def watchdogs_remove_all_items_from_watchdogs_list(self):
-	# 	if self.base_get_state(self.item, self.all_items_removed_from_watchdog_list_text):
+	# 	if self.base_get_state(self.item, self.all_items_removed_from_watchdogs_list_text):
 	# 		while self.base_is_visible(self.item_remove_button, 1):
 	# 			self.base_click(self.item_remove_button)
 	# 			self.base_click(self.item_removal_confirmation_button)
@@ -61,8 +61,8 @@ class Watchdogs(ObjectHandler):
 		return flag
 
 	def get_text_once_all_items_removed(self):
-		if self.object_handler_is_visible(self.all_items_removed_from_watchdog_list_text):
-			all_items_removed_message = self.object_handler_get_element_text(self.all_items_removed_from_watchdog_list_text)
+		if self.object_handler_is_visible(self.all_items_removed_from_watchdogs_list_text):
+			all_items_removed_message = self.object_handler_get_element_text(self.all_items_removed_from_watchdogs_list_text)
 			return all_items_removed_message
 
 	def close_success_popup(self):

@@ -20,7 +20,7 @@ class TestData:
     search_result_word_in_title_via_suggestion = "recenze"
 
     watchdog_price_limit = "10"
-    text_once_all_items_removed_from_watchdog_list = "Momentálně pro vás nehlídáme žádné produkty"
+    text_once_all_items_removed_from_watchdogs_list = "Momentálně pro vás nehlídáme žádné produkty"
 
     delivery_address_1_original = {"name surname": "Jarda Starý",
                         "street and number": "Ulice 4",

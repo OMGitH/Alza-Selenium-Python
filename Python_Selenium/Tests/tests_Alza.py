@@ -169,9 +169,9 @@ class TestsAlza:
 
     def test_watchdogs_add_remove_item(self):
         """
-        Tests adding and removing item from watchdog list. First all cookies are rejected then logs in, if there are items in watchdog list they
-        are removed. Then adds watchdog to pet supply item, goes to watchdog list, checks name of item present, its price limit and that checkbox
-        for alerting when price decreases is checked. Then removes item from watchdog list and checks watchdog list is empty.
+        Tests adding and removing item from watchdogs list. First all cookies are rejected then logs in, if there are items in watchdogs list they
+        are removed. Then adds watchdog to pet supply item, goes to watchdogs list, checks name of item present, its price limit and that checkbox
+        for alerting when price decreases is checked. Then removes item from watchdogs list and checks watchdogs list is empty.
         At the end logs out.
         """
 
@@ -187,8 +187,8 @@ class TestsAlza:
         # Reject all cookies and log into application and stop test execution if login failed.
         self.alza_module.reject_cookies_and_login(True)
 
-        # Precondition: Empty watchdog list if there are watched items and go back to Alza main page.
-        self.alza_module.empty_watchdog_list_if_watched_items()
+        # Precondition: Empty watchdogs list if there are watched items and go back to Alza main page.
+        self.alza_module.empty_watchdogs_list_if_watched_items()
 
         # Navigate to pet supplies, open first pet supply, handle dialog if appears and get supply name.
         self.main_page.hover_click_pet_supplies_menu_item()
@@ -219,8 +219,8 @@ class TestsAlza:
         mixed_assert.is_true(self.watchdogs_page.check_alert_price_is_checked(), f"Checkbox for alert when price is lower than '{TestData.watchdog_price_limit}' shall be checked but it is not.")
         # Remove item from watchdogs list.
         self.watchdogs_page.remove_all_items_from_watchdogs_list()
-        actual_text_once_watchdog_list_empty = self.watchdogs_page.get_text_once_all_items_removed()
-        mixed_assert.equal(actual_text_once_watchdog_list_empty, TestData.text_once_all_items_removed_from_watchdog_list, f"Wrong text once watchdog list is empty. Actual text is '{actual_text_once_watchdog_list_empty}' but it shall be '{TestData.text_once_all_items_removed_from_watchdog_list}'. Seems watchdog list is not empty.")
+        actual_text_once_watchdogs_list_empty = self.watchdogs_page.get_text_once_all_items_removed()
+        mixed_assert.equal(actual_text_once_watchdogs_list_empty, TestData.text_once_all_items_removed_from_watchdogs_list, f"Wrong text once watchdogs list is empty. Actual text is '{actual_text_once_watchdogs_list_empty}' but it shall be '{TestData.text_once_all_items_removed_from_watchdogs_list}'. Seems watchdogs list is not empty.")
 
         # Logout.
         self.alza_module.logout()
