@@ -9,9 +9,10 @@ class TopSection(ObjectHandler):
     login_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleLogin']")
     alza_main_page_icon = (By.XPATH, "//a[@data-testid='headerLogo']")
     my_profile_link = (By.XPATH, "//a[@data-testid='headerNavigationMyProfile']/span")
-    signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
+    signed_in_user_link = (By.XPATH, "//button[@data-testid='headerContextMenuToggle']")
+    # signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
     signed_in_user_dialog = (By.XPATH, "//div[@data-testid='headerContextMenu']")
-    logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']")
+    logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']/*[name()='svg']")
     search_input = (By.XPATH, "//input[@data-testid='searchInput']")
     search_button = (By.XPATH, "//button[@data-testid='button-search']")
     search_suggestion = (By.XPATH, "//div[@data-testid='searchResultsContainer']")
@@ -59,10 +60,13 @@ class TopSection(ObjectHandler):
             signed_in_user_text = self.object_handler_get_element_text(self.signed_in_user_link)
             return signed_in_user_text
 
+    def click_signed_in_user_link(self):
+        self.object_handler_click(self.signed_in_user_link)
+
     # It seems in Firefox sometimes signed in user link is clicked before page is fully loaded and dialog does not get displayed,
     # therefore method click until appears is used.
-    def click_signed_in_user_link(self):
-        self.object_handler_click_until_appears(self.signed_in_user_link, self.signed_in_user_dialog)
+    # def click_signed_in_user_link(self):
+    #     self.object_handler_click_until_appears(self.signed_in_user_link, self.signed_in_user_dialog)
 
     def click_basket_icon(self):
         self.object_handler_click(self.basket_icon)
