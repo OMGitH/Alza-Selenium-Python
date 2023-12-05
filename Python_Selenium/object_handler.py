@@ -121,7 +121,7 @@ class ObjectHandler:
         return elements
 
     """
-    Is used for checking which of multiple possible states is true without having to wait for timeout when checking whether an element is present or not.
+    Serves for checking which of multiple possible states is true without having to wait for timeout when checking whether an element is present or not.
     Can be used only if each state has an element that is not present in the other state as the state is identified based on presence of an element.
     In general speeds up process of checking state and adds reliability (for example can be used instead of checking if item is in basket or not
     using visibility_of_element_located with timeout of 2 seconds and if it doesn't appear in 2 seconds, assuming that there is no item in basket).
@@ -130,11 +130,10 @@ class ObjectHandler:
         for check in range(number_of_checks):
             for locator in locators:
                 try:
-                    WebDriverWait(self.driver, 0.1).until(EC.visibility_of_element_located(locator))
+                    WebDriverWait(self.driver, check_wait).until(EC.visibility_of_element_located(locator))
                     return locator
                 except TimeoutException:
                     pass
-            time.sleep(check_wait)
 
     """
     Can be used for checking which of 2 possible states is true without having to wait for timeout when checking whether an element is present or not.

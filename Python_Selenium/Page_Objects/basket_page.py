@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from object_handler import ObjectHandler
+import time
 
 
 class Basket(ObjectHandler):
@@ -45,11 +46,19 @@ class Basket(ObjectHandler):
             all_items_removed_message = self.object_handler_get_element_text(self.all_items_removed_from_basket_text)
             return all_items_removed_message
 
-    def remove_all_items_from_basket(self):
+    def remove_all_items_from_basket(self, number_of_checks=10, check_wait=0.5):
         while self.object_handler_get_state(self.down_arrow_price_button, self.all_items_removed_from_basket_text) == self.down_arrow_price_button:
+            number_of_items = self.object_handler_get_number_of_visible_elements(self.down_arrow_price_button)
             self.object_handler_click(self.down_arrow_price_button)
             self.object_handler_click(self.down_arrow_price_menu_remove_item)
             self.object_handler_is_invisible(self.down_arrow_price_menu)
+            # It seems Firefox doesn't wait for the basket page to be fully refreshed, following code waits for page to get refreshed.
+            if number_of_items != 0:
+                for check in range(number_of_checks):
+                    number_of_items_after_removal = self.object_handler_get_number_of_visible_elements(self.down_arrow_price_button)
+                    if number_of_items_after_removal == 0 or number_of_items_after_removal == number_of_items - 1:
+                        break
+                    time.sleep(check_wait)
 
     # def basket_remove_all_items_from_basket(self):
     #     while self.base_is_visible(self.down_arrow_price_button, 1, True):
