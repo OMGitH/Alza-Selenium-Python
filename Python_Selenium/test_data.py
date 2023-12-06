@@ -1,6 +1,9 @@
 class TestData:
+
+    # Alza url
     url = "https://www.alza.cz/"
 
+    # test_login_logout
     user_name = "wedey95103@haizail.com"
     password = "PasHes12"
     incorrect_user_name = "aa@haizail.com"
@@ -10,18 +13,21 @@ class TestData:
     blank_password_text = "Zadejte prosím heslo"
     user_signed_in_text = user_name
 
+    # test_basket_add_remove_item
     number_of_items_in_basket = 1
     text_once_all_items_removed_from_basket = "Jsem tak prázdný..."
 
+    # test_search
     search_value_via_search_button = "jízdní kola"
     search_result_header_via_search_button = "Jízdní kola"
-
     search_value_via_suggestion = "recenze"
     search_result_word_in_title_via_suggestion = "recenze"
 
+    # test_watchdogs_add_remove_item
     watchdog_price_limit = "10"
     text_once_all_items_removed_from_watchdogs_list = "Momentálně pro vás nehlídáme žádné produkty"
 
+    # test_delivery_addresses_add_remove_addresses
     delivery_address_1_original = {"name surname": "Jarda Starý",
                         "street and number": "Ulice 4",
                         "zip": "10000",

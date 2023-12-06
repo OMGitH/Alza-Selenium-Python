@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from object_handler import ObjectHandler
-from Config.test_data import TestData
+from test_data import TestData
 
 
 class DeliveryAddressesDetails(ObjectHandler):

@@ -1,5 +1,5 @@
 from selenium import webdriver
-from Config.test_data import TestData
+from test_data import TestData
 import pytest
 import os
 from datetime import datetime

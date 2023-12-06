@@ -1,4 +1,4 @@
-from Config.test_data import TestData
+from test_data import TestData
 from Page_Objects.basket_page import Basket
 from Page_Objects.login_page import LoginPage
 from Page_Objects.main_page import MainPage

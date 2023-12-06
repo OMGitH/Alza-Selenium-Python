@@ -6,7 +6,7 @@ from Page_Objects.my_account_page import MyAccount
 from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from Page_Objects.delivery_addresses_details_dialog import DeliveryAddressesDetails
-from Config.test_data import TestData
+from test_data import TestData
 import mixed_assertions as mixed_assert
 
 # Additional layer in which various methods can be defined, for example those used in more tests, that are just preconditions for test
