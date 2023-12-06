@@ -18,15 +18,16 @@ class TestsAlza:
 
     def test_login_logout(self):
         """
-        Tests log in functionality. First all cookies are rejected, then login is clicked.
-        Credential fields are blank, signin button is clicked and it is checked that login dialog stays open and there are corresponding error messages displayed.
-        Then wrong email address is provided with correct password, signin button is clicked and it is checked that login stays displayed and there is correct
+        Tests log in and log out:
+        - Reject all cookies, click login link.
+        - Click signin button when credential fields are blank. Check that login dialog stays displayed and there are corresponding error messages displayed.
+        - Provide wrong email address and correct password, click signin button. Check that login dialog stays displayed and there is correct
         text on signin button.
-        Then correct email address is provided with wrong password, signin button is clicked and it is checked that login stays displayed and there is correct
+        - Provide correct email address and wrong password, click signin button. Check that login dialog stays displayed and there is correct
         text on signin button.
-        Then both correct email address and correct password are provided, signin button is clicked and it is checked that login disappears and correct
-        user email is displayed in upper part of the screen.
-        At the end logout link is clicked and it is checked that login link is present.
+        - Provide correct email address and password, click signin button. Check that login dialog disappears and correct user email is displayed
+        in the upper part of the screen.
+        - Click logout link, check that login link is displayed.
         """
 
         self.login_page = LoginPage(self.driver)
@@ -80,10 +81,12 @@ class TestsAlza:
 
     def test_basket_add_remove_item(self):
         """
-        Tests adding and removing item from basket. First all cookies are rejected then logs in, if there are items in basket they are removed,
-        then adds computer to basket, checks number of items at basket icon, goes to basket, checks name of item present, its count and price.
-        Then removes item from basket, checks basket is empty and that there is no number at basket icon.
-        At the end logs out.
+        Tests adding and removing item from basket:
+        - Reject all cookies and log in, if there are items in basket, remove them.
+        - Add computer to basket and check number of items at basket icon.
+        - Go to basket, check name of item present, its count and price.
+        - Remove item from basket, check that basket is empty and there is no number at basket icon.
+        - Log out.
         """
 
         self.login_page = LoginPage(self.driver)
@@ -133,11 +136,13 @@ class TestsAlza:
 
     def test_search(self):
         """
-        Tests search functionality in 2 ways. First all cookies are rejected then logs in, provides search value, presses search button
-        and checks header of result and that amount of items found is bigger than 0.
-        Then provides search value, waits for suggestions to appear, clicks first article in suggestions and checks that name of article contains
-        looked up word.
-        At the end logs out.
+        Tests searching via search button and by clicking suggestion:
+        - Reject all cookies and log in.
+        - Type "jízdní kola" into search input, press search button. Check that header of result page is "jízdní kola" and that amount of items found
+        is bigger than 0.
+        - Type "recenze" into search box, wait for suggestions to appear. Click first suggestion in suggestions and check that header of result page contains
+        word "recenze".
+        - Log out.
         """
 
         self.cookies_pane = CookiesPane(self.driver)
@@ -169,10 +174,12 @@ class TestsAlza:
 
     def test_watchdogs_add_remove_item(self):
         """
-        Tests adding and removing item from watchdogs list. First all cookies are rejected then logs in, if there are items in watchdogs list they
-        are removed. Then adds watchdog to pet supply item, goes to watchdogs list, checks name of item present, its price limit and that checkbox
-        for alerting when price decreases is checked. Then removes item from watchdogs list and checks watchdogs list is empty.
-        At the end logs out.
+        Tests adding and removing item from watchdogs list:
+        - Reject all cookies and log in, if there are items in watchdogs list, remove them.
+        - Add watchdog to pet supply item, go to watchdogs list. Check name of item present, its price limit and that checkbox for alerting when price
+        decreases under price limit is checked.
+        - Remove item from watchdogs list, check that watchdogs list is empty.
+        - Log out.
         """
 
         self.cookies_pane = CookiesPane(self.driver)
@@ -227,12 +234,14 @@ class TestsAlza:
 
     def test_delivery_addresses_add_remove_addresses(self):
         """
-        Tests adding and removing addresses from delivery addresses list. First all cookies are rejected then logs in, if there are addresses in
-        delivery addresses list they are removed. Then adds 2 delivery addresses, goes to main page, then back to delivery addresses list, checks number of
-        delivery addresses and at both all provided data. Then edits data at both addresses, goes to main page, then back to delivery addresses list
-        and checks at both all edited data. Then removes both addresses from delivery addresses list and checks delivery addresses list is empty.
-        At the end logs out.
-        Number of addresses can be changed by adding or removing dictionaries from TestData.delivery_addresses_original and TestData.delivery_addresses_edited.
+        Tests adding and removing addresses from delivery addresses list:
+        - Reject all cookies and log in, if there are addresses in delivery addresses list, remove them.
+        - Add 2 delivery addresses, go to main page, then back to delivery addresses list. Check number of delivery addresses and that at both all provided
+        data is correct.
+        - Edit data at both addresses, go to main page, then back to delivery addresses list. Check that at both addresses all edited data is correct.
+        - Remove both addresses from delivery addresses list and check that delivery addresses list is empty.
+        - Log out.
+        Note: Number of addresses can be changed by adding or removing dictionaries from TestData.delivery_addresses_original and TestData.delivery_addresses_edited.
         """
 
         self.cookies_pane = CookiesPane(self.driver)
