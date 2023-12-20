@@ -39,7 +39,7 @@ class MyAccount(ObjectHandler):
         self.object_handler_element_exists(self.data_was_saved_text)
 
     def click_watchdogs_menu_item(self):
-        self.object_handler_click(self.watchdogs_menu_item)
+        self.object_handler_click(self.watchdogs_menu_item, "'Hlídací psi' menu item", True)
 
     def click_delivery_addresses_menu_item(self):
-        self.object_handler_click(self.delivery_addresses_menu_item)
+        self.object_handler_click(self.delivery_addresses_menu_item, "'Doručovací adresy' menu item", True)

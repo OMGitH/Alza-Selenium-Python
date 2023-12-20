@@ -10,7 +10,7 @@ handler = logging.StreamHandler(sys.stdout)
 handler.setLevel("INFO")
 
 # Create message format (used for printing into console) and add it to handler.
-message_format = logging.Formatter('%(levelname)s     %(message)s')
+message_format = logging.Formatter("%(asctime)s     %(levelname)s     %(message)s")
 handler.setFormatter(message_format)
 
 # Add handler to report logger.

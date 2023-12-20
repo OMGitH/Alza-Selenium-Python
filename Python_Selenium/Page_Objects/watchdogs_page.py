@@ -22,10 +22,10 @@ class Watchdogs(ObjectHandler):
 	# Actions on watchdogs page.
 	def remove_all_items_from_watchdogs_list(self):
 		while self.object_handler_get_state(self.item_remove_button, self.all_items_removed_from_watchdogs_list_text) == self.item_remove_button:
-			self.object_handler_click(self.item_remove_button)
-			self.object_handler_click(self.item_removal_confirmation_button)
+			self.object_handler_click(self.item_remove_button, "'X' button", True)
+			self.object_handler_click(self.item_removal_confirmation_button, "'Zrušit hlídání' button", True)
 			self.object_handler_is_invisible(self.remove_question_dialog)
-			self.object_handler_click(self.success_remove_popup_close_button)
+			self.object_handler_click(self.success_remove_popup_close_button, "'X' button", True)
 
 	# def watchdogs_remove_all_items_from_watchdogs_list(self):
 	# 	if self.base_is_visible(self.item, 3, True):
@@ -66,4 +66,4 @@ class Watchdogs(ObjectHandler):
 			return all_items_removed_message
 
 	def close_success_popup(self):
-		self.object_handler_click(self.success_add_popup_close_button)
+		self.object_handler_click(self.success_add_popup_close_button, "'X' button", True)

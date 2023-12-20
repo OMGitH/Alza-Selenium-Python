@@ -27,29 +27,29 @@ class TopSection(ObjectHandler):
 
     # Actions in top section of the page.
     def click_login_link(self):
-        self.object_handler_click(self.login_link)
+        self.object_handler_click(self.login_link, "'Přihlásit se' link", True)
 
     def click_alza_icon(self):
-        self.object_handler_click(self.alza_main_page_icon)
+        self.object_handler_click(self.alza_main_page_icon, "'alza.cz' icon", True)
 
     def click_my_profile_link(self):
-        self.object_handler_click(self.my_profile_link)
+        self.object_handler_click(self.my_profile_link, "'Můj profil' link", True)
 
     def click_logout_link(self):
-        self.object_handler_click(self.logout_link)
+        self.object_handler_click(self.logout_link, "'Odhlásit se' link", True)
 
     def search_provide_value(self, value):
         self.object_handler_clear_input_by_pressing_backspace(self.search_input, "value")
-        self.object_handler_send_keys(self.search_input, value)
+        self.object_handler_send_keys(self.search_input, value, "Search input field", True)
         self.object_handler_is_visible(self.search_suggestion)
         time.sleep(1)
 
     def click_search_button(self):
-        self.object_handler_click(self.search_button)
+        self.object_handler_click(self.search_button, "'Hledat' button", True)
 
     def search_suggestion_click_1st_item(self):
         self.object_handler_is_visible(self.search_suggestion)
-        self.object_handler_click(self.search_suggestion_1st_item)
+        self.object_handler_click(self.search_suggestion_1st_item, "Search suggestion 1st item", True)
 
     def login_link_is_visible(self):
         flag = self.object_handler_is_visible(self.login_link, handle_TimeoutException=True)
@@ -61,7 +61,7 @@ class TopSection(ObjectHandler):
             return signed_in_user_text
 
     def click_signed_in_user_link(self):
-        self.object_handler_click(self.signed_in_user_link)
+        self.object_handler_click(self.signed_in_user_link, "Signed in user link", True)
 
     # It seems in Firefox sometimes signed in user link is clicked before page is fully loaded and dialog does not get displayed,
     # therefore method click until appears is used.
@@ -69,7 +69,7 @@ class TopSection(ObjectHandler):
     #     self.object_handler_click_until_appears(self.signed_in_user_link, self.signed_in_user_dialog)
 
     def click_basket_icon(self):
-        self.object_handler_click(self.basket_icon)
+        self.object_handler_click(self.basket_icon, "Basket icon", True)
 
     def check_if_basket_is_not_empty(self):
         flag = self.object_handler_is_visible(self.basket_icon_item_inside, 2, True)

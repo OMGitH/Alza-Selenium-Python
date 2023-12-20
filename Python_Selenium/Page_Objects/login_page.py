@@ -19,15 +19,15 @@ class LoginPage(ObjectHandler):
 
     # Actions on login dialog.
     def provide_email(self, username):
-        self.object_handler_clear_input(self.email_input)
-        self.object_handler_send_keys(self.email_input, username)
+        self.object_handler_clear_input(self.email_input, "'E-mail' input field", True)
+        self.object_handler_send_keys(self.email_input, username, "'E-mail' input field", True)
 
     def provide_password(self, password):
-        self.object_handler_clear_input(self.password_input)
-        self.object_handler_send_keys(self.password_input, password)
+        self.object_handler_clear_input(self.password_input, "'Heslo' input field", True)
+        self.object_handler_send_keys(self.password_input, password, "'Heslo' input field", True)
 
     def click_signin_button(self):
-        self.object_handler_click(self.sign_in_button_active)
+        self.object_handler_click(self.sign_in_button_active, "'Přihlásit se' button", True)
 
     def login_dialog_is_visible(self):
         flag = self.object_handler_is_visible(self.login_dialog, handle_TimeoutException=True)

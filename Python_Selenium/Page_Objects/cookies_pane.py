@@ -14,7 +14,7 @@ class CookiesPane(ObjectHandler):
 
     # Actions on cookies pane.
     def click_reject_all_link(self):
-        self.object_handler_click(self.reject_all_link)
+        self.object_handler_click(self.reject_all_link, "'Odmítnout vše' link", True)
 
     def cookies_pane_is_invisible(self):
         flag = self.object_handler_is_invisible(self.cookies_pane, handle_TimeoutException=True)

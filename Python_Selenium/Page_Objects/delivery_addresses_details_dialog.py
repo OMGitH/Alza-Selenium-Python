@@ -18,20 +18,20 @@ class DeliveryAddressesDetails(ObjectHandler):
 
 	# Actions on delivery addresses details dialog.
 	def fill_in_new_address_details(self, data):
-		self.object_handler_send_keys(self.name_surname_input, data["name surname"])
-		self.object_handler_send_keys(self.street_input, data["street and number"])
-		self.object_handler_send_keys(self.zip_input, data["zip"])
-		self.object_handler_send_keys(self.city_input, data["city"])
-		self.object_handler_click(self.save_button)
+		self.object_handler_send_keys(self.name_surname_input, data["name surname"], "'Jméno a příjmení' input field", True)
+		self.object_handler_send_keys(self.street_input, data["street and number"], "'Ulice a číslo popisné' input field", True)
+		self.object_handler_send_keys(self.zip_input, data["zip"], "'PSČ' input field", True)
+		self.object_handler_send_keys(self.city_input, data["city"], "'Město' input field", True)
+		self.object_handler_click(self.save_button, "'Uložit' button", True)
 		self.object_handler_is_invisible(self.save_button)
 
 	def edit_address_details(self, index):
 		self.object_handler_clear_input_by_pressing_backspace(self.name_surname_input, "value")
-		self.object_handler_send_keys(self.name_surname_input, TestData.delivery_addresses_edited[index]["name surname"])
+		self.object_handler_send_keys(self.name_surname_input, TestData.delivery_addresses_edited[index]["name surname"], "'Jméno a příjmení' input field", True)
 		self.object_handler_clear_input_by_pressing_backspace(self.street_input, "value")
-		self.object_handler_send_keys(self.street_input, TestData.delivery_addresses_edited[index]["street and number"])
+		self.object_handler_send_keys(self.street_input, TestData.delivery_addresses_edited[index]["street and number"], "'Ulice a číslo popisné' input field", True)
 		self.object_handler_clear_input_by_pressing_backspace(self.zip_input, "value")
-		self.object_handler_send_keys(self.zip_input, TestData.delivery_addresses_edited[index]["zip"])
+		self.object_handler_send_keys(self.zip_input, TestData.delivery_addresses_edited[index]["zip"], "'PSČ' input field", True)
 		self.object_handler_clear_input_by_pressing_backspace(self.city_input, "value")
-		self.object_handler_send_keys(self.city_input, TestData.delivery_addresses_edited[index]["city"])
-		self.object_handler_click(self.save_button)
+		self.object_handler_send_keys(self.city_input, TestData.delivery_addresses_edited[index]["city"], "'Město' input field", True)
+		self.object_handler_click(self.save_button, "'Uložit' button", True)

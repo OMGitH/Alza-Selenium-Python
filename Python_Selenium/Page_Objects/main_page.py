@@ -27,22 +27,22 @@ class MainPage(ObjectHandler):
 
     # Actions on main page.
     def hover_click_computers_notebooks_menu_item(self):
-        self.object_handler_hover_click(self.computers_notebooks_menu_item)
+        self.object_handler_hover_click(self.computers_notebooks_menu_item, "'Počítače a notebooky' menu item", True)
         self.object_handler_is_visible(self.category_section_header)
 
     def hover_click_pet_supplies_menu_item(self):
-        self.object_handler_hover_click(self.pet_supplies_menu_item)
+        self.object_handler_hover_click(self.pet_supplies_menu_item, "'Chovatelské potřeby' menu item", True)
         self.object_handler_is_visible(self.category_section_header)
 
     def click_computers_tile(self):
-        self.object_handler_click(self.computers_tile)
+        self.object_handler_click(self.computers_tile, "'Počítače' tile", True)
 
     def click_first_pet_suppy_item(self):
-        self.object_handler_click(self.first_pet_supply_item_link)
+        self.object_handler_click(self.first_pet_supply_item_link, "'Chovatelské potřeby' item", True)
         self.object_handler_is_visible(self.item_detail_page)
 
     def click_watch_price_link(self):
-        self.object_handler_click(self.watch_price_link)
+        self.object_handler_click(self.watch_price_link, "'Hlídat cenu' link", True)
 
     def get_first_computer_name(self):
         if self.object_handler_is_visible(self.first_computer_name):
@@ -73,7 +73,7 @@ class MainPage(ObjectHandler):
         self.object_handler_click(self.continue_to_basket_button)
 
     def click_first_computer_put_to_basket_button(self):
-        self.object_handler_click(self.first_computer_put_to_basket_button)
+        self.object_handler_click(self.first_computer_put_to_basket_button, "'Do košíku' button", True)
 
     def get_search_result_header(self):
         if self.object_handler_is_visible(self.search_result_header_text):
@@ -87,4 +87,4 @@ class MainPage(ObjectHandler):
 
     def pet_supply_close_dialog(self):
         if self.object_handler_is_visible(self.pet_supply_dialog_agree_button, 2, True):
-            self.object_handler_click(self.pet_supply_dialog_agree_button)
+            self.object_handler_click(self.pet_supply_dialog_agree_button, "'Souhlasím' button", True)

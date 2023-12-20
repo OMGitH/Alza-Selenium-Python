@@ -36,10 +36,10 @@ class Basket(ObjectHandler):
             return item_price
 
     def click_down_arrow_price(self):
-        self.object_handler_click(self.down_arrow_price_button)
+        self.object_handler_click(self.down_arrow_price_button, "Down arrow price button", True)
 
     def click_down_arrow_price_remove_item(self):
-        self.object_handler_click(self.down_arrow_price_menu_remove_item)
+        self.object_handler_click(self.down_arrow_price_menu_remove_item, "'Odstranit' down arrow menu item", True)
 
     def get_text_once_all_items_removed(self):
         if self.object_handler_is_visible(self.all_items_removed_from_basket_text):
@@ -49,8 +49,8 @@ class Basket(ObjectHandler):
     def remove_all_items_from_basket(self, number_of_checks=10, check_wait=0.5):
         while self.object_handler_get_state(self.down_arrow_price_button, self.all_items_removed_from_basket_text) == self.down_arrow_price_button:
             number_of_items = self.object_handler_get_number_of_visible_elements(self.down_arrow_price_button)
-            self.object_handler_click(self.down_arrow_price_button)
-            self.object_handler_click(self.down_arrow_price_menu_remove_item)
+            self.object_handler_click(self.down_arrow_price_button, "Down arrow price button", True)
+            self.object_handler_click(self.down_arrow_price_menu_remove_item, "'Odstranit' down arrow menu item", True)
             self.object_handler_is_invisible(self.down_arrow_price_menu)
             # It seems Firefox doesn't wait for the basket page to be fully refreshed, following code waits for page to get refreshed.
             if number_of_items != 0:
