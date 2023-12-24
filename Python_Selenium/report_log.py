@@ -1,16 +1,25 @@
-import logging
+import colorlog
 import sys
 
-# Create report logger and set level to info.
-logger = logging.getLogger("ReportLogger")
-logger.setLevel("INFO")
+# Configuration of report logger, uses colorlog for coloring log records.
+# Create report logger and set level to debug.
+logger = colorlog.getLogger("ReportLogger")
+logger.setLevel("DEBUG")
 
-# Create handler, set output stream to stdout instead of default stderr and set level to info.
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel("INFO")
+# Create handler, set output stream to stdout instead of default stderr and set level to debug.
+handler = colorlog.StreamHandler(sys.stdout)
+handler.setLevel("DEBUG")
 
-# Create message format (used for printing into console) and add it to handler.
-message_format = logging.Formatter("%(asctime)s     %(levelname)s     %(message)s")
+# Create message format and add it to handler.
+message_format = colorlog.ColoredFormatter(
+	"%(log_color)s%(asctime)s     %(message)s",
+	datefmt="%d.%m.%Y %H:%M:%S",
+	log_colors={
+		'DEBUG':    'green',     # Used for assertion passed messages.
+		'INFO':     'blue',      # Used for info messages.
+		'WARNING':  'red'        # Used for assertion failed messages.
+	}
+)
 handler.setFormatter(message_format)
 
 # Add handler to report logger.
