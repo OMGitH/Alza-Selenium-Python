@@ -3,7 +3,7 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import report_log
+from report_log import logger
 
 # Contains basic methods for handling web page elements that are used at all page object and thus is a parent of all page objects.
 
@@ -28,7 +28,7 @@ class ObjectHandler:
                 except StaleElementReferenceException:
                     pass
         if report_entry:
-            report_log.logger.info(f"{locator_name} clicked.")
+            logger.info(f"{locator_name} clicked.")
 
 
     def object_handler_click_until_appears(self, locator_click, locator_to_appear, number_of_clicks=10, click_wait=0.5):
@@ -42,12 +42,12 @@ class ObjectHandler:
         action = ActionChains(self.driver)
         action.move_to_element(element).click().perform()
         if report_entry:
-            report_log.logger.info(f"{locator_name} hovered and clicked.")
+            logger.info(f"{locator_name} hovered and clicked.")
 
     def object_handler_send_keys(self, locator, value, locator_name, report_entry, timeout=timeout_default):
         WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).send_keys(value)
         if report_entry:
-            report_log.logger.info(f"'{value}' entered into {locator_name}.")
+            logger.info(f"'{value}' entered into {locator_name}.")
 
     def object_handler_switch_to_frame(self, locator, timeout=timeout_default):
         WebDriverWait(self.driver, timeout).until(EC.frame_to_be_available_and_switch_to_it(locator))
@@ -95,7 +95,7 @@ class ObjectHandler:
     def object_handler_clear_input(self, locator, locator_name, report_entry, timeout=timeout_default):
         WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator)).clear()
         if report_entry:
-            report_log.logger.info(f"{locator_name} cleared.")
+            logger.info(f"{locator_name} cleared.")
 
 
     def object_handler_element_exists(self, locator, timeout=timeout_default):
@@ -118,7 +118,7 @@ class ObjectHandler:
         number_of_hits = len(element_attribute_value)
         WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).send_keys(number_of_hits * Keys.BACKSPACE)
         if report_entry:
-            report_log.logger.info(f"{locator_name} cleared by pressing backspace.")
+            logger.info(f"{locator_name} cleared by pressing backspace.")
 
     def object_handler_get_number_of_visible_elements(self, locator, timeout=2):
         try:
