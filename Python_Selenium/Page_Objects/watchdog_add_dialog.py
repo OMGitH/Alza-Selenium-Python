@@ -22,7 +22,7 @@ class WatchdogAdd(ObjectHandler):
 
 	def set_price_limit(self, value):
 		self.object_handler_hover_click(self.price_limit_checkbox, "'Při snížení ceny pod' checkbox", True)
-		self.object_handler_clear_input_by_pressing_backspace(self.price_limit_input, "value")
+		self.object_handler_clear_input_by_pressing_backspace(self.price_limit_input, "value", "'Při snížení ceny pod' checkbox", True)
 		self.object_handler_send_keys(self.price_limit_input, value, "'Při snížení ceny pod' checkbox", True)
 
 	def click_confirm_button(self):

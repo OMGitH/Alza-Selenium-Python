@@ -39,8 +39,8 @@ class TopSection(ObjectHandler):
         self.object_handler_click(self.logout_link, "'Odhlásit se' link", True)
 
     def search_provide_value(self, value):
-        self.object_handler_clear_input_by_pressing_backspace(self.search_input, "value")
-        self.object_handler_send_keys(self.search_input, value, "Search input field", True)
+        self.object_handler_clear_input_by_pressing_backspace(self.search_input, "value", "search input field", True)
+        self.object_handler_send_keys(self.search_input, value, "search input field", True)
         self.object_handler_is_visible(self.search_suggestion)
         time.sleep(1)
 

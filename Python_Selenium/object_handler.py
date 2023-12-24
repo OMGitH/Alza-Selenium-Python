@@ -113,10 +113,12 @@ class ObjectHandler:
         return flag
     """
 
-    def object_handler_clear_input_by_pressing_backspace(self, locator, attribute, timeout=timeout_default):
+    def object_handler_clear_input_by_pressing_backspace(self, locator, attribute, locator_name, report_entry, timeout=timeout_default):
         element_attribute_value = self.object_handler_get_element_attribute_value(locator, attribute, timeout)
         number_of_hits = len(element_attribute_value)
         WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).send_keys(number_of_hits * Keys.BACKSPACE)
+        if report_entry:
+            report_log.logger.info(f"{locator_name} cleared by pressing backspace.")
 
     def object_handler_get_number_of_visible_elements(self, locator, timeout=2):
         try:
