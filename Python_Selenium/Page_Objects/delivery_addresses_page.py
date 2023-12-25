@@ -24,7 +24,7 @@ class DeliveryAddresses(ObjectHandler):
 	def remove_all_addresses_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
 		while self.object_handler_is_visible(self.delivery_address_remove_button, 2, True):
 			number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
-			self.object_handler_click(self.delivery_address_remove_button, "'X' button", True)
+			self.object_handler_click(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", True)
 			self.object_handler_click(self.delivery_address_removal_confirmation_button, "'Smazat' button", True)
 			self.object_handler_is_invisible(self.remove_question_dialog)
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for page to get refreshed.

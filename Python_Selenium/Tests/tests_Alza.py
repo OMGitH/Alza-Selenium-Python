@@ -211,7 +211,7 @@ class TestsAlza:
         # Set watch price, confirm and close success popup.
         self.watchdog_add_dialog.set_price_limit(TestData.watchdog_price_limit)
         self.watchdog_add_dialog.click_confirm_button()
-        self.watchdogs_page.close_success_popup()
+        self.watchdogs_page.close_success_note()
 
         # Check watchdogs page and remove item:
         # Go to watchdogs page.
