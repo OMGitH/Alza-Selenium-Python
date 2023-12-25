@@ -25,7 +25,7 @@ class TestData:
 
     # test_watchdogs_add_remove_item
     watchdog_price_limit = "10"
-    text_once_all_items_removed_from_watchdogs_list = "Momentálně pro vás nehlídáme žádné produkty"
+    text_once_all_items_removed_from_watchdogs_page = "Momentálně pro vás nehlídáme žádné produkty"
 
     # test_delivery_addresses_add_remove_addresses
     delivery_address_1_original = {"name surname": "Jarda Starý",

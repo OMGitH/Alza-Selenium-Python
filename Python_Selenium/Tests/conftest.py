@@ -33,4 +33,18 @@ def pytest_configure(config):
 def pytest_html_report_title(report):
     report_title = "Test execution report, " + datetime.now().strftime("%d.%m.%Y %H:%M:%S")
     report.title = report_title
-    
+
+# Configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps". Whole section "Captured log call"
+# is removed as it is uncolored duplicate of stdout logs.
+def pytest_html_results_table_html(data):
+    title_to_replace = "Captured stdout call"
+    new_title = "Steps"
+    section_to_remove = "Captured log call"
+    index_item_to_remove = -1
+    for i, s in enumerate(data):
+        if title_to_replace in s:
+            data[i] = s.replace(title_to_replace, new_title)
+        if section_to_remove in s:
+            index_item_to_remove = i
+    if index_item_to_remove > -1:
+        data.pop(index_item_to_remove)

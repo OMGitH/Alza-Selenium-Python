@@ -11,6 +11,7 @@ from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from alza_module import AlzaModule
 import pytest
 import mixed_assertions as mixed_assert
+from report_log import logger
 
 
 @pytest.mark.usefixtures("initialize_driver")
@@ -21,11 +22,11 @@ class TestsAlza:
         Tests log in and log out:
         - Reject all cookies, click login link.
         - Click signin button when credential fields are blank. Check that login dialog stays displayed and there are corresponding error messages displayed.
-        - Provide wrong email address and correct password, click signin button. Check that login dialog stays displayed and there is correct
+        - Provide wrong e-mail address and correct password, click signin button. Check that login dialog stays displayed and there is correct
         text on signin button.
-        - Provide correct email address and wrong password, click signin button. Check that login dialog stays displayed and there is correct
+        - Provide correct e-mail address and wrong password, click signin button. Check that login dialog stays displayed and there is correct
         text on signin button.
-        - Provide correct email address and password, click signin button. Check that login dialog disappears and correct user email is displayed
+        - Provide correct e-mail address and password, click signin button. Check that login dialog disappears and correct user e-mail is displayed
         in the upper part of the screen.
         - Click logout link, check that login link is displayed.
         """
@@ -36,28 +37,30 @@ class TestsAlza:
         self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies.
+        logger.info("------- REJECT ALL COOKIES -------")
         self.cookies_pane.click_reject_all_link()
         mixed_assert.is_true(self.cookies_pane.cookies_pane_is_invisible(), "Cookies pane is correctly invisible.", "Cookies pane is still visible but shall not be.")
 
-        # Click login link.
-        self.top_section.click_login_link()
-
         # Unsuccessful login:
-        # Email and password fields blank.
+        # E-mail and password fields blank.
+        logger.info("------- UNSUCCESSFUL LOGIN: E-MAIL AND PASSWORD FIELDS BLANK -------")
+        self.top_section.click_login_link()
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is correctly visible.", "Login dialog is not visible though it shall be.", True)
         actual_blank_email_text = self.login_page.get_blank_email_text()
         mixed_assert.equal(actual_blank_email_text, TestData.blank_email_text, f"Message for blank e-mail input field is correct: '{actual_blank_email_text}'.", f"Wrong message for blank e-mail input field. Actual message is '{actual_blank_email_text}' but it shall be '{TestData.blank_email_text}'.")
         actual_blank_password_text = self.login_page.get_blank_password_text()
         mixed_assert.equal(actual_blank_password_text, TestData.blank_password_text, f"Message for blank password input field is correct: '{actual_blank_password_text}'.", f"Wrong message for blank password input field. Actual message is '{actual_blank_password_text}' but it shall be '{TestData.blank_password_text}'.")
-        # Wrong email and correct password provided.
+        # Wrong e-mail and correct password provided.
+        logger.info("------- UNSUCCESSFUL LOGIN: WRONG E-MAIL AND CORRECT PASSWORD PROVIDED -------")
         self.login_page.provide_email(TestData.incorrect_user_name)
         self.login_page.provide_password(TestData.password)
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is correctly visible.", "Login dialog is not visible though it shall be.", True)
         actual_disabled_login_button_text = self.login_page.get_disabled_login_button_text()
         mixed_assert.equal(actual_disabled_login_button_text, TestData.signin_button_incorrect_user_name_password_text, f"Message at signin button when incorrect e-mail provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect e-mail provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{TestData.signin_button_incorrect_user_name_password_text}'.")
-        # Correct email and wrong password provided.
+        # Correct e-mail and wrong password provided.
+        logger.info("------- UNSUCCESSFUL LOGIN: CORRECT E-MAIL AND WRONG PASSWORD PROVIDED -------")
         self.login_page.provide_email(TestData.user_name)
         self.login_page.provide_password(TestData.incorrect_password)
         self.login_page.click_signin_button()
@@ -66,6 +69,7 @@ class TestsAlza:
         mixed_assert.equal(actual_disabled_login_button_text, TestData.signin_button_incorrect_user_name_password_text, f"Message at signin button when incorrect password provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect password provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{TestData.signin_button_incorrect_user_name_password_text}'.")
 
         # Successful login.
+        logger.info("------- SUCCESSFUL LOGIN -------")
         self.login_page.provide_email(TestData.user_name)
         self.login_page.provide_password(TestData.password)
         self.login_page.click_signin_button()
@@ -74,6 +78,7 @@ class TestsAlza:
         mixed_assert.equal(actual_signed_in_text, TestData.user_signed_in_text, f"Text in the top menu is correct: '{actual_signed_in_text}'.", f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.", True)
 
         # Logout.
+        logger.info("------- LOGOUT -------")
         self.top_section.click_signed_in_user_link()
         self.top_section.click_logout_link()
         # Check successful logout.
@@ -97,26 +102,31 @@ class TestsAlza:
         self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies and log into application.
+        logger.info("------- REJECT ALL COOKIES AND LOG IN -------")
         self.alza_module.reject_cookies_and_login()
 
         # Precondition: Empty basket if there are items inside and go back to Alza main page.
+        logger.info("------- PRECONDITION: EMPTY BASKET IF THERE ARE ITEMS AND GO BACK TO ALZA MAIN PAGE -------")
         self.alza_module.empty_basket_if_items_inside()
 
         # Putting into basket:
         # Navigate to computers.
+        logger.info("------- GO TO COMPUTERS, PUT FIRST COMPUTER INTO BASKET -------")
         self.main_page.hover_click_computers_notebooks_menu_item()
         self.main_page.click_computers_tile()
-        # Get first computer name and price, put it into basket and go there.
+        # Get first computer name and price, put computer into basket.
         first_computer_name = self.main_page.get_first_computer_name()
         first_computer_price = self.main_page.get_first_computer_price()
         self.main_page.click_first_computer_put_to_basket_button()
         # Check there is correct number at basket icon and go to basket.
+        logger.info("------- CHECK NUMBER OF ITEMS AT BASKET ICON AND GO TO BASKET -------")
         actual_number_of_items_at_basket_icon = self.top_section.get_number_of_items_at_basket_icon()
         mixed_assert.equal(actual_number_of_items_at_basket_icon, TestData.number_of_items_in_basket, f"Number of items at basket icon is correct: '{actual_number_of_items_at_basket_icon}'.", f"Wrong number of items at basket icon. Actual number is '{actual_number_of_items_at_basket_icon}' but it shall be '{TestData.number_of_items_in_basket}'.")
         self.top_section.click_basket_icon()
 
         # On basket_page page:
         # Check item name, count and price.
+        logger.info("------- BASKET: CHECK CORRECT ITEM IS IN BASKET -------")
         actual_computer_name = self.basket_page.get_item_name()
         mixed_assert.is_in(first_computer_name, actual_computer_name, f"Name of computer in basket is correct: '{actual_computer_name}'.", f"Wrong name of computer in basket. Actual name is '{actual_computer_name}' but it shall be '{first_computer_name}'. Seems computer that shall be in basket is not.")
         actual_number_of_computers_in_basket = self.basket_page.get_item_count()
@@ -124,6 +134,7 @@ class TestsAlza:
         actual_computer_price_in_basket = self.basket_page.get_item_price()
         mixed_assert.equal(actual_computer_price_in_basket, first_computer_price, f"Computer price in basket is correct: '{actual_computer_price_in_basket}'.", f"Wrong computer price in basket. Actual price is '{actual_computer_price_in_basket}' but shall be '{first_computer_price}'.")
         # Remove item from basket and check it is empty.
+        logger.info("------- BASKET: REMOVE ALL ITEMS FROM BASKET AND CHECK THE BASKET IS EMPTY -------")
         self.basket_page.remove_all_items_from_basket()
         actual_text_once_basket_empty = self.basket_page.get_text_once_all_items_removed()
         mixed_assert.equal(actual_text_once_basket_empty, TestData.text_once_all_items_removed_from_basket, f"Text once basket is empty is correct: '{actual_text_once_basket_empty}'.", f"Wrong text once basket is empty. Actual text is '{actual_text_once_basket_empty}' but it shall be '{TestData.text_once_all_items_removed_from_basket}'. Seems basket is not empty.")
@@ -132,6 +143,7 @@ class TestsAlza:
         mixed_assert.equal(actual_number_of_items_at_basket_icon, "No items", "There are correctly no items at basket icon.", f"Wrong number of items at basket icon. Actual number is '{actual_number_of_items_at_basket_icon}' but there shall be no items.")
 
         # Logout.
+        logger.info("------- LOGOUT -------")
         self.alza_module.logout()
 
     def test_search(self):
@@ -152,9 +164,11 @@ class TestsAlza:
         self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies and log into application.
+        logger.info("------- REJECT ALL COOKIES AND LOG IN -------")
         self.alza_module.reject_cookies_and_login()
 
         # Search for "jízdní kola" and click search button:
+        logger.info("------- LOOK UP 'JÍZDNÍ KOLA' VIA 'HLEDAT' BUTTON AND CHECK RESULT -------")
         self.top_section.search_provide_value(TestData.search_value_via_search_button)
         self.top_section.click_search_button()
         # Check result.
@@ -163,6 +177,7 @@ class TestsAlza:
         mixed_assert.greater(self.main_page.get_search_result_items_amount(), 0, "There are correctly items found.", "No items found, items shall be found.")
 
         # Search for "recenze" and choose from suggestion:
+        logger.info("------- LOOK UP 'RECENZE' VIA FIRST SUGGESTION AND CHECK RESULT -------")
         self.top_section.search_provide_value(TestData.search_value_via_suggestion)
         self.top_section.search_suggestion_click_1st_item()
         # Check result.
@@ -170,15 +185,16 @@ class TestsAlza:
         mixed_assert.is_in(TestData.search_result_word_in_title_via_suggestion, actual_search_result_title, f"Result title: '{actual_search_result_title}' correctly contains looked up word: '{TestData.search_result_word_in_title_via_suggestion}'.", f"Result doesn't contain looked up word in title. Actual title is '{actual_search_result_title}', it does not contain word '{TestData.search_result_word_in_title_via_suggestion}' though it shall.")
 
         # Logout.
+        logger.info("------- LOGOUT -------")
         self.alza_module.logout()
 
     def test_watchdogs_add_remove_item(self):
         """
-        Tests adding and removing item from watchdogs list:
-        - Reject all cookies and log in, if there are items in watchdogs list, remove them.
-        - Add watchdog to pet supply item, go to watchdogs list. Check name of item present, its price limit and that checkbox for alerting when price
+        Tests adding and removing item from watchdogs page:
+        - Reject all cookies and log in, if there are items at watchdogs page, remove them.
+        - Add watchdog to pet supply item, go to watchdogs page. Check name of item present, its price limit and that checkbox for alerting when price
         decreases under price limit is checked.
-        - Remove item from watchdogs list, check that watchdogs list is empty.
+        - Remove item from watchdogs page, check that watchdogs page is empty.
         - Log out.
         """
 
@@ -192,12 +208,15 @@ class TestsAlza:
         self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies and log into application and stop test execution if login failed.
+        logger.info("------- REJECT ALL COOKIES AND LOG IN -------")
         self.alza_module.reject_cookies_and_login(True)
 
-        # Precondition: Empty watchdogs list if there are watched items and go back to Alza main page.
-        self.alza_module.empty_watchdogs_list_if_watched_items()
+        # Precondition: Empty watchdogs page if there are watched items and go back to Alza main page.
+        logger.info("------- PRECONDITION: EMPTY WATCHDOGS PAGE IF THERE ARE ITEMS AND GO BACK TO ALZA MAIN PAGE -------")
+        self.alza_module.empty_watchdogs_page_if_watched_items()
 
         # Navigate to pet supplies, open first pet supply, handle dialog if appears and get supply name.
+        logger.info("------- GO TO PET SUPPLIES, AT FIRST PET SUPPLY SET WATCHDOG -------")
         self.main_page.hover_click_pet_supplies_menu_item()
         self.main_page.click_first_pet_suppy_item()
         self.main_page.pet_supply_close_dialog()
@@ -215,6 +234,7 @@ class TestsAlza:
 
         # Check watchdogs page and remove item:
         # Go to watchdogs page.
+        logger.info("------- GO TO WATCHDOGS PAGE AND CHECK THERE IS CORRECT ITEM WITH CORRECT WATCHDOG DATA -------")
         self.top_section.click_signed_in_user_link()
         self.top_section.click_my_profile_link()
         self.my_account_page.click_watchdogs_menu_item()
@@ -224,22 +244,24 @@ class TestsAlza:
         actual_price_limit = self.watchdogs_page.get_price_limit_provided()
         mixed_assert.equal(actual_price_limit, TestData.watchdog_price_limit, f"Price limit in watchdogs is correct: '{actual_price_limit}'.", f"Wrong price limit displayed in watchdogs. Actual price limit is '{actual_price_limit}' but it shall be '{TestData.watchdog_price_limit}'.")
         mixed_assert.is_true(self.watchdogs_page.check_alert_price_is_checked(), f"Checkbox for alert when price is lower than '{TestData.watchdog_price_limit}' is correctly checked.", f"Checkbox for alert when price is lower than '{TestData.watchdog_price_limit}' shall be checked but it is not.")
-        # Remove item from watchdogs list.
-        self.watchdogs_page.remove_all_items_from_watchdogs_list()
-        actual_text_once_watchdogs_list_empty = self.watchdogs_page.get_text_once_all_items_removed()
-        mixed_assert.equal(actual_text_once_watchdogs_list_empty, TestData.text_once_all_items_removed_from_watchdogs_list, f"Text once watchdogs list is empty is correct: '{actual_text_once_watchdogs_list_empty}'.", f"Wrong text once watchdogs list is empty. Actual text is '{actual_text_once_watchdogs_list_empty}' but it shall be '{TestData.text_once_all_items_removed_from_watchdogs_list}'. Seems watchdogs list is not empty.")
+        # Remove item from watchdogs page.
+        logger.info("------- WATCHDOGS PAGE: REMOVE ALL ITEMS FROM WATCHDOGS PAGE AND CHECK IT IS EMPTY -------")
+        self.watchdogs_page.remove_all_items_from_watchdogs_page()
+        actual_text_once_watchdogs_page_empty = self.watchdogs_page.get_text_once_all_items_removed()
+        mixed_assert.equal(actual_text_once_watchdogs_page_empty, TestData.text_once_all_items_removed_from_watchdogs_page, f"Text once watchdogs page is empty is correct: '{actual_text_once_watchdogs_page_empty}'.", f"Wrong text once watchdogs page is empty. Actual text is '{actual_text_once_watchdogs_page_empty}' but it shall be '{TestData.text_once_all_items_removed_from_watchdogs_page}'. Seems watchdogs page is not empty.")
 
         # Logout.
+        logger.info("------- LOGOUT -------")
         self.alza_module.logout()
 
     def test_delivery_addresses_add_remove_addresses(self):
         """
-        Tests adding and removing addresses from delivery addresses list:
-        - Reject all cookies and log in, if there are addresses in delivery addresses list, remove them.
-        - Add 2 delivery addresses, go to main page, then back to delivery addresses list. Check number of delivery addresses and that at both all provided
+        Tests adding and removing addresses from delivery addresses page:
+        - Reject all cookies and log in, if there are addresses at delivery addresses page, remove them.
+        - Add 2 delivery addresses, go to main page, then back to delivery addresses page. Check number of delivery addresses and that at both all provided
         data is correct.
-        - Edit data at both addresses, go to main page, then back to delivery addresses list. Check that at both addresses all edited data is correct.
-        - Remove both addresses from delivery addresses list and check that delivery addresses list is empty.
+        - Edit data at both addresses, go to main page, then back to delivery addresses page. Check that at both addresses all edited data is correct.
+        - Remove both addresses from delivery addresses page and check that delivery addresses page is empty.
         - Log out.
         Note: Number of addresses can be changed by adding or removing dictionaries from TestData.delivery_addresses_original and TestData.delivery_addresses_edited.
         """
@@ -252,19 +274,24 @@ class TestsAlza:
         self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies and log into application and stop test execution if login failed.
+        logger.info("------- REJECT ALL COOKIES AND LOG IN -------")
         self.alza_module.reject_cookies_and_login(True)
 
         # Adding delivery addresses:
         # Go to delivery addresses page:
+        logger.info("------- GO TO DELIVERY ADDRESSES PAGE -------")
         self.top_section.click_signed_in_user_link()
         self.top_section.click_my_profile_link()
         self.my_account_page.click_delivery_addresses_menu_item()
-        # Precondition: Empty delivery addresses list if there are addresses.
-        self.delivery_addresses_page.remove_all_addresses_from_delivery_addresses_list()
+        # Precondition: Empty delivery addresses page if there are addresses.
+        logger.info("------- PRECONDITION: EMPTY DELIVERY ADDRESSES PAGE IF THERE ARE ADDRESSES -------")
+        self.delivery_addresses_page.remove_all_addresses_from_delivery_addresses_page()
         # Add 2 delivery addresses.
+        logger.info("------- DELIVERY ADDRESSES PAGE: ADD 2 ADDRESSES -------")
         self.alza_module.delivery_addresses_add_addresses()
 
         # Go to Alza main page and back to delivery addresses and check added addresses are present with correct data:
+        logger.info("------- GO TO ALZA MAIN PAGE, BACK TO DELIVERY ADDRESSES PAGE AND CHECK THERE ARE ADDED ADDRESSES WITH CORRECT DATA -------")
         self.top_section.click_alza_icon()
         # Go to delivery addresses page.
         self.top_section.click_signed_in_user_link()
@@ -278,6 +305,7 @@ class TestsAlza:
         mixed_assert.equal(actual_delivery_addresses_data, TestData.delivery_addresses_original, f"Actual delivery addresses are correctly the same as provided delivery addresses: '{actual_delivery_addresses_data}'.", f"Actual delivery addresses are not the same as provided delivery addresses. Actual delivery addresses are '{actual_delivery_addresses_data}', expected delivery addresses are '{TestData.delivery_addresses_original}'.")
 
         # Editing delivery addresses:
+        logger.info("------- EDIT ADDRESSES, GO TO ALZA MAIN PAGE, BACK TO DELIVERY ADDRESSES PAGE AND CHECK THERE ARE ADDRESSES WITH CORRECT EDITED DATA -------")
         self.alza_module.delivery_addresses_edit_addresses()
         # Go to Alza main page.
         self.top_section.click_alza_icon()
@@ -290,10 +318,12 @@ class TestsAlza:
         mixed_assert.equal(actual_delivery_addresses_data, TestData.delivery_addresses_edited, f"Actual delivery addresses are correctly the same as updated delivery addresses: '{actual_delivery_addresses_data}'.", f"Actual delivery addresses are not the same as updated delivery addresses. Actual delivery addresses are '{actual_delivery_addresses_data}', expected delivery addresses are '{TestData.delivery_addresses_edited}'.")
 
         # Remove delivery addresses:
-        self.delivery_addresses_page.remove_all_addresses_from_delivery_addresses_list()
+        logger.info("------- DELIVERY ADDRESSES PAGE: REMOVE ALL ADDRESSES FROM DELIVERY ADDRESSES PAGE AND CHECK IT IS EMPTY -------")
+        self.delivery_addresses_page.remove_all_addresses_from_delivery_addresses_page()
         # Check there are no addresses.
         actual_number_of_delivery_addresses = self.delivery_addresses_page.get_number_of_addresses()
         mixed_assert.equal(actual_number_of_delivery_addresses, 0, f"There are correctly no delivery addresses present.", f"There are delivery addresses present though there shall not be any. There are '{actual_number_of_delivery_addresses}' delivery addresses.")
 
         # Logout.
+        logger.info("------- LOGOUT -------")
         self.alza_module.logout()

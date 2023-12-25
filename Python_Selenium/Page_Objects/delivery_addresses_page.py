@@ -21,7 +21,7 @@ class DeliveryAddresses(ObjectHandler):
 		super().__init__(driver)
 
 	# Actions on delivery addresses page.
-	def remove_all_addresses_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
+	def remove_all_addresses_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 		while self.object_handler_is_visible(self.delivery_address_remove_button, 2, True):
 			number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
 			self.object_handler_click(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", True)
@@ -35,7 +35,7 @@ class DeliveryAddresses(ObjectHandler):
 						break
 					time.sleep(check_wait)
 
-	# def delivery_addresses_remove_all_items_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
+	# def delivery_addresses_remove_all_items_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 	# 	if self.base_is_visible(self.delivery_address_item, 3, True):
 	# 		while self.base_is_visible(self.delivery_address_remove_button, 1, True):
 	# 			number_of_items = self.base_get_number_of_visible_elements(self.delivery_address_remove_button)
@@ -52,9 +52,9 @@ class DeliveryAddresses(ObjectHandler):
 
 	"""
 	Code below uses get state method that is faster as it doesn't wait for timeout to make sure whether or not there is an item
-	identifying a state (if there is an address in delivery addresses list, True is returned, if not, False is returned).
+	identifying a state (if there is an address at delivery addresses page, True is returned, if not, False is returned).
 	"""
-	# def delivery_addresses_remove_all_items_from_delivery_addresses_list(self, number_of_checks=10, check_wait=0.5):
+	# def delivery_addresses_remove_all_items_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 	# 	if self.base_get_state(self.delivery_address_item, self.without_delivery_address_items):
 	# 		while self.base_is_visible(self.delivery_address_remove_button, 1):
 	# 			number_of_items = self.base_get_number_of_elements(self.delivery_address_remove_button)

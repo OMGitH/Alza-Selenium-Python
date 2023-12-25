@@ -55,12 +55,12 @@ class AlzaModule:
 			self.basket_page.remove_all_items_from_basket()
 			self.top_section.click_alza_icon()
 
-	# test_watchdogs_add_remove_item: Empty watchdogs list if there are watched items and go back to Alza main page.
-	def empty_watchdogs_list_if_watched_items(self):
+	# test_watchdogs_add_remove_item: Empty watchdogs page if there are watched items and go back to Alza main page.
+	def empty_watchdogs_page_if_watched_items(self):
 		self.top_section.click_signed_in_user_link()
 		self.top_section.click_my_profile_link()
 		self.my_account_page.click_watchdogs_menu_item()
-		self.watchdogs_page.remove_all_items_from_watchdogs_list()
+		self.watchdogs_page.remove_all_items_from_watchdogs_page()
 		self.top_section.click_alza_icon()
 
 	# test_add_remove_delivery_addresses: Add delivery addresses.
