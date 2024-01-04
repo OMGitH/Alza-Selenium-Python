@@ -47,9 +47,9 @@ class MainPage(ObjectHandler):
     def get_first_computer_name(self):
         if self.object_handler_is_visible(self.first_computer_name):
             first_computer_name = self.object_handler_get_element_text(self.first_computer_name)
-            # It may happen there is a note in name, either inside () or starting with word "záruka" and following text. It is needed to remove such a note
+            # It may happen there is a note in name, either inside "()", starting with word "záruka" or by "-" and following text. It is needed to remove such a note
             # as it is not present in item name inside basket.
-            unwanted_texts = ["(", "záruka"]
+            unwanted_texts = ["(", "-", "záruka"]
             for text in unwanted_texts:
                 text_index = str(first_computer_name).find(text)
                 if text_index != -1:

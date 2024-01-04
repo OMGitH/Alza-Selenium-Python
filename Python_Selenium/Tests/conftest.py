@@ -3,6 +3,7 @@ from test_data import TestData
 import pytest
 import os
 from datetime import datetime
+import pytest_html
 
 
 @pytest.fixture(params=["chrome", "firefox"])
@@ -29,10 +30,43 @@ def pytest_configure(config):
     config.option.htmlpath = report_location
 
 
-# Configuration of title of html report.
+# Fixture method for getting report screenshots folder name from html report file name that is stored in pytest config and is
+# created inside pytest_configure hook.
+@pytest.fixture()
+def get_report_screenshots_folder_name(pytestconfig):
+    path_to_html_report = pytestconfig.getoption("htmlpath")
+    report_screenshots_folder = path_to_html_report.split("/")[-1].replace(".html", "")
+    return report_screenshots_folder
+
+
+# Adding screenshots to corresponding test in html report if test fails.
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item):
+    outcome = yield
+    report = outcome.get_result()
+    extras = getattr(report, "extras", [])
+    if report.when == "call":
+        if report.failed:
+            # Getting folder names and path to screenshots folder. Report folder for screenshots has the same name as report file except for ".html".
+            # Test folder for screenshots has the same name as test.
+            report_screenshots_folder = item.config.option.htmlpath.split("/")[-1].replace(".html", "")
+            test_screenshots_folder = item.name
+            path_test_screenshots_folder = os.path.join(".\Reports\Screenshots", report_screenshots_folder, test_screenshots_folder)
+            # If assertion failed and screenshot was taken and saved into desired folder, all screenshots from folder are added into html report.
+            if os.path.exists(path_test_screenshots_folder):
+                screenshots = os.scandir(path_test_screenshots_folder)
+                for screenshot in screenshots:
+                    # Reports folder has to be removed from path as apparently relative path here starts from html report file, so from Reports folder.
+                    path_screenshot = screenshot.path.replace("\\Reports", "")
+                    extras.append(pytest_html.extras.png(path_screenshot, screenshot.name))
+        report.extras = extras
+
+
+# Configuration of html report title.
 def pytest_html_report_title(report):
     report_title = "Test execution report, " + datetime.now().strftime("%d.%m.%Y %H:%M:%S")
     report.title = report_title
+
 
 # Configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps". Whole section "Captured log call"
 # is removed as it is uncolored duplicate of stdout logs.
