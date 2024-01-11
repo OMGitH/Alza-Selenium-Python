@@ -3,7 +3,8 @@ from test_data import TestData
 import pytest
 import os
 from datetime import datetime
-import pytest_html
+from utilities import (get_exception_error_name_possibly_screenshot, check_exception_error_occurred, log_exception_error, add_screenshots_to_html_report,
+                       get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder)
 
 
 @pytest.fixture(params=["chrome", "firefox"])
@@ -39,7 +40,8 @@ def get_report_screenshots_folder_name(pytestconfig):
     return report_screenshots_folder
 
 
-# Adding screenshots to corresponding test in html report if test fails.
+# Take screenshot in case of exception or an error, create a log record about exception or error and add all screenshots
+# to corresponding test in html report if test fails.
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     outcome = yield
@@ -47,18 +49,15 @@ def pytest_runtest_makereport(item):
     extras = getattr(report, "extras", [])
     if report.when == "call":
         if report.failed:
-            # Getting folder names and path to screenshots folder. Report folder for screenshots has the same name as report file except for ".html".
-            # Test folder for screenshots has the same name as test.
-            report_screenshots_folder = item.config.option.htmlpath.split("/")[-1].replace(".html", "")
-            test_screenshots_folder = item.name
-            path_test_screenshots_folder = os.path.join(".\Reports\Screenshots", report_screenshots_folder, test_screenshots_folder)
-            # If assertion failed and screenshot was taken and saved into desired folder, all screenshots from folder are added into html report.
-            if os.path.exists(path_test_screenshots_folder):
-                screenshots = os.scandir(path_test_screenshots_folder)
-                for screenshot in screenshots:
-                    # Reports folder has to be removed from path as apparently relative path here starts from html report file, so from Reports folder.
-                    path_screenshot = screenshot.path.replace("\\Reports", "")
-                    extras.append(pytest_html.extras.png(path_screenshot, screenshot.name))
+            # Get path to folder where screenshots for actual test are stored.
+            path_test_screenshots_folder = get_path_test_screenshots_folder(item)
+            # Take screenshot in case of an exception or an error, save it and create log record in html report.
+            # There can be either exception or error not both.
+            if check_exception_error_occurred(report.longreprtext):
+                exception_error, screenshot_name = get_exception_error_name_possibly_screenshot(report.longreprtext, take_screenshot=True, item=item, path_test_screenshots_folder=path_test_screenshots_folder)
+                log_exception_error(screenshot_name, exception_error)
+            # Add all screenshots from folder to html report.
+            add_screenshots_to_html_report(path_test_screenshots_folder, extras)
         report.extras = extras
 
 
@@ -68,17 +67,16 @@ def pytest_html_report_title(report):
     report.title = report_title
 
 
-# Configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps". Whole section "Captured log call"
-# is removed as it is uncolored duplicate of stdout logs.
-def pytest_html_results_table_html(data):
-    title_to_replace = "Captured stdout call"
-    new_title = "Steps"
-    section_to_remove = "Captured log call"
-    index_item_to_remove = -1
-    for i, s in enumerate(data):
-        if title_to_replace in s:
-            data[i] = s.replace(title_to_replace, new_title)
-        if section_to_remove in s:
-            index_item_to_remove = i
-    if index_item_to_remove > -1:
-        data.pop(index_item_to_remove)
+# Configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps" there is moved
+# log record about exception or error (if occurred) from "Captured stdout teardown" section. Then section "Captured stdout teardown"
+# is removed (if it doesn't contain any other info) as well as whole section "Captured log call" that is uncolored duplicate "Steps" section.
+def pytest_html_results_table_html(report, data):
+    exception_error_log_record = ""
+    # If exception or error occurred, get actual exception or error and get log record about the exception or error that shall be added to "Steps".
+    # The log record about exception or error is not present in "report" or "data" (at least not in time to use it and change html report).
+    if check_exception_error_occurred(report.longreprtext):
+        exception_error = get_exception_error_name_possibly_screenshot(report.longreprtext)
+        exception_error_log_record = get_exception_error_log_record_from_previous_calls(exception_error)
+    # Manipulations to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
+    # to section "Steps" and to remove whole sections "Captured log call" and "Captured stdout teardown".
+    html_report_log_section_manipulation(report, data, exception_error_log_record)

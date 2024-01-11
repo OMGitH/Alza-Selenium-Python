@@ -1,7 +1,11 @@
 import colorlog
 import sys
 
-# Configuration of report logger, uses colorlog for coloring log records.
+"""
+Configuration of report logger, uses colorlog for coloring log records.
+"""
+
+
 # Create report logger and set level to debug.
 logger = colorlog.getLogger("ReportLogger")
 logger.setLevel("DEBUG")
