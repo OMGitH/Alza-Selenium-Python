@@ -67,9 +67,10 @@ def pytest_html_report_title(report):
     report.title = report_title
 
 
-# Configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps" there is moved
-# log record about exception or error (if occurred) from "Captured stdout teardown" section. Then section "Captured stdout teardown"
-# is removed (if it doesn't contain any other info) as well as whole section "Captured log call" that is uncolored duplicate "Steps" section.
+# Configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps" there is added
+# log record about exception or error (if occurred) from "Captured stdout teardown" section. Then date and time is removed at desired log
+# records, section "Captured stdout teardown" is removed (if it doesn't contain any other info) as well as whole section "Captured log call"
+# that is uncolored duplicate "Steps" section.
 def pytest_html_results_table_html(report, data):
     exception_error_log_record = ""
     # If exception or error occurred, get actual exception or error and get log record about the exception or error that shall be added to "Steps".

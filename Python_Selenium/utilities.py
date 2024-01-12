@@ -212,24 +212,37 @@ def get_exception_error_log_record_from_previous_calls(exception_error):
 # Method for manipulation of log section of html report.
 def html_report_log_section_manipulation(report, data, exception_error_log_record):
 	# Data manipulation to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
-	# to section "Steps" and to remove whole section "Captured log call".
-	# Data manipulation has effect when report is in "call" phase (there are 3 phases, first is "setup", second is "call" third is "teardown").
+	# to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole section "Captured log call".
+	# Data manipulation has effect only when report is in "call" phase (there are 3 phases, first is "setup", second is "call" third is "teardown").
 	if report.when == "call":
 		title_to_replace = "Captured stdout call"
 		new_title = "Steps"
 		section_log_call_to_remove = "Captured log call"
 		item_to_remove_index = -1
 		section_captured_stdout_call_present = False
-		for i, s in enumerate(data):
-			# Renaming section "Captured stdout call" to "Steps", adding log record about exception or error to section "Steps" and setting
-			# presence of this section to "True".
-			if title_to_replace in s:
-				data[i] = s.replace(title_to_replace, new_title)
-				data[i] += exception_error_log_record
+		for index, section in enumerate(data):
+			# Renaming section "Captured stdout call" to "Steps", adding log record about exception or error to section "Steps", removing
+			# date and time and setting presence of this section to "True".
+			if title_to_replace in section:
+				data[index] = section.replace(title_to_replace, new_title)
+				data[index] += exception_error_log_record
+				# Removing date and time:
+				replace_by = r"                   \1"
+				# From log headers.
+				log_headers_pattern = "\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}(     -----)"
+				data[index] = re.sub(log_headers_pattern, replace_by, data[index])
+				# From log records when items are removed from basket, watchdogs or delivery addresses.
+				items_removed_pattern = "\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}(     \t- \d )"
+				data[index] = re.sub(items_removed_pattern, replace_by, data[index])
+				# From log records when nothing is removed from basket, watchdogs or delivery addresses.
+				nothing_removed_pattern = "\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}(     \t- Nothing removed as )"
+				data[index] = re.sub(nothing_removed_pattern, replace_by, data[index])
+
+				# Noting that "Captured stdout call" section was present.
 				section_captured_stdout_call_present = True
 			# Getting index of item in which section "Captured log call" is.
-			if section_log_call_to_remove in s:
-				item_to_remove_index = i
+			if section_log_call_to_remove in section:
+				item_to_remove_index = index
 		# Removing item with section "Captured log call".
 		if item_to_remove_index > -1:
 			data.pop(item_to_remove_index)
