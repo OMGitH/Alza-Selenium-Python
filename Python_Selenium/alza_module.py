@@ -8,6 +8,7 @@ from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from Page_Objects.delivery_addresses_details_dialog import DeliveryAddressesDetails
 from test_data import TestData
 import mixed_assertions as mixed_assert
+from report_log import logger
 
 # Additional layer in which various methods can be defined, for example those used in more tests, that are just preconditions for test
 # or which combines more page objects. Can serve also for extraction of complexity from test level.
@@ -54,6 +55,8 @@ class AlzaModule:
 			self.top_section.click_basket_icon()
 			self.basket_page.remove_all_items_from_basket()
 			self.top_section.click_alza_icon()
+		else:
+			logger.info("\t- Nothing removed as there are no items in basket.")
 
 	# test_watchdogs_add_remove_item: Empty watchdogs page if there are watched items and go back to Alza main page.
 	def empty_watchdogs_page_if_watched_items(self):

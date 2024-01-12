@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from object_handler import ObjectHandler
+from report_log import logger
 
 
 class Watchdogs(ObjectHandler):
@@ -21,11 +22,18 @@ class Watchdogs(ObjectHandler):
 
 	# Actions on watchdogs page.
 	def remove_all_items_from_watchdogs_page(self):
+		removed_watchdogs = 0
 		while self.object_handler_get_state(self.item_remove_button, self.all_items_removed_from_watchdogs_page_text) == self.item_remove_button:
 			self.object_handler_click(self.item_remove_button, "'X' button to remove item from watchdogs", True)
 			self.object_handler_click(self.item_removal_confirmation_button, "'Zrušit hlídání' button", True)
 			self.object_handler_is_invisible(self.remove_question_dialog)
 			self.object_handler_click(self.success_remove_note_close_button, "'X' button at 'Hlídací pes smazán.' note", True)
+			removed_watchdogs += 1
+		if removed_watchdogs == 0:
+			logger.info("\t- Nothing removed as there are no watchdogs.")
+		else:
+			logger.info(f"\t- {removed_watchdogs} watchdog(s) removed.")
+
 
 	# def watchdogs_remove_all_items_from_watchdogs_page(self):
 	# 	if self.base_is_visible(self.item, 3, True):

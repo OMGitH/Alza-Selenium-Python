@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from object_handler import ObjectHandler
 import time
+from report_log import logger
 
 
 class DeliveryAddresses(ObjectHandler):
@@ -22,11 +23,13 @@ class DeliveryAddresses(ObjectHandler):
 
 	# Actions on delivery addresses page.
 	def remove_all_addresses_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
+		removed_addresses = 0
 		while self.object_handler_is_visible(self.delivery_address_remove_button, 2, True):
 			number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
 			self.object_handler_click(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", True)
 			self.object_handler_click(self.delivery_address_removal_confirmation_button, "'Smazat' button", True)
 			self.object_handler_is_invisible(self.remove_question_dialog)
+			removed_addresses += 1
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for page to get refreshed.
 			if number_of_addresses != 0:
 				for check in range(number_of_checks):
@@ -34,6 +37,10 @@ class DeliveryAddresses(ObjectHandler):
 					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break
 					time.sleep(check_wait)
+		if removed_addresses == 0:
+			logger.info("\t- Nothing removed as there are no delivery addresses.")
+		else:
+			logger.info(f"\t- {removed_addresses} delivery addresse(s) removed.")
 
 	# def delivery_addresses_remove_all_items_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 	# 	if self.base_is_visible(self.delivery_address_item, 3, True):
