@@ -4,7 +4,9 @@ import pytest
 import os
 from datetime import datetime
 from utilities import (get_exception_error_name_possibly_screenshot, check_exception_error_occurred, log_exception_error, add_screenshots_to_html_report,
-                       get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder)
+                       get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
+                       add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist)
+from Config.names_paths import reports_folder
 
 
 @pytest.fixture(params=["chrome", "firefox"])
@@ -23,11 +25,9 @@ def initialize_driver(request):
 # Configuration of location and name of html report file.
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
-    report_folder = "Reports"
+    make_folders_if_dont_exist(reports_folder)
     report_file = "Test_report_" + datetime.now().strftime("%d-%m-%Y_%H-%M-%S") + ".html"
-    report_location = report_folder + "/" + report_file
-    if not os.path.exists(report_folder):
-        os.makedirs(report_folder)
+    report_location = os.path.join(reports_folder, report_file)
     config.option.htmlpath = report_location
 
 
@@ -36,7 +36,7 @@ def pytest_configure(config):
 @pytest.fixture()
 def get_report_screenshots_folder_name(pytestconfig):
     path_to_html_report = pytestconfig.getoption("htmlpath")
-    report_screenshots_folder = path_to_html_report.split("/")[-1].replace(".html", "")
+    report_screenshots_folder = path_to_html_report.split("\\")[-1].replace(".html", "")
     return report_screenshots_folder
 
 
@@ -51,13 +51,15 @@ def pytest_runtest_makereport(item):
         if report.failed:
             # Get path to folder where screenshots for actual test are stored.
             path_test_screenshots_folder = get_path_test_screenshots_folder(item)
-            # Take screenshot in case of an exception or an error, save it and create log record in html report.
+            # Take screenshot and record url in case of an exception or an error, save it and create log record in html report.
             # There can be either exception or error not both.
             if check_exception_error_occurred(report.longreprtext):
                 exception_error, screenshot_name = get_exception_error_name_possibly_screenshot(report.longreprtext, take_screenshot=True, item=item, path_test_screenshots_folder=path_test_screenshots_folder)
-                log_exception_error(screenshot_name, exception_error)
-            # Add all screenshots from folder to html report.
+                url_report_link_title = get_url_save_to_file(item.cls.driver, screenshot_name)
+                log_exception_error(screenshot_name, exception_error, url_report_link_title)
+            # Add all screenshots from screenshots folder and urls from urls file to html report.
             add_screenshots_to_html_report(path_test_screenshots_folder, extras)
+            add_urls_to_html_report_delete_urls_file(extras)
         report.extras = extras
 
 
@@ -79,5 +81,6 @@ def pytest_html_results_table_html(report, data):
         exception_error = get_exception_error_name_possibly_screenshot(report.longreprtext)
         exception_error_log_record = get_exception_error_log_record_from_previous_calls(exception_error)
     # Manipulations to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
-    # to section "Steps" and to remove whole sections "Captured log call" and "Captured stdout teardown".
+    # to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole sections
+    # "Captured log call" and "Captured stdout teardown".
     html_report_log_section_manipulation(report, data, exception_error_log_record)

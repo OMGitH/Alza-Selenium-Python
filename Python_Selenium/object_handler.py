@@ -3,7 +3,7 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from report_log import logger
+from report_logger import logger
 
 # Contains basic methods for handling web page elements that are used at all page object and thus is a parent of all page objects.
 

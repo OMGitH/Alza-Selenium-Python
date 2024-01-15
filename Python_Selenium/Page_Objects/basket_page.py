@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from object_handler import ObjectHandler
 import time
-from report_log import logger
+from report_logger import logger
 
 
 class Basket(ObjectHandler):

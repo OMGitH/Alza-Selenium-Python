@@ -4,8 +4,9 @@ import os
 import inspect
 import re
 import pytest
-from report_log import logger
+from report_logger import logger
 import pytest_html
+from Config.names_paths import path_urls_file, path_screenshots_folder
 
 """
 Contains additional methods. Contains also methods directly related to assertions like process_assertion as if these methods were directly
@@ -56,12 +57,14 @@ def process_assertion(driver, report_screenshots_folder, assertion_type, flag, a
 
 	if not flag and interrupt_test:
 		screenshot_name = take_screenshot_assertion_failed(driver, report_screenshots_folder, assertion_type, value1, value2, boolean_value)
-		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken." + interrupt_message
+		url_report_title = get_url_save_to_file(driver, screenshot_name)
+		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken." + f"\n\t\t\t\t- URL '{url_report_title}' recorded." + interrupt_message
 		logger.warning(assertion_fail_message)
 		pytest.skip(interrupt_message)
 	elif not flag:
 		screenshot_name = take_screenshot_assertion_failed(driver, report_screenshots_folder, assertion_type, value1, value2, boolean_value)
-		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken."
+		url_report_title = get_url_save_to_file(driver, screenshot_name)
+		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken." + f"\n\t\t\t\t- URL '{url_report_title}' recorded."
 		logger.warning(assertion_fail_message)
 	else:
 		assertion_pass_message = assertion_pass_note + assertion_pass_message
@@ -85,8 +88,8 @@ def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, 
 	test_filename, code_line_number = get_test_filename_code_line_number(running_test_name)
 	# Because test filename is used in name of screenshot file "." is removed from it.
 	test_filename_without_dot = test_filename.replace(".", "")
-	test_filename_code_line_number = f'{test_filename_without_dot}{code_line_number}'
-	path_test_screenshots_folder = os.path.join(".\Reports\Screenshots", report_screenshots_folder, test_screenshots_folder)
+	test_filename_code_line_number = f"{test_filename_without_dot}{code_line_number}"
+	path_test_screenshots_folder = os.path.join(path_screenshots_folder, report_screenshots_folder, test_screenshots_folder)
 	make_folders_if_dont_exist(path_test_screenshots_folder)
 	# Each failed assertion screenshot name contains index based on number of already existing screenshots in corresponding folder.
 	number_of_test_screenshots = len(os.listdir(path_test_screenshots_folder))
@@ -118,11 +121,12 @@ def get_last_line_from_record(failure_record):
 
 # Method for getting path to folder where screenshots for particular test are stored.
 def get_path_test_screenshots_folder(item):
-	# Get folder names and path to screenshots folder. Report folder for screenshots has the same name as report file except for ".html".
+	# Get folder names and path to screenshots folder.
+	# Report folder for screenshots has the same name as report file except for ".html".
+	report_screenshots_folder = item.config.option.htmlpath.split("\\")[-1].replace(".html", "")
 	# Test folder for screenshots has the same name as test itself.
-	report_screenshots_folder = item.config.option.htmlpath.split("/")[-1].replace(".html", "")
 	test_screenshots_folder = item.name
-	path_test_screenshots_folder = os.path.join(".\Reports\Screenshots", report_screenshots_folder, test_screenshots_folder)
+	path_test_screenshots_folder = os.path.join(path_screenshots_folder, report_screenshots_folder, test_screenshots_folder)
 	return path_test_screenshots_folder
 
 
@@ -145,12 +149,12 @@ def check_exception_error_occurred(failure_record):
 # - - In case screenshot shall NOT be taken, 1 value is returned (the exception or error itself as "exception_error").
 # - - In case screenshot shall be taken, 2 values are returned ("exception_error" and "screenshot_name").
 def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot=False, item="", path_test_screenshots_folder=""):
-	# Get last line of failure record, as name of exception or error is there.
-	failure_record_last_line = get_last_line_from_record(failure_record)
+	# If set to "True" takes screenshot into memory as soon as possible.
 	if take_screenshot:
-		# If set to "True" takes screenshot into memory as soon as possible.
 		driver = item.cls.driver
 		screenshot = take_screenshot_memory(driver)
+	# Get last line of failure record, as name of exception or error is there.
+	failure_record_last_line = get_last_line_from_record(failure_record)
 	fail_words = ["Exception", "Error"]
 	for fail_word in fail_words:
 		# Get all words containing "Exception" or "Error" that are at last line of failure record.
@@ -168,11 +172,27 @@ def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot
 			return exception_error
 
 
+# Method for getting current url address and saving it to a file. File is temporary just for actual test, so it is created during test run
+# and deleted at the end of test run (in method add_urls_to_html_report_delete_urls_file)
+def get_url_save_to_file(driver, screenshot_name):
+	url_address = driver.current_url
+	# Title of url in report contains name of screenshot.
+	url_report_link_title = screenshot_name.replace(".png", "")
+	url_report_link_title = f"URL-{url_report_link_title}"
+	# Each line in file represents one url in format <title of url in report>;<actual url address>.
+	urls_file_line = f"{url_report_link_title};{url_address}\n"
+	# Open file or create and append current url information.
+	with open(path_urls_file, "a") as urls_file:
+		urls_file.write(urls_file_line)
+	return url_report_link_title
+
+
 # Method for creation of a log record in case of exception or error.
-def log_exception_error(screenshot_name, exception_error):
+def log_exception_error(screenshot_name, exception_error, url_report_link_title):
 	screenshot_message = f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken."
+	url_message = f"\n\t\t\t\t- URL '{url_report_link_title}' recorded."
 	test_stop_message = f"\n\t\t\t\t- Test execution stopped."
-	exception_error_message = f"'{exception_error}' occurred." + screenshot_message + test_stop_message
+	exception_error_message = f"'{exception_error}' occurred." + screenshot_message + url_message + test_stop_message
 	logger.warning(exception_error_message)
 
 
@@ -182,8 +202,21 @@ def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
 		screenshots = os.scandir(path_test_screenshots_folder)
 		for screenshot in screenshots:
 			# "Reports" folder has to be removed from path as apparently relative path here starts from html report file, so from "Reports" folder.
-			path_screenshot_file = screenshot.path.replace("\\Reports", "")
+			path_screenshot_file = screenshot.path.replace("Reports\\", "")
 			extras.append(pytest_html.extras.png(path_screenshot_file, screenshot.name))
+
+
+# Method for adding urls of failed assertions and exception or error to html report and deleting file afterwards so that there is a new file per test.
+def add_urls_to_html_report_delete_urls_file(extras):
+	if os.path.isfile(path_urls_file):
+		with open(path_urls_file) as urls_file:
+			for url in urls_file:
+				url = url.strip()
+				url = url.split(";")
+				url_report_link_title = url[0]
+				url_address = url[1]
+				extras.append(pytest_html.extras.url(url_address, url_report_link_title))
+		os.remove(path_urls_file)
 
 
 # Method for obtaining log record about exception or error from previous calls by looping back through frames.

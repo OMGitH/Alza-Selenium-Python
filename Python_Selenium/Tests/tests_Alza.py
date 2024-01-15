@@ -11,7 +11,7 @@ from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from alza_module import AlzaModule
 import pytest
 import mixed_assertions as mixed_assert
-from report_log import logger
+from report_logger import logger
 
 
 @pytest.mark.usefixtures("initialize_driver")
