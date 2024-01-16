@@ -5,12 +5,14 @@ import os
 from datetime import datetime
 from utilities import (get_exception_error_name_possibly_screenshot, check_exception_error_occurred, log_exception_error, add_screenshots_to_html_report,
                        get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
-                       add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist)
+                       add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata)
 from Config.names_paths import reports_folder
 
 
+# Fixture method for initialization of driver before each test runs, after each test version of webdrivers and Selenium are obtained for html
+# report Environment table and driver is quit.
 @pytest.fixture(params=["chrome", "firefox"])
-def initialize_driver(request):
+def initialize_driver(request, metadata):
     if request.param == "chrome":
         driver = webdriver.Chrome()
     if request.param == "firefox":
@@ -19,6 +21,8 @@ def initialize_driver(request):
     driver.get(TestData.url)
     request.cls.driver = driver
     yield
+    # Get version of webdrivers (Chrome, Firefox) and Selenium and save it to pytest metadata therefore add it to Environment section of html report.
+    get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata)
     driver.quit()
 
 

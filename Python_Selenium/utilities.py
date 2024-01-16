@@ -6,6 +6,7 @@ import re
 import pytest
 from report_logger import logger
 import pytest_html
+from selenium import __version__
 from Config.names_paths import path_urls_file, path_screenshots_folder
 
 """
@@ -299,3 +300,22 @@ def html_report_log_section_manipulation(report, data, exception_error_log_recor
 			if len(section) == 2 and section_teardown_to_remove == section[0] and "Screenshot '" in section[1] and section[1].count("\x1b[31m") == 1:
 				report.sections.pop(index)
 				break
+
+
+# Method for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to Environment section of html report
+# as html report takes content of Environment section from pytest metadata.
+def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
+	# Get Selenium version and add it to pytest metadata if it is not there.
+	if "Selenium" not in metadata:
+		selenium_version = __version__
+		metadata["Selenium"] = selenium_version
+	# Get version of webdrivers (Chrome, Firefox) and add them to pytest metadata if they are not there.
+	if "Webdriver(s)" not in metadata:
+		webdrivers = {}
+		metadata["Webdriver(s)"] = webdrivers
+	if "chrome" in driver.capabilities and "chrome" not in metadata["Webdriver(s)"]:
+		driver_version = driver.capabilities['chrome']['chromedriverVersion'].split()[0]
+		metadata["Webdriver(s)"]["chrome"] = driver_version
+	elif "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"]:
+		driver_version = driver.capabilities['moz:geckodriverVersion']
+		metadata["Webdriver(s)"]["firefox"] = driver_version
