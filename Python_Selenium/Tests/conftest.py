@@ -5,7 +5,8 @@ import os
 from datetime import datetime
 from utilities import (get_exception_error_name_possibly_screenshot, check_exception_error_occurred, log_exception_error, add_screenshots_to_html_report,
                        get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
-                       add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata)
+                       add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
+                       change_date_format_subtitle_html_report)
 from Config.names_paths import reports_folder
 
 
@@ -26,7 +27,7 @@ def initialize_driver(request, metadata):
     driver.quit()
 
 
-# Configuration of location and name of html report file.
+# Hook method inside which a location and name of html report file are configured.
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
     make_folders_if_dont_exist(reports_folder)
@@ -44,8 +45,8 @@ def get_report_screenshots_folder_name(pytestconfig):
     return report_screenshots_folder
 
 
-# Take screenshot in case of exception or an error, create a log record about exception or error and add all screenshots
-# to corresponding test in html report if test fails.
+# Hook method inside which a screenshot is taken in case of exception or an error, a log record about exception or error is created and all screenshots
+# are added to corresponding test in html report if test fails.
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     outcome = yield
@@ -67,13 +68,13 @@ def pytest_runtest_makereport(item):
         report.extras = extras
 
 
-# Configuration of html report title.
+# Hook method inside which html report title is configured.
 def pytest_html_report_title(report):
     report_title = "Test execution report, " + datetime.now().strftime("%d.%m.%Y %H:%M:%S")
     report.title = report_title
 
 
-# Configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps" there is added
+# Hook method inside which tests log records in html report are configured. Title "Captured stdout call" is changed to "Steps", under "Steps" there is added
 # log record about exception or error (if occurred) from "Captured stdout teardown" section. Then date and time is removed at desired log
 # records, section "Captured stdout teardown" is removed (if it doesn't contain any other info) as well as whole section "Captured log call"
 # that is uncolored duplicate "Steps" section.
@@ -88,3 +89,10 @@ def pytest_html_results_table_html(report, data):
     # to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole sections
     # "Captured log call" and "Captured stdout teardown".
     html_report_log_section_manipulation(report, data, exception_error_log_record)
+
+
+# Hook method called after whole test run is finished (even after pytest_sessionfinish hook), at that time actual html report file is created
+# and format of date in subtitle is changed directly in html report file.
+def pytest_unconfigure(config):
+    path_actual_html_report_file = config.option.htmlpath
+    change_date_format_subtitle_html_report(path_actual_html_report_file)

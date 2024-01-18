@@ -7,6 +7,7 @@ import pytest
 from report_logger import logger
 import pytest_html
 from selenium import __version__
+from datetime import date
 from Config.names_paths import path_urls_file, path_screenshots_folder
 
 """
@@ -319,3 +320,23 @@ def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
 	elif "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"]:
 		driver_version = driver.capabilities['moz:geckodriverVersion']
 		metadata["Webdriver(s)"]["firefox"] = driver_version
+
+
+# Method for changing date format in sentence below title in html report. It is done directly in report html file.
+# At first whole content of current html report file is read by lines into list, then in list there is found line with sentence
+# and in this sentence date is rewritten with today's date in correct format. Whole list with correction is then written into html report file.
+def change_date_format_subtitle_html_report(path_actual_html_report_file):
+	with open(path_actual_html_report_file, "r") as html_report:
+		html_report_content = html_report.readlines()
+
+	todays_date = date.today()
+	todays_date_formatted = todays_date.strftime("%d.%m.%Y")
+	pattern = "(on) \d{2}-[a-zA-Z]*-\d{4} (at)"
+	replace_by = rf"\1 {todays_date_formatted} \2"
+	for index, line in enumerate(html_report_content):
+		if "<p>Report generated on" in line:
+			html_report_content[index] = re.sub(pattern, replace_by, line)
+			break
+
+	with open(path_actual_html_report_file, "w") as html_report:
+		html_report.writelines(html_report_content)
