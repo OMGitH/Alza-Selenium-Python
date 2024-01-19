@@ -10,6 +10,7 @@ class DeliveryAddressesDetails(ObjectHandler):
 	street_input = (By.NAME, "street")
 	zip_input = (By.NAME, "zip")
 	city_input = (By.NAME, "city")
+	phone_input = (By.NAME, "phone")
 	save_button = (By.XPATH, "//button[@data-testid='button-submit']")
 
 	# Initialization.
@@ -22,6 +23,7 @@ class DeliveryAddressesDetails(ObjectHandler):
 		self.object_handler_send_keys(self.street_input, data["street and number"], "'Ulice a číslo popisné' input field", True)
 		self.object_handler_send_keys(self.zip_input, data["zip"], "'PSČ' input field", True)
 		self.object_handler_send_keys(self.city_input, data["city"], "'Město' input field", True)
+		self.object_handler_send_keys(self.phone_input, data["phone"], "'Telefon' input field", True)
 		self.object_handler_click(self.save_button, "'Uložit' button", True)
 		self.object_handler_is_invisible(self.save_button)
 
@@ -34,4 +36,6 @@ class DeliveryAddressesDetails(ObjectHandler):
 		self.object_handler_send_keys(self.zip_input, TestData.delivery_addresses_edited[index]["zip"], "'PSČ' input field", True)
 		self.object_handler_clear_input_by_pressing_backspace(self.city_input, "value", "'Město' input field", True)
 		self.object_handler_send_keys(self.city_input, TestData.delivery_addresses_edited[index]["city"], "'Město' input field", True)
+		self.object_handler_clear_input_by_pressing_backspace(self.phone_input, "value", "'Telefon' input field", True)
+		self.object_handler_send_keys(self.phone_input, TestData.delivery_addresses_edited[index]["phone"], "'Telefon' input field", True)
 		self.object_handler_click(self.save_button, "'Uložit' button", True)

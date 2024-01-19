@@ -15,6 +15,7 @@ class DeliveryAddresses(ObjectHandler):
 	name_text = (By.XPATH, "//span[@data-testid='name']")
 	street_and_number_text = (By.XPATH, "//span[@data-testid='street']")
 	zip_and_city_text = (By.XPATH, "//span[@data-testid='postCodeAndCityContainer']")
+	phone_text = (By.XPATH, "//span[@data-testid='phone']")
 	add_new_delivery_address_button = (By.XPATH, "//button[@data-testid='button-addAddress']")
 
 	# Initialization.
@@ -40,7 +41,7 @@ class DeliveryAddresses(ObjectHandler):
 		if removed_addresses == 0:
 			logger.info("\t- Nothing removed as there are no delivery addresses.")
 		else:
-			logger.info(f"\t- {removed_addresses} delivery addresse(s) removed.")
+			logger.info(f"\t- {removed_addresses} delivery address(es) removed.")
 
 	# def delivery_addresses_remove_all_items_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 	# 	if self.base_is_visible(self.delivery_address_item, 3, True):
@@ -85,10 +86,11 @@ class DeliveryAddresses(ObjectHandler):
 
 	def get_addresses_data(self, number_of_addresses):
 		delivery_addresses = []
-		# Get name and surname, street and number, zip and city for all delivery addresses.
+		# Get name and surname, street and number, zip and city and phone for all delivery addresses.
 		addresses_names_surnames = self.object_handler_get_multiple_elements_text(self.name_text)
 		addresses_street_and_number = self.object_handler_get_multiple_elements_text(self.street_and_number_text)
 		addresses_zip_and_city = self.object_handler_get_multiple_elements_text(self.zip_and_city_text)
+		addresses_phones = self.object_handler_get_multiple_elements_text(self.phone_text)
 		# Fill list with dictionary per delivery address with data so that it is similar to the list in TestData and return it.
 		for index in range(number_of_addresses):
 			address = {}
@@ -99,6 +101,8 @@ class DeliveryAddresses(ObjectHandler):
 			zip_city = str(zip_city).split()
 			delivery_addresses[index]["zip"] = zip_city[0]
 			delivery_addresses[index]["city"] = zip_city[1]
+			addresses_phones = [phone.replace("+420 ", "") for phone in addresses_phones]
+			delivery_addresses[index]["phone"] = addresses_phones[index]
 		return delivery_addresses
 
 	def get_addresses(self):

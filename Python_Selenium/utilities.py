@@ -107,7 +107,7 @@ def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, 
 		case "greater":
 			screenshot_name = f"Assert_failed{screenshot_index}-{value1}_is_greater_than_{value2}-({test_filename_code_line_number}).png"
 		case _:
-			screenshot_name = "invalid.png"
+			screenshot_name = f"Assert_failed{screenshot_index}-unknown_assertion_type-({test_filename_code_line_number}).png"
 	path_to_actual_screenshot = os.path.join(path_test_screenshots_folder, screenshot_name)
 	return screenshot_name, path_to_actual_screenshot
 
