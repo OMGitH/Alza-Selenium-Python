@@ -96,16 +96,23 @@ def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, 
 	# Each failed assertion screenshot name contains index based on number of already existing screenshots in corresponding folder.
 	number_of_test_screenshots = len(os.listdir(path_test_screenshots_folder))
 	screenshot_index = number_of_test_screenshots + 1
-	# Screenshot filename is created based on type of assertion.
+	# Screenshot filename is created based on type of assertion. It may happen value1 or value2 contains character that is restricted in
+	# filename, therefore screenshot_name is checked and if it is incorrect, values are removed from it.
 	match assertion_type:
 		case "equal":
 			screenshot_name = f"Assert_failed{screenshot_index}-{value1}_equals_{value2}-({test_filename_code_line_number}).png"
+			if not check_filename_is_correct(screenshot_name):
+				screenshot_name = f"Assert_failed{screenshot_index}-equals-({test_filename_code_line_number}).png"
 		case "is_true":
 			screenshot_name = f"Assert_failed{screenshot_index}-check_bool({boolean_value})-({test_filename_code_line_number}).png"
 		case "is_in":
 			screenshot_name = f"Assert_failed{screenshot_index}-{value1}_in_{value2}-({test_filename_code_line_number}).png"
+			if not check_filename_is_correct(screenshot_name):
+				screenshot_name = f"Assert_failed{screenshot_index}-in-({test_filename_code_line_number}).png"
 		case "greater":
 			screenshot_name = f"Assert_failed{screenshot_index}-{value1}_is_greater_than_{value2}-({test_filename_code_line_number}).png"
+			if not check_filename_is_correct(screenshot_name):
+				screenshot_name = f"Assert_failed{screenshot_index}-is_greater_than-({test_filename_code_line_number}).png"
 		case _:
 			screenshot_name = f"Assert_failed{screenshot_index}-unknown_assertion_type-({test_filename_code_line_number}).png"
 	path_to_actual_screenshot = os.path.join(path_test_screenshots_folder, screenshot_name)
@@ -167,6 +174,10 @@ def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot
 			exception_error = exceptions_errors[-1]
 			if take_screenshot:
 				screenshot_name = f"{exception_error}.png"
+				# If there is a character in exception or error name that cannot be present in filename then name of exception or error
+				# is replaced by general "exception_or_error".
+				if not check_filename_is_correct(screenshot_name):
+					screenshot_name = "exception_or_error.png"
 				path_screenshot_file = os.path.join(path_test_screenshots_folder, screenshot_name)
 				make_folders_if_dont_exist(path_test_screenshots_folder)
 				save_screenshot_png_file(screenshot, path_screenshot_file)
@@ -340,3 +351,14 @@ def change_date_format_subtitle_html_report(path_actual_html_report_file):
 
 	with open(path_actual_html_report_file, "w") as html_report:
 		html_report.writelines(html_report_content)
+
+
+# Method for checking filename if it is correct, i.e. doesn't contain character that can't be present in filename.
+def check_filename_is_correct(filename):
+	restricted_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
+	flag = True
+	for char in restricted_chars:
+		if char in filename:
+			flag = False
+			return flag
+	return flag
