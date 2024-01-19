@@ -7,7 +7,7 @@ from utilities import (get_exception_error_name_possibly_screenshot, check_excep
                        get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
                        add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
                        change_date_format_subtitle_html_report)
-from Config.names_paths import reports_folder
+from Config.names_paths import reports_folder, path_urls_file
 
 
 # Fixture method for initialization of driver before each test runs, after each test version of webdrivers and Selenium are obtained for html
@@ -25,6 +25,13 @@ def initialize_driver(request, metadata):
     # Get version of webdrivers (Chrome, Firefox) and Selenium and save it to pytest metadata therefore add it to Environment section of html report.
     get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata)
     driver.quit()
+
+
+# Hook method that runs at the beginning of whole test run session inside which a urls file is deleted if it exists (shall be deleted at the end of previous test
+# after urls are added to html report).
+def pytest_sessionstart():
+    if os.path.exists(path_urls_file):
+        os.remove(path_urls_file)
 
 
 # Hook method inside which a location and name of html report file are configured.
