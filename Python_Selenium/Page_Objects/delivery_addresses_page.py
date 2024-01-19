@@ -101,8 +101,7 @@ class DeliveryAddresses(ObjectHandler):
 			zip_city = str(zip_city).split()
 			delivery_addresses[index]["zip"] = zip_city[0]
 			delivery_addresses[index]["city"] = zip_city[1]
-			addresses_phones = [phone.replace("+420 ", "") for phone in addresses_phones]
-			delivery_addresses[index]["phone"] = addresses_phones[index]
+			delivery_addresses[index]["phone"] = addresses_phones[index].replace(" ", "").replace("+420", "")
 		return delivery_addresses
 
 	def get_addresses(self):

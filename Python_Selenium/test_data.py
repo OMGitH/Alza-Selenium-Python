@@ -32,21 +32,21 @@ class TestData:
                         "street and number": "Ulice 4",
                         "zip": "10000",
                         "city": "Praha",
-                        "phone": "777 123 456"}
+                        "phone": "777123456"}
     delivery_address_2_original = {"name surname": "Petr Nový",
                         "street and number": "Jarní 20",
                         "zip": "11000",
                         "city": "Ostrava",
-                        "phone": "777 456 789"}
+                        "phone": "777456789"}
     delivery_addresses_original = [delivery_address_1_original, delivery_address_2_original]
     delivery_address_1_edited = {"name surname": "Martin Pávek",
                                "street and number": "Nová 17",
                                "zip": "12000",
                                "city": "Liberec",
-                               "phone": "604 987 654"}
+                               "phone": "604987654"}
     delivery_address_2_edited = {"name surname": "Gregor Běžný",
                                "street and number": "Podzimní 45",
                                "zip": "13000",
                                "city": "Brno",
-                               "phone": "604 654 321"}
+                               "phone": "604654321"}
     delivery_addresses_edited = [delivery_address_1_edited, delivery_address_2_edited]
