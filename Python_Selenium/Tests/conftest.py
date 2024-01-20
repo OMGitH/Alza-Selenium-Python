@@ -7,7 +7,7 @@ from utilities import (get_exception_error_name_possibly_screenshot, check_excep
                        get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
                        add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
                        change_date_format_subtitle_html_report)
-from Config.names_paths import reports_folder, path_urls_file
+from Config.files_folders_names_paths import reports_folder, path_urls_file
 
 
 # Fixture method for initialization of driver before each test runs, after each test version of webdrivers and Selenium are obtained for html
@@ -48,7 +48,7 @@ def pytest_configure(config):
 @pytest.fixture()
 def get_report_screenshots_folder_name(pytestconfig):
     path_to_html_report = pytestconfig.getoption("htmlpath")
-    report_screenshots_folder = path_to_html_report.split("\\")[-1].replace(".html", "")
+    report_screenshots_folder = os.path.splitext(os.path.basename(path_to_html_report))[0]
     return report_screenshots_folder
 
 

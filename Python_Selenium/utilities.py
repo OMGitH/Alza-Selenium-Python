@@ -8,7 +8,7 @@ from report_logger import logger
 import pytest_html
 from selenium import __version__
 from datetime import date
-from Config.names_paths import path_urls_file, path_screenshots_folder
+from Config.files_folders_names_paths import path_urls_file, path_screenshots_folder, reports_folder
 
 """
 Contains additional methods. Contains also methods directly related to assertions like process_assertion as if these methods were directly
@@ -85,9 +85,9 @@ def take_screenshot_assertion_failed(driver, report_screenshots_folder, assertio
 
 # Method for creating name of screenshot file and path to it when assertion fails.
 def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, assertion_type, value1="", value2="", boolean_value=""):
-	running_test_name = os.environ.get("PYTEST_CURRENT_TEST").split(":")[-1].split(" ")[0]
-	test_screenshots_folder = running_test_name
-	test_filename, code_line_number = get_test_filename_code_line_number(running_test_name)
+	running_test_name_including_browser = os.environ.get("PYTEST_CURRENT_TEST").split(":")[-1].split(" ")[0]
+	test_screenshots_folder = running_test_name_including_browser
+	test_filename, code_line_number = get_test_filename_code_line_number(running_test_name_including_browser)
 	# Because test filename is used in name of screenshot file "." is removed from it.
 	test_filename_without_dot = test_filename.replace(".", "")
 	test_filename_code_line_number = f"{test_filename_without_dot}{code_line_number}"
@@ -132,7 +132,7 @@ def get_last_line_from_record(failure_record):
 def get_path_test_screenshots_folder(item):
 	# Get folder names and path to screenshots folder.
 	# Report folder for screenshots has the same name as report file except for ".html".
-	report_screenshots_folder = item.config.option.htmlpath.split("\\")[-1].replace(".html", "")
+	report_screenshots_folder = item.funcargs["get_report_screenshots_folder_name"]
 	# Test folder for screenshots has the same name as test itself.
 	test_screenshots_folder = item.name
 	path_test_screenshots_folder = os.path.join(path_screenshots_folder, report_screenshots_folder, test_screenshots_folder)
@@ -213,9 +213,11 @@ def log_exception_error(screenshot_name, exception_error, url_report_link_title)
 def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
 	if os.path.exists(path_test_screenshots_folder):
 		screenshots = os.scandir(path_test_screenshots_folder)
+		path_separator = os.sep
 		for screenshot in screenshots:
 			# "Reports" folder has to be removed from path as apparently relative path here starts from html report file, so from "Reports" folder.
-			path_screenshot_file = screenshot.path.replace("Reports\\", "")
+			reports_folder_with_separator = reports_folder + path_separator
+			path_screenshot_file = screenshot.path.replace(reports_folder_with_separator, "")
 			extras.append(pytest_html.extras.png(path_screenshot_file, screenshot.name))
 
 
