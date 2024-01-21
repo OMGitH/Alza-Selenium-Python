@@ -1,10 +1,10 @@
 from selenium.webdriver.common.by import By
-from object_handler import ObjectHandler
+from element_handler import ElementHandler
 
 
-class MyAccount(ObjectHandler):
+class MyAccount(ElementHandler):
 
-    # Identification of objects on my account page.
+    # Identification of elements on my account page.
     account_settings_dropdown = (By.XPATH, "//div[@data-testid='menuSection-MyAccount']")
     my_account_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserSettings']")
     watchdogs_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
@@ -31,15 +31,15 @@ class MyAccount(ObjectHandler):
 
     # Actions on my account page.
     def click_account_settings_dropdown(self):
-        self.object_handler_click(self.account_settings_dropdown)
+        self.element_handler_click(self.account_settings_dropdown)
 
     def click_my_account_menu_item(self):
-        self.object_handler_click(self.my_account_menu_item)
+        self.element_handler_click(self.my_account_menu_item)
         # Following method helps initialize the page as validations there are dynamic.
-        self.object_handler_element_exists(self.data_was_saved_text)
+        self.element_handler_element_exists(self.data_was_saved_text)
 
     def click_watchdogs_menu_item(self):
-        self.object_handler_click(self.watchdogs_menu_item, "'Hlídací psi' menu item", True)
+        self.element_handler_click(self.watchdogs_menu_item, "'Hlídací psi' menu item", True)
 
     def click_delivery_addresses_menu_item(self):
-        self.object_handler_click(self.delivery_addresses_menu_item, "'Doručovací adresy' menu item", True)
+        self.element_handler_click(self.delivery_addresses_menu_item, "'Doručovací adresy' menu item", True)

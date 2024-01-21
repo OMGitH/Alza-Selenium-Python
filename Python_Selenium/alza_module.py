@@ -10,8 +10,10 @@ from test_data import TestData
 import mixed_assertions as mixed_assert
 from report_logger import logger
 
-# Additional layer in which various methods can be defined, for example those used in more tests, that are just preconditions for test
-# or which combines more page objects. Can serve also for extraction of complexity from test level.
+"""
+Additional layer in which various methods can be defined, for example those used in more tests, that are just preconditions for test
+or which combines more page objects. Can serve also for extraction of complexity from test level.
+"""
 
 
 class AlzaModule:

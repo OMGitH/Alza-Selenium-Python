@@ -1,12 +1,12 @@
 from selenium.webdriver.common.by import By
-from object_handler import ObjectHandler
+from element_handler import ElementHandler
 import time
 from report_logger import logger
 
 
-class DeliveryAddresses(ObjectHandler):
+class DeliveryAddresses(ElementHandler):
 
-	# Identification of objects on delivery addresses page.
+	# Identification of elements on delivery addresses page.
 	delivery_address_item = (By.XPATH, "//div[@data-testid='address']")
 	without_delivery_address_items = (By.XPATH, "//div[@data-testid='deliveryAddressesRoot'][not(descendant::div[@data-testid='address'])]")
 	delivery_address_remove_button = (By.XPATH, "//button[@data-testid='button-deleteAddress']")
@@ -25,16 +25,16 @@ class DeliveryAddresses(ObjectHandler):
 	# Actions on delivery addresses page.
 	def remove_all_addresses_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 		removed_addresses = 0
-		while self.object_handler_is_visible(self.delivery_address_remove_button, 2, True):
-			number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
-			self.object_handler_click(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", True)
-			self.object_handler_click(self.delivery_address_removal_confirmation_button, "'Smazat' button", True)
-			self.object_handler_is_invisible(self.remove_question_dialog)
+		while self.element_handler_is_visible(self.delivery_address_remove_button, 2, True):
+			number_of_addresses = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
+			self.element_handler_click(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", True)
+			self.element_handler_click(self.delivery_address_removal_confirmation_button, "'Smazat' button", True)
+			self.element_handler_is_invisible(self.remove_question_dialog)
 			removed_addresses += 1
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for page to get refreshed.
 			if number_of_addresses != 0:
 				for check in range(number_of_checks):
-					number_of_addresses_after_removal = self.object_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
+					number_of_addresses_after_removal = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
 					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break
 					time.sleep(check_wait)
@@ -78,19 +78,19 @@ class DeliveryAddresses(ObjectHandler):
 	# 					time.sleep(check_wait)
 
 	def click_add_new_address_button(self):
-		self.object_handler_click(self.add_new_delivery_address_button, "'Přidat novou adresu' button", True)
+		self.element_handler_click(self.add_new_delivery_address_button, "'Přidat novou adresu' button", True)
 
 	def get_number_of_addresses(self):
-		number_of_addresses = self.object_handler_get_number_of_visible_elements(self.delivery_address_item)
+		number_of_addresses = self.element_handler_get_number_of_visible_elements(self.delivery_address_item)
 		return number_of_addresses
 
 	def get_addresses_data(self, number_of_addresses):
 		delivery_addresses = []
 		# Get name and surname, street and number, zip and city and phone for all delivery addresses.
-		addresses_names_surnames = self.object_handler_get_multiple_elements_text(self.name_text)
-		addresses_street_and_number = self.object_handler_get_multiple_elements_text(self.street_and_number_text)
-		addresses_zip_and_city = self.object_handler_get_multiple_elements_text(self.zip_and_city_text)
-		addresses_phones = self.object_handler_get_multiple_elements_text(self.phone_text)
+		addresses_names_surnames = self.element_handler_get_multiple_elements_text(self.name_text)
+		addresses_street_and_number = self.element_handler_get_multiple_elements_text(self.street_and_number_text)
+		addresses_zip_and_city = self.element_handler_get_multiple_elements_text(self.zip_and_city_text)
+		addresses_phones = self.element_handler_get_multiple_elements_text(self.phone_text)
 		# Fill list with dictionary per delivery address with data so that it is similar to the list in TestData and return it.
 		for index in range(number_of_addresses):
 			address = {}
@@ -105,8 +105,8 @@ class DeliveryAddresses(ObjectHandler):
 		return delivery_addresses
 
 	def get_addresses(self):
-		addresses = self.object_handler_get_multiple_visible_elements(self.delivery_address_item)
+		addresses = self.element_handler_get_multiple_visible_elements(self.delivery_address_item)
 		return addresses
 
 	def click_address_item_as_argument(self, address):
-		self.object_handler_click(address, "Address tile", True)
+		self.element_handler_click(address, "Address tile", True)

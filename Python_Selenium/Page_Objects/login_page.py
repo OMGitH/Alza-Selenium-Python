@@ -1,10 +1,10 @@
 from selenium.webdriver.common.by import By
-from object_handler import ObjectHandler
+from element_handler import ElementHandler
 
 
-class LoginPage(ObjectHandler):
+class LoginPage(ElementHandler):
 
-    # Identification of objects on login page.
+    # Identification of elements on login page.
     email_input = (By.XPATH, "//input[@id='userName' and not(@readonly)]")
     password_input = (By.XPATH, "//input[@id='password' and not(@readonly)]")
     sign_in_button_active = (By.XPATH, "//button[@id='btnLogin'][@class='btn btn-login mt-2']")
@@ -19,37 +19,37 @@ class LoginPage(ObjectHandler):
 
     # Actions on login dialog.
     def provide_email(self, username):
-        self.object_handler_clear_input(self.email_input, "'E-mail' input field", True)
-        self.object_handler_send_keys(self.email_input, username, "'E-mail' input field", True)
+        self.element_handler_clear_input(self.email_input, "'E-mail' input field", True)
+        self.element_handler_send_keys(self.email_input, username, "'E-mail' input field", True)
 
     def provide_password(self, password):
-        self.object_handler_clear_input(self.password_input, "'Heslo' input field", True)
-        self.object_handler_send_keys(self.password_input, password, "'Heslo' input field", True)
+        self.element_handler_clear_input(self.password_input, "'Heslo' input field", True)
+        self.element_handler_send_keys(self.password_input, password, "'Heslo' input field", True)
 
     def click_signin_button(self):
-        self.object_handler_click(self.sign_in_button_active, "'Přihlásit se' button", True)
+        self.element_handler_click(self.sign_in_button_active, "'Přihlásit se' button", True)
 
     def login_dialog_is_visible(self):
-        flag = self.object_handler_is_visible(self.login_dialog, handle_TimeoutException=True)
+        flag = self.element_handler_is_visible(self.login_dialog, handle_TimeoutException=True)
         return flag
 
     def login_dialog_is_invisible(self):
-        flag = self.object_handler_is_invisible(self.login_dialog, handle_TimeoutException=True)
+        flag = self.element_handler_is_invisible(self.login_dialog, handle_TimeoutException=True)
         return flag
 
     def get_blank_email_text(self):
-        if self.object_handler_is_visible(self.provide_email_text):
-            email_text = self.object_handler_get_element_text(self.provide_email_text)
+        if self.element_handler_is_visible(self.provide_email_text):
+            email_text = self.element_handler_get_element_text(self.provide_email_text)
             return email_text
 
     def get_blank_password_text(self):
-        if self.object_handler_is_visible(self.provide_password_text):
-            password_text = self.object_handler_get_element_text(self.provide_password_text)
+        if self.element_handler_is_visible(self.provide_password_text):
+            password_text = self.element_handler_get_element_text(self.provide_password_text)
             return password_text
 
     def get_disabled_login_button_text(self):
-        if self.object_handler_is_visible(self.sign_in_button_disabled):
-            disabled_button_text = self.object_handler_get_element_text(self.sign_in_button_disabled)
+        if self.element_handler_is_visible(self.sign_in_button_disabled):
+            disabled_button_text = self.element_handler_get_element_text(self.sign_in_button_disabled)
             return disabled_button_text
 
     def successful_login(self, username, password):
