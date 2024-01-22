@@ -17,6 +17,7 @@ conftest.py file which are defined here in order to keep conftest.py less comple
 """
 
 
+# General methods:
 # Method for taking screenshot into memory.
 def take_screenshot_memory(driver):
 	screenshot = driver.get_screenshot_as_png()
@@ -36,21 +37,44 @@ def make_folders_if_dont_exist(path_to_folders):
 		os.makedirs(path_to_folders)
 
 
-# Method for getting test file name and code line number inside test from which code leading to the assertion was executed.
+# Method for checking filename if it is correct, i.e. doesn't contain character that can't be present in filename.
+def check_filename_is_correct(filename):
+	restricted_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
+	flag = True
+	for char in restricted_chars:
+		if char in filename:
+			flag = False
+			return flag
+	return flag
+
+
+# Method for getting last line from record.
+# Note:
+# - Can be used with failure record when looking for particular exception or error as it is mentioned at its last line. In such case
+# as a "record" a "report.longreprtext".
+def get_last_line_from_record(record):
+	record_last_line = ""
+	if record != "":
+		record_last_line = record.splitlines()[-1]
+	return record_last_line
+
+
+# Method for getting filename and line number of code inside calling method.
+# Note:
+# - Can be used for getting test filename and code line number inside test from which code leading to the assertion was executed.
 # This info is used in name of failed assertions screenshot.
-def get_test_filename_code_line_number(running_test_name):
-	# Get only running test name without additional information like browser.
-	running_test_name = running_test_name.split("[")[0].strip()
-	# Loop back through frames and look for a frame that contains name of actual running test. From this frame name of file
+def get_calling_method_filename_code_line_number(calling_method):
+	# Loop back through frames and look for a frame that contains name of calling method. From this frame name of file
 	# and code line number are obtained.
 	previous_frame = inspect.currentframe().f_back
-	while previous_frame.f_code.co_name != running_test_name:
+	while previous_frame.f_code.co_name != calling_method:
 		previous_frame = previous_frame.f_back
-	test_filename = os.path.basename(previous_frame.f_code.co_filename)
+	calling_method_filename = os.path.basename(previous_frame.f_code.co_filename)
 	code_line_number = previous_frame.f_lineno
-	return test_filename, code_line_number
+	return calling_method_filename, code_line_number
 
 
+# Methods related to assertions:
 # Method for processing test execution based on outcome of assertion like taking a screenshot if failed, stopping test execution or logging a message.
 def process_assertion(driver, report_screenshots_folder, assertion_type, flag, assertion_pass_message, assertion_fail_message, interrupt_test, value1="", value2="", boolean_value=""):
 	assertion_pass_note = "Assertion PASSED: "
@@ -87,7 +111,9 @@ def take_screenshot_assertion_failed(driver, report_screenshots_folder, assertio
 def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, assertion_type, value1="", value2="", boolean_value=""):
 	running_test_name_including_browser = os.environ.get("PYTEST_CURRENT_TEST").split(":")[-1].split(" ")[0]
 	test_screenshots_folder = running_test_name_including_browser
-	test_filename, code_line_number = get_test_filename_code_line_number(running_test_name_including_browser)
+	# Get only running test name without additional information like browser.
+	running_test_name = running_test_name_including_browser.split("[")[0].strip()
+	test_filename, code_line_number = get_calling_method_filename_code_line_number(running_test_name)
 	# Because test filename is used in name of screenshot file "." is removed from it.
 	test_filename_without_dot = test_filename.replace(".", "")
 	test_filename_code_line_number = f"{test_filename_without_dot}{code_line_number}"
@@ -119,26 +145,7 @@ def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, 
 	return screenshot_name, path_to_actual_screenshot
 
 
-# Method for getting last line from record. Can be used with failure record when looking for particular exception or error as it is mentioned at its last line.
-# As a "failure_record" is used "report.longreprtext" but it can be any record from which last line shall be obtained.
-def get_last_line_from_record(failure_record):
-	failure_message_last_line = ""
-	if failure_record != "":
-		failure_message_last_line = failure_record.splitlines()[-1]
-	return failure_message_last_line
-
-
-# Method for getting path to folder where screenshots for particular test are stored.
-def get_path_test_screenshots_folder(item):
-	# Get folder names and path to screenshots folder.
-	# Report folder for screenshots has the same name as report file except for ".html".
-	report_screenshots_folder = item.funcargs["get_report_screenshots_folder_name"]
-	# Test folder for screenshots has the same name as test itself.
-	test_screenshots_folder = item.name
-	path_test_screenshots_folder = os.path.join(path_screenshots_folder, report_screenshots_folder, test_screenshots_folder)
-	return path_test_screenshots_folder
-
-
+# Methods related to exceptions or errors:
 # Method for checking if exception or error occurred.
 def check_exception_error_occurred(failure_record):
 	flag = False
@@ -156,7 +163,7 @@ def check_exception_error_occurred(failure_record):
 # - Should be called only when there was an exception or error (i.e. when method "check_exception_error_occurred" returns True).
 # - Method returns 1 or 2 values:
 # - - In case screenshot shall NOT be taken, 1 value is returned (the exception or error itself as "exception_error").
-# - - In case screenshot shall be taken, 2 values are returned ("exception_error" and "screenshot_name").
+# - - In case screenshot shall be taken, 2 values are returned (the exception or error itself as "exception_error" and "screenshot_name").
 def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot=False, item="", path_test_screenshots_folder=""):
 	# If set to "True" takes screenshot into memory as soon as possible.
 	if take_screenshot:
@@ -185,21 +192,6 @@ def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot
 			return exception_error
 
 
-# Method for getting current url address and saving it to a file. File is temporary just for actual test, so it is created during test run
-# and deleted at the end of test run (in method add_urls_to_html_report_delete_urls_file)
-def get_url_save_to_file(driver, screenshot_name):
-	url_address = driver.current_url
-	# Title of url in report contains name of screenshot.
-	url_report_link_title = screenshot_name.replace(".png", "")
-	url_report_link_title = f"URL-{url_report_link_title}"
-	# Each line in file represents one url in format <title of url in report>;<actual url address>.
-	urls_file_line = f"{url_report_link_title};{url_address}\n"
-	# Open file or create and append current url information.
-	with open(path_urls_file, "a") as urls_file:
-		urls_file.write(urls_file_line)
-	return url_report_link_title
-
-
 # Method for creation of a log record in case of exception or error.
 def log_exception_error(screenshot_name, exception_error, url_report_link_title):
 	screenshot_message = f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken."
@@ -207,31 +199,6 @@ def log_exception_error(screenshot_name, exception_error, url_report_link_title)
 	test_stop_message = f"\n\t\t\t\t- Test execution stopped."
 	exception_error_message = f"'{exception_error}' occurred." + screenshot_message + url_message + test_stop_message
 	logger.warning(exception_error_message)
-
-
-# Method for adding screenshots of failed assertions and exception or error to html report.
-def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
-	if os.path.exists(path_test_screenshots_folder):
-		screenshots = os.scandir(path_test_screenshots_folder)
-		path_separator = os.sep
-		for screenshot in screenshots:
-			# "Reports" folder has to be removed from path as apparently relative path here starts from html report file, so from "Reports" folder.
-			reports_folder_with_separator = reports_folder + path_separator
-			path_screenshot_file = screenshot.path.replace(reports_folder_with_separator, "")
-			extras.append(pytest_html.extras.png(path_screenshot_file, screenshot.name))
-
-
-# Method for adding urls of failed assertions and exception or error to html report and deleting file afterwards so that there is a new file per test.
-def add_urls_to_html_report_delete_urls_file(extras):
-	if os.path.isfile(path_urls_file):
-		with open(path_urls_file) as urls_file:
-			for url in urls_file:
-				url = url.strip()
-				url = url.split(";")
-				url_report_link_title = url[0]
-				url_address = url[1]
-				extras.append(pytest_html.extras.url(url_address, url_report_link_title))
-		os.remove(path_urls_file)
 
 
 # Method for obtaining log record about exception or error from previous calls by looping back through frames.
@@ -257,6 +224,34 @@ def get_exception_error_log_record_from_previous_calls(exception_error):
 	return exception_error_log_record
 
 
+# Methods related to assertions and exceptions or errors:
+# Method for getting path to folder where screenshots for particular test are stored.
+def get_path_test_screenshots_folder(item):
+	# Get folder names and path to screenshots folder.
+	# Report folder for screenshots has the same name as report file except for ".html".
+	report_screenshots_folder = item.funcargs["get_report_screenshots_folder_name"]
+	# Test folder for screenshots has the same name as test itself.
+	test_screenshots_folder = item.name
+	path_test_screenshots_folder = os.path.join(path_screenshots_folder, report_screenshots_folder, test_screenshots_folder)
+	return path_test_screenshots_folder
+
+
+# Method for getting current url address and saving it to a file. File is temporary just for actual test, so it is created during test run
+# and deleted at the end of test run (in method add_urls_to_html_report_delete_urls_file)
+def get_url_save_to_file(driver, screenshot_name):
+	url_address = driver.current_url
+	# Title of url in report contains name of screenshot.
+	url_report_link_title = screenshot_name.replace(".png", "")
+	url_report_link_title = f"URL-{url_report_link_title}"
+	# Each line in file represents one url in format <title of url in report>;<actual url address>.
+	urls_file_line = f"{url_report_link_title};{url_address}\n"
+	# Open file or create and append current url information.
+	with open(path_urls_file, "a") as urls_file:
+		urls_file.write(urls_file_line)
+	return url_report_link_title
+
+
+# Methods related to html report:
 # Method for manipulation of log section of html report.
 def html_report_log_section_manipulation(report, data, exception_error_log_record):
 	# Data manipulation to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
@@ -316,25 +311,6 @@ def html_report_log_section_manipulation(report, data, exception_error_log_recor
 				break
 
 
-# Method for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to Environment section of html report
-# as html report takes content of Environment section from pytest metadata.
-def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
-	# Get Selenium version and add it to pytest metadata if it is not there.
-	if "Selenium" not in metadata:
-		selenium_version = __version__
-		metadata["Selenium"] = selenium_version
-	# Get version of webdrivers (Chrome, Firefox) and add them to pytest metadata if they are not there.
-	if "Webdriver(s)" not in metadata:
-		webdrivers = {}
-		metadata["Webdriver(s)"] = webdrivers
-	if "chrome" in driver.capabilities and "chrome" not in metadata["Webdriver(s)"]:
-		driver_version = driver.capabilities['chrome']['chromedriverVersion'].split()[0]
-		metadata["Webdriver(s)"]["chrome"] = driver_version
-	elif "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"]:
-		driver_version = driver.capabilities['moz:geckodriverVersion']
-		metadata["Webdriver(s)"]["firefox"] = driver_version
-
-
 # Method for changing date format in sentence below title in html report. It is done directly in report html file.
 # At first whole content of current html report file is read by lines into list, then in list there is found line with sentence
 # and in this sentence date is rewritten with today's date in correct format. Whole list with correction is then written into html report file.
@@ -355,12 +331,45 @@ def change_date_format_subtitle_html_report(path_actual_html_report_file):
 		html_report.writelines(html_report_content)
 
 
-# Method for checking filename if it is correct, i.e. doesn't contain character that can't be present in filename.
-def check_filename_is_correct(filename):
-	restricted_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
-	flag = True
-	for char in restricted_chars:
-		if char in filename:
-			flag = False
-			return flag
-	return flag
+# Method for adding screenshots of failed assertions and exception or error to html report.
+def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
+	if os.path.exists(path_test_screenshots_folder):
+		screenshots = os.scandir(path_test_screenshots_folder)
+		path_separator = os.sep
+		for screenshot in screenshots:
+			# "Reports" folder has to be removed from path as apparently relative path here starts from html report file, so from "Reports" folder.
+			reports_folder_with_separator = reports_folder + path_separator
+			path_screenshot_file = screenshot.path.replace(reports_folder_with_separator, "")
+			extras.append(pytest_html.extras.png(path_screenshot_file, screenshot.name))
+
+
+# Method for adding urls of failed assertions and exception or error to html report and deleting file afterwards so that there is a new file per test.
+def add_urls_to_html_report_delete_urls_file(extras):
+	if os.path.isfile(path_urls_file):
+		with open(path_urls_file) as urls_file:
+			for url in urls_file:
+				url = url.strip()
+				url = url.split(";")
+				url_report_link_title = url[0]
+				url_address = url[1]
+				extras.append(pytest_html.extras.url(url_address, url_report_link_title))
+		os.remove(path_urls_file)
+
+
+# Method for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to Environment section of html report
+# as html report takes content of Environment table from pytest metadata.
+def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
+	# Get Selenium version and add it to pytest metadata if it is not there.
+	if "Selenium" not in metadata:
+		selenium_version = __version__
+		metadata["Selenium"] = selenium_version
+	# Get version of webdrivers (Chrome, Firefox) and add them to pytest metadata if they are not there.
+	if "Webdriver(s)" not in metadata:
+		webdrivers = {}
+		metadata["Webdriver(s)"] = webdrivers
+	if "chrome" in driver.capabilities and "chrome" not in metadata["Webdriver(s)"]:
+		driver_version = driver.capabilities['chrome']['chromedriverVersion'].split()[0]
+		metadata["Webdriver(s)"]["chrome"] = driver_version
+	elif "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"]:
+		driver_version = driver.capabilities['moz:geckodriverVersion']
+		metadata["Webdriver(s)"]["firefox"] = driver_version
