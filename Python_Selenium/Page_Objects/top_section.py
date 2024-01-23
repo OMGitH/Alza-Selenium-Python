@@ -13,6 +13,7 @@ class TopSection(ElementHandler):
     # signed_in_user_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleTitle']")
     signed_in_user_dialog = (By.XPATH, "//div[@data-testid='headerContextMenu']")
     logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']/*[name()='svg']")
+    alzaplus_image = (By.XPATH, "//img[contains(@src, 'Logo-AlzaPlus')]")
     search_input = (By.XPATH, "//input[@data-testid='searchInput']")
     search_button = (By.XPATH, "//button[@data-testid='button-search']")
     search_suggestion = (By.XPATH, "//div[@data-testid='searchResultsContainer']")
@@ -36,7 +37,8 @@ class TopSection(ElementHandler):
         self.element_handler_click(self.my_profile_link, "'Můj profil' link", True)
 
     def click_logout_link(self):
-        self.element_handler_click(self.logout_link, "'Odhlásit se' link", True)
+        if self.element_handler_is_visible(self.logout_link):
+            self.element_handler_click(self.logout_link, "'Odhlásit se' link", True)
 
     def search_provide_value(self, value):
         self.element_handler_clear_input_by_pressing_backspace(self.search_input, "value", "search input field", True)
@@ -62,6 +64,7 @@ class TopSection(ElementHandler):
 
     def click_signed_in_user_link(self):
         self.element_handler_click(self.signed_in_user_link, "Signed in user link", True)
+        self.element_handler_is_visible(self.alzaplus_image)
 
     # It seems in Firefox sometimes signed in user link is clicked before page is fully loaded and dialog does not get displayed,
     # therefore method click until appears is used.
