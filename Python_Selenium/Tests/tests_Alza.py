@@ -1,3 +1,4 @@
+import pytest
 from test_data import TestData
 from Page_Objects.basket_page import Basket
 from Page_Objects.login_page import LoginPage
@@ -9,7 +10,6 @@ from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.watchdog_add_dialog import WatchdogAdd
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from alza_module import AlzaModule
-import pytest
 import mixed_assertions as mixed_assert
 from report_logger import logger
 

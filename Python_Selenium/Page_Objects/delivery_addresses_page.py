@@ -1,6 +1,6 @@
+from time import sleep
 from selenium.webdriver.common.by import By
 from element_handler import ElementHandler
-import time
 from report_logger import logger
 
 
@@ -37,7 +37,7 @@ class DeliveryAddresses(ElementHandler):
 					number_of_addresses_after_removal = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
 					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break
-					time.sleep(check_wait)
+					sleep(check_wait)
 		if removed_addresses == 0:
 			logger.info("\t- Nothing removed as there are no delivery addresses.")
 		else:

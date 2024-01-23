@@ -1,13 +1,13 @@
-from PIL import Image
-from io import BytesIO
 import os
-import inspect
-import re
-import pytest
-from report_logger import logger
-import pytest_html
-from selenium import __version__
 from datetime import date
+from io import BytesIO
+from re import findall, sub
+from inspect import currentframe
+from selenium import __version__
+import pytest
+import pytest_html
+from PIL import Image
+from report_logger import logger
 from Config.files_folders_names_paths import path_urls_file, path_screenshots_folder, reports_folder
 
 """
@@ -66,7 +66,7 @@ def get_last_line_from_record(record):
 def get_calling_method_filename_code_line_number(calling_method):
 	# Loop back through frames and look for a frame that contains name of calling method. From this frame name of file
 	# and code line number are obtained.
-	previous_frame = inspect.currentframe().f_back
+	previous_frame = currentframe().f_back
 	while previous_frame.f_code.co_name != calling_method:
 		previous_frame = previous_frame.f_back
 	calling_method_filename = os.path.basename(previous_frame.f_code.co_filename)
@@ -174,7 +174,7 @@ def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot
 	fail_words = ["Exception", "Error"]
 	for fail_word in fail_words:
 		# Get all words containing "Exception" or "Error" that are at last line of failure record.
-		exceptions_errors = re.findall(f"[a-zA-Z]*{fail_word}[a-zA-Z]*", failure_record_last_line)
+		exceptions_errors = findall(f"[a-zA-Z]*{fail_word}[a-zA-Z]*", failure_record_last_line)
 		if exceptions_errors:
 			# Get actual exception or error by returning the last occurrence of the word as the actual exception or error
 			# is mentioned at the end of failure record.
@@ -210,7 +210,7 @@ def get_exception_error_log_record_from_previous_calls(exception_error):
 	# Loop back through frames and look for a frame that contains report from teardown phase and that contains in capstdout actual exception
 	# or error. A list of log records is created from this frame capstdout and from this list the actual exception or error log record is obtained.
 	# At the end there is a separator added to this record because as a separator formatting characters from end of log records are used.
-	previous_frame = inspect.currentframe().f_back
+	previous_frame = currentframe().f_back
 	while not exception_error_log_record:
 		if previous_frame.f_locals.get("report"):
 			if previous_frame.f_locals["report"].when == "teardown" and exception_error in previous_frame.f_locals["report"].capstdout:
@@ -273,13 +273,13 @@ def html_report_log_section_manipulation(report, data, exception_error_log_recor
 				replace_by = r"                   \1"
 				# From log headers.
 				log_headers_pattern = "\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}(     -----)"
-				data[index] = re.sub(log_headers_pattern, replace_by, data[index])
+				data[index] = sub(log_headers_pattern, replace_by, data[index])
 				# From log records when items are removed from basket, watchdogs or delivery addresses.
 				items_removed_pattern = "\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}(     \t- \d )"
-				data[index] = re.sub(items_removed_pattern, replace_by, data[index])
+				data[index] = sub(items_removed_pattern, replace_by, data[index])
 				# From log records when nothing is removed from basket, watchdogs or delivery addresses.
 				nothing_removed_pattern = "\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}(     \t- Nothing removed as )"
-				data[index] = re.sub(nothing_removed_pattern, replace_by, data[index])
+				data[index] = sub(nothing_removed_pattern, replace_by, data[index])
 
 				# Noting that "Captured stdout call" section was present.
 				section_captured_stdout_call_present = True
@@ -324,7 +324,7 @@ def change_date_format_subtitle_html_report(path_actual_html_report_file):
 	replace_by = rf"\1 {todays_date_formatted} \2"
 	for index, line in enumerate(html_report_content):
 		if "<p>Report generated on" in line:
-			html_report_content[index] = re.sub(pattern, replace_by, line)
+			html_report_content[index] = sub(pattern, replace_by, line)
 			break
 
 	with open(path_actual_html_report_file, "w") as html_report:
@@ -336,9 +336,9 @@ def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
 	if os.path.exists(path_test_screenshots_folder):
 		screenshots = os.scandir(path_test_screenshots_folder)
 		path_separator = os.sep
+		reports_folder_with_separator = reports_folder + path_separator
 		for screenshot in screenshots:
 			# "Reports" folder has to be removed from path as apparently relative path here starts from html report file, so from "Reports" folder.
-			reports_folder_with_separator = reports_folder + path_separator
 			path_screenshot_file = screenshot.path.replace(reports_folder_with_separator, "")
 			extras.append(pytest_html.extras.png(path_screenshot_file, screenshot.name))
 

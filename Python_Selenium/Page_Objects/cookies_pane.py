@@ -1,5 +1,5 @@
-from element_handler import ElementHandler
 from selenium.webdriver.common.by import By
+from element_handler import ElementHandler
 
 
 class CookiesPane(ElementHandler):

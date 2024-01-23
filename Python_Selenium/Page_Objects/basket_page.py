@@ -1,6 +1,6 @@
+from time import sleep
 from selenium.webdriver.common.by import By
 from element_handler import ElementHandler
-import time
 from report_logger import logger
 
 
@@ -61,7 +61,7 @@ class Basket(ElementHandler):
                     number_of_items_after_removal = self.element_handler_get_number_of_visible_elements(self.down_arrow_price_button)
                     if number_of_items_after_removal == 0 or number_of_items_after_removal == number_of_items - 1:
                         break
-                    time.sleep(check_wait)
+                    sleep(check_wait)
         if removed_items > 0:
             logger.info(f"\t- {removed_items} item(s) removed from basket.")
 

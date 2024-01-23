@@ -1,8 +1,8 @@
+from time import monotonic
 from selenium.common import StaleElementReferenceException, TimeoutException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 from report_logger import logger
 
 """
@@ -22,8 +22,8 @@ class ElementHandler:
         if not handle_StaleElementReferenceException:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(element_identifier)).click()
         else:
-            end_time = time.monotonic() + timeout
-            while time.monotonic() <= end_time:
+            end_time = monotonic() + timeout
+            while monotonic() <= end_time:
                 try:
                     WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(element_identifier)).click()
                     break
@@ -85,9 +85,7 @@ class ElementHandler:
 
     def element_handler_get_multiple_elements_text(self, element_identifier, timeout=timeout_default):
         elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(element_identifier))
-        elements_text = []
-        for element in elements:
-            elements_text.append(element.text)
+        elements_text = [element.text for element in elements]
         return elements_text
 
     def element_handler_get_element_attribute_value(self, element_identifier, attribute, timeout=timeout_default):

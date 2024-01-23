@@ -1,8 +1,8 @@
-from selenium import webdriver
-from test_data import TestData
-import pytest
-import os
+from os import path, remove
 from datetime import datetime
+from selenium import webdriver
+import pytest
+from test_data import TestData
 from utilities import (get_exception_error_name_possibly_screenshot, check_exception_error_occurred, log_exception_error, add_screenshots_to_html_report,
                        get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
                        add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
@@ -30,8 +30,8 @@ def initialize_driver(request, metadata):
 # Hook method that runs at the beginning of whole test run session inside which a urls file is deleted if it exists (shall be deleted at the end of previous test
 # after urls are added to html report).
 def pytest_sessionstart():
-    if os.path.exists(path_urls_file):
-        os.remove(path_urls_file)
+    if path.exists(path_urls_file):
+        remove(path_urls_file)
 
 
 # Hook method inside which a location and name of html report file are configured.
@@ -39,7 +39,7 @@ def pytest_sessionstart():
 def pytest_configure(config):
     make_folders_if_dont_exist(reports_folder)
     report_file = "Test_report_" + datetime.now().strftime("%d-%m-%Y_%H-%M-%S") + ".html"
-    report_location = os.path.join(reports_folder, report_file)
+    report_location = path.join(reports_folder, report_file)
     config.option.htmlpath = report_location
 
 
@@ -48,7 +48,7 @@ def pytest_configure(config):
 @pytest.fixture()
 def get_report_screenshots_folder_name(pytestconfig):
     path_to_html_report = pytestconfig.getoption("htmlpath")
-    report_screenshots_folder = os.path.splitext(os.path.basename(path_to_html_report))[0]
+    report_screenshots_folder = path.splitext(path.basename(path_to_html_report))[0]
     return report_screenshots_folder
 
 
