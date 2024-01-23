@@ -72,7 +72,7 @@ class TopSection(ElementHandler):
         self.element_handler_click(self.basket_icon, "Basket icon", True)
 
     def check_if_basket_is_not_empty(self):
-        flag = self.element_handler_is_visible(self.basket_icon_item_inside, 2, True)
+        flag = self.element_handler_is_visible(self.basket_icon_item_inside, 3, True)
         return flag
 
     """
