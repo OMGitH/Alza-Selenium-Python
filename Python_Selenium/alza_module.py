@@ -7,7 +7,7 @@ from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from Page_Objects.delivery_addresses_details_dialog import DeliveryAddressesDetails
 from Page_Objects.main_page import MainPage
-from test_data import TestData
+from test_data import user_name, password, user_signed_in_text, delivery_addresses_original
 import mixed_assertions as mixed_assert
 from report_logger import logger
 
@@ -46,11 +46,11 @@ class AlzaModule:
 		# Click login link.
 		self.top_section.click_login_link()
 		# Fill in credentials and login.
-		self.login_page.successful_login(TestData.user_name, TestData.password)
+		self.login_page.successful_login(user_name, password)
 		# Check successful login.
 		mixed_assert.is_true(driver, get_report_screenshots_folder_name, self.login_page.login_dialog_is_invisible(), "Login dialog is correctly invisible.", "Login dialog is still visible but shall not be.", interrupt_test)
 		actual_signed_in_text = self.top_section.get_signed_in_user_text()
-		mixed_assert.equal(driver, get_report_screenshots_folder_name, actual_signed_in_text, TestData.user_signed_in_text, f"Text in the top menu is correct: '{actual_signed_in_text}'.", f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{TestData.user_signed_in_text}'. Seems user is not logged in though shall be.", interrupt_test)
+		mixed_assert.equal(driver, get_report_screenshots_folder_name, actual_signed_in_text, user_signed_in_text, f"Text in the top menu is correct: '{actual_signed_in_text}'.", f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{user_signed_in_text}'. Seems user is not logged in though shall be.", interrupt_test)
 
 	def logout(self, driver, get_report_screenshots_folder_name, interrupt_test=False):
 		self.top_section.click_signed_in_user_link()
@@ -77,7 +77,7 @@ class AlzaModule:
 
 	# test_add_remove_delivery_addresses: Add delivery addresses.
 	def delivery_addresses_add_addresses(self):
-		for data in TestData.delivery_addresses_original:
+		for data in delivery_addresses_original:
 			self.delivery_addresses_page.click_add_new_address_button()
 			self.delivery_addresses_details_dialog.fill_in_new_address_details(data)
 
