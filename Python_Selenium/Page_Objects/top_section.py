@@ -1,4 +1,3 @@
-from time import sleep
 from selenium.webdriver.common.by import By
 from element_handler import ElementHandler
 
@@ -44,7 +43,6 @@ class TopSection(ElementHandler):
         self.element_handler_clear_input_by_pressing_backspace(self.search_input, "value", "search input field", True)
         self.element_handler_send_keys(self.search_input, value, "search input field", True)
         self.element_handler_is_visible(self.search_suggestion)
-        sleep(1)
 
     def click_search_button(self):
         self.element_handler_click(self.search_button, "'Hledat' button", True)

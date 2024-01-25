@@ -6,6 +6,7 @@ from Page_Objects.my_account_page import MyAccount
 from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from Page_Objects.delivery_addresses_details_dialog import DeliveryAddressesDetails
+from Page_Objects.main_page import MainPage
 from test_data import TestData
 import mixed_assertions as mixed_assert
 from report_logger import logger
@@ -29,12 +30,18 @@ class AlzaModule:
 		self.watchdogs_page = Watchdogs(self.driver)
 		self.delivery_addresses_page = DeliveryAddresses(self.driver)
 		self.delivery_addresses_details_dialog = DeliveryAddressesDetails(self.driver)
+		self.main_page = MainPage(self.driver)
 
 	# Methods:
+	# Reject all cookies.
+	def reject_all_cookies(self):
+		self.main_page.goods_images_are_visible()
+		self.cookies_pane.click_reject_all_button()
+
 	# Login and logout:
 	def reject_cookies_and_login(self, driver, get_report_screenshots_folder_name, interrupt_test=False):
 		# Reject all cookies.
-		self.cookies_pane.click_reject_all_link()
+		self.reject_all_cookies()
 		# Log into application:
 		# Click login link.
 		self.top_section.click_login_link()

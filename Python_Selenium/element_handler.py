@@ -64,20 +64,21 @@ class ElementHandler:
         else:
             try:
                 WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(element_identifier))
-                return True
+                flag = True
             except TimeoutException:
-                return False
+                flag = False
+        return flag
 
     def element_handler_is_invisible(self, element_identifier, timeout=timeout_default, handle_TimeoutException=False):
         if not handle_TimeoutException:
             flag = WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(element_identifier))
-            return flag
         else:
             try:
                 WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(element_identifier))
-                return True
+                flag = True
             except TimeoutException:
-                return False
+                flag = False
+        return flag
 
     def element_handler_get_element_text(self, element_identifier, timeout=timeout_default):
         element_text = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(element_identifier)).text
@@ -124,10 +125,9 @@ class ElementHandler:
         try:
             elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(element_identifier))
             number_of_elements = len(elements)
-            return number_of_elements
         except TimeoutException:
             number_of_elements = 0
-            return number_of_elements
+        return number_of_elements
 
     def element_handler_get_multiple_visible_elements(self, element_identifier, timeout=timeout_default):
         elements = WebDriverWait(self.driver, timeout).until(EC.visibility_of_all_elements_located(element_identifier))
@@ -139,9 +139,9 @@ class ElementHandler:
     In general speeds up process of checking state and adds reliability (for example can be used instead of checking if item is in basket or not
     using visibility_of_element_located with timeout of 2 seconds and if it doesn't appear in 2 seconds, assuming that there is no item in basket).
     """
-    def element_handler_get_state(self, *element_identifiers, number_of_checks=40, check_wait=0.25):
+    def element_handler_get_state(self, *elements_identifiers, number_of_checks=40, check_wait=0.25):
         for check in range(number_of_checks):
-            for element_identifier in element_identifiers:
+            for element_identifier in elements_identifiers:
                 try:
                     WebDriverWait(self.driver, check_wait).until(EC.visibility_of_element_located(element_identifier))
                     return element_identifier
