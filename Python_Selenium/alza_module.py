@@ -35,13 +35,14 @@ class AlzaModule:
 	# Methods:
 	# Reject all cookies.
 	def reject_all_cookies(self):
-		self.main_page.goods_images_are_visible()
+		self.main_page.main_page_loaded()
 		self.cookies_pane.click_reject_all_button()
 
 	# Login and logout:
 	def reject_cookies_and_login(self, driver, get_report_screenshots_folder_name, interrupt_test=False):
 		# Reject all cookies.
 		self.reject_all_cookies()
+		self.cookies_pane.cookies_pane_is_invisible()
 		# Log into application:
 		# Click login link.
 		self.top_section.click_login_link()

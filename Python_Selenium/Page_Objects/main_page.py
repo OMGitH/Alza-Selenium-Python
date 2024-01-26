@@ -6,7 +6,7 @@ class MainPage(ElementHandler):
 
     # Identification of elements on main page.
     category_section_header = (By.XPATH, "//div[@class='categoryPage']/h1")
-    goods_images = (By.XPATH, "//img[contains(@class, 'carousel0')]")
+    price_bombs_image = (By.XPATH, "//img[@alt='Cenové bomby']")
     item_detail_page = (By.XPATH, "//div[contains(@class, 'detail-page')]")
     computers_notebooks_menu_item = (By.LINK_TEXT, "Počítače a notebooky")
     computers_tile = (By.LINK_TEXT, "Počítače")
@@ -92,5 +92,5 @@ class MainPage(ElementHandler):
         if self.element_handler_is_visible(self.pet_supply_dialog_agree_button, 2, True):
             self.element_handler_click(self.pet_supply_dialog_agree_button, "'Souhlasím' button", True)
 
-    def goods_images_are_visible(self):
-        self.element_handler_is_visible(self.goods_images)
+    def main_page_loaded(self):
+        self.element_handler_is_visible(self.price_bombs_image)

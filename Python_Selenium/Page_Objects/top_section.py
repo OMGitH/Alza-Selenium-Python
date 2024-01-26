@@ -16,7 +16,8 @@ class TopSection(ElementHandler):
     search_input = (By.XPATH, "//input[@data-testid='searchInput']")
     search_button = (By.XPATH, "//button[@data-testid='button-search']")
     search_suggestion = (By.XPATH, "//div[@data-testid='searchResultsContainer']")
-    search_suggestion_1st_item = (By.XPATH, "//div[contains(@data-testid, 'section')][1]/a[@data-testid='suggestion-item'][1]")
+    search_suggestion_1st_item = (By.XPATH, "//div[contains(@data-testid, 'section')][1]/a[@data-testid='suggestion-item'][1]//span[text()]")
+    search_suggestion_show_all_results_button = (By.XPATH, "//a[@data-testid='button-showAllResults']")
     basket_icon = (By.XPATH, "//a[@data-testid='headerBasketIcon']")
     basket_icon_item_inside = (By.XPATH, "//a[@data-testid='headerBasketIcon']//span")
     basket_icon_empty = (By.XPATH, "//a[@data-testid='headerBasketIcon'][not(span)]")
@@ -46,10 +47,12 @@ class TopSection(ElementHandler):
 
     def click_search_button(self):
         self.element_handler_click(self.search_button, "'Hledat' button", True)
+        self.element_handler_is_invisible(self.search_suggestion)
 
     def search_suggestion_click_1st_item(self):
-        self.element_handler_is_visible(self.search_suggestion)
-        self.element_handler_click(self.search_suggestion_1st_item, "Search suggestion 1st item", True)
+        if self.element_handler_is_visible(self.search_suggestion_1st_item) and self.element_handler_is_visible(self.search_suggestion_show_all_results_button):
+            self.element_handler_click(self.search_suggestion_1st_item, "Search suggestion 1st item", True)
+        self.element_handler_is_invisible(self.search_suggestion)
 
     def login_link_is_visible(self):
         flag = self.element_handler_is_visible(self.login_link, handle_TimeoutException=True)
