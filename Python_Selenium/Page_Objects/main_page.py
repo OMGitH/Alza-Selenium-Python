@@ -6,7 +6,6 @@ class MainPage(ElementHandler):
 
     # Identification of elements on main page.
     category_section_header = (By.XPATH, "//div[@class='categoryPage']/h1")
-    price_bombs_image = (By.XPATH, "//img[@alt='Cenové bomby']")
     item_detail_page = (By.XPATH, "//div[contains(@class, 'detail-page')]")
     computers_notebooks_menu_item = (By.LINK_TEXT, "Počítače a notebooky")
     computers_tile = (By.LINK_TEXT, "Počítače")
@@ -22,6 +21,8 @@ class MainPage(ElementHandler):
     first_pet_supply_item_link = (By.XPATH, "//div[@data-react-client-component-id='carousel0']//swiper-slide[@class='swiper-slide-active']//a[@data-testid='itemName']")
     first_pet_supply_item_name = (By.XPATH, "//h1[@itemprop='name']")
     watch_price_link = (By.CLASS_NAME, "watchproduct")
+    sync_frame = (By.XPATH, "//iframe[contains(@src, 'creativecdn.com')]")
+    document_body_in_sync_frame = (By.XPATH, "//body")
 
     # Initialization.
     def __init__(self, driver):
@@ -37,7 +38,7 @@ class MainPage(ElementHandler):
         self.element_handler_is_visible(self.category_section_header)
 
     def click_computers_tile(self):
-        self.element_handler_click(self.computers_tile, "'Počítače' tile", True, timeout=30)
+        self.element_handler_click(self.computers_tile, "'Počítače' tile", True, timeout=40)
 
     def click_first_pet_suppy_item(self):
         self.element_handler_click(self.first_pet_supply_item_link, "'Chovatelské potřeby' item", True)
@@ -92,5 +93,7 @@ class MainPage(ElementHandler):
         if self.element_handler_is_visible(self.pet_supply_dialog_agree_button, 2, True):
             self.element_handler_click(self.pet_supply_dialog_agree_button, "'Souhlasím' button", True)
 
-    def main_page_loaded(self):
-        self.element_handler_is_visible(self.price_bombs_image)
+    def main_page_loaded_after_cookies_rejected(self):
+        self.element_handler_switch_to_frame(self.sync_frame)
+        self.element_handler_is_visible(self.document_body_in_sync_frame)
+        self.element_handler_switch_back_from_frame()
