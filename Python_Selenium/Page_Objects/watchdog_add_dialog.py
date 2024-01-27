@@ -6,7 +6,7 @@ class WatchdogAdd(ElementHandler):
 
 	# Identification of elements on watchdog add dialog.
 	email_input = (By.NAME, "email")
-	price_limit_checkbox = (By.XPATH, "//input[contains(@class, 'PrivateSwitchBase')][not(contains(@name, 'isTrackingStock'))]")
+	price_limit_checkbox = (By.XPATH, "//input[contains(@class, 'PrivateSwitchBase')][not(@name)]/following-sibling::*[name()='svg']")
 	price_limit_input = (By.NAME, "price")
 	confirm_button = (By.XPATH, "//button[contains(@class, 'blue')][contains(@class, 'price-box')]")
 

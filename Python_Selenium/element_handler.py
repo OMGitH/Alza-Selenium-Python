@@ -40,9 +40,9 @@ class ElementHandler:
                 break
 
     def element_handler_hover_click(self, element_identifier, element_name, report_entry, timeout=timeout_default):
-        element = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(element_identifier))
+        element_hover_click = self.element_handler_is_visible(element_identifier, timeout=timeout)
         action = ActionChains(self.driver)
-        action.move_to_element(element).click().perform()
+        action.move_to_element(element_hover_click).click().perform()
         if report_entry:
             logger.info(f"{element_name} hovered and clicked.")
 
