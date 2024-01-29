@@ -28,6 +28,7 @@ class Watchdogs(ElementHandler):
 			self.element_handler_click(self.item_removal_confirmation_button, "'Zrušit hlídání' button", True)
 			self.element_handler_is_invisible(self.remove_question_dialog)
 			self.element_handler_click(self.success_remove_note_close_button, "'X' button at 'Hlídací pes smazán.' note", True)
+			self.element_handler_is_invisible(self.success_remove_note_close_button)
 			removed_watchdogs += 1
 		if removed_watchdogs == 0:
 			logger.info("\t- Nothing removed as there are no watchdogs.")
@@ -73,5 +74,6 @@ class Watchdogs(ElementHandler):
 			all_items_removed_message = self.element_handler_get_element_text(self.all_items_removed_from_watchdogs_page_text)
 			return all_items_removed_message
 
-	def close_success_note(self):
+	def close_success_add_note(self):
 		self.element_handler_click(self.success_add_note_close_button, "'X' button at 'Hlídací pes nastaven.' note", True)
+		self.element_handler_is_invisible(self.success_add_note_close_button)
