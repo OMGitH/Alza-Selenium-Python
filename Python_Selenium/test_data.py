@@ -27,24 +27,24 @@ text_once_all_items_removed_from_watchdogs_page = "Momentálně pro vás nehlíd
 
 # test_delivery_addresses_add_remove_addresses
 delivery_address_1_original = {"name surname": "Jarda Starý",
-                    "street and number": "Ulice 4",
-                    "zip": "10000",
-                    "city": "Praha",
-                    "phone": "777123456"}
+                               "street and number": "Ulice 4",
+                               "zip": "10000",
+                               "city": "Praha",
+                               "phone": "777123456"}
 delivery_address_2_original = {"name surname": "Petr Nový",
-                    "street and number": "Jarní 20",
-                    "zip": "11000",
-                    "city": "Ostrava",
-                    "phone": "777456789"}
+                               "street and number": "Jarní 20",
+                               "zip": "11000",
+                               "city": "Ostrava",
+                               "phone": "777456789"}
 delivery_addresses_original = [delivery_address_1_original, delivery_address_2_original]
 delivery_address_1_edited = {"name surname": "Martin Pávek",
-                           "street and number": "Nová 17",
-                           "zip": "12000",
-                           "city": "Liberec",
-                           "phone": "604987654"}
+                             "street and number": "Nová 17",
+                             "zip": "12000",
+                             "city": "Liberec",
+                             "phone": "604987654"}
 delivery_address_2_edited = {"name surname": "Gregor Běžný",
-                           "street and number": "Podzimní 45",
-                           "zip": "13000",
-                           "city": "Brno",
-                           "phone": "604654321"}
+                             "street and number": "Podzimní 45",
+                             "zip": "13000",
+                             "city": "Brno",
+                             "phone": "604654321"}
 delivery_addresses_edited = [delivery_address_1_edited, delivery_address_2_edited]

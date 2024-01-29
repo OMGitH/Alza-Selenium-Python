@@ -11,6 +11,7 @@
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="D:\Alza-Selenium-Python\Python_Selenium\Config\requirements.txt" />
     <option name="versionSpecifier" value="Greater or equal (&gt;=x.y.z)" />
+    <option name="removeUnused" value="true" />
     <option name="keepMatchingSpecifier" value="false" />
   </component>
   <component name="TestRunnerService">

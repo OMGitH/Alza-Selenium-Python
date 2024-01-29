@@ -11,7 +11,7 @@ from Config.files_folders_names_paths import reports_folder, path_urls_file
 
 
 # Fixture method for initialization of driver before each test runs, after each test version of webdrivers and Selenium are obtained for html
-# report Environment table and driver is quit.
+# report "Environment" table and driver is quit.
 @pytest.fixture(params=["chrome", "firefox"])
 def initialize_driver(request, metadata):
     if request.param == "chrome":
@@ -22,7 +22,7 @@ def initialize_driver(request, metadata):
     driver.get(url)
     request.cls.driver = driver
     yield
-    # Get version of webdrivers (Chrome, Firefox) and Selenium and save it to pytest metadata therefore add it to Environment section of html report.
+    # Get version of webdrivers (Chrome, Firefox) and Selenium and save it to pytest metadata therefore add it to "Environment" section of html report.
     get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata)
     driver.quit()
 

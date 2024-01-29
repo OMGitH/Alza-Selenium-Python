@@ -13,7 +13,6 @@ class MainPage(ElementHandler):
     first_computer_price = (By.XPATH, "//div[contains(@class, 'first firstRow')]//span[@class='price-box__price']")
     first_computer_put_to_basket_button = (By.XPATH, "//div[contains(@class, 'first firstRow')]//a[@class='btnk1']")
     first_computer_added_to_basket_text = (By.XPATH, "//div[contains(@class, 'first firstRow')]//span[contains(@class, 'count-text')]")
-    continue_to_basket_button = (By.ID, "varBToBasketButton")
     search_result_header_text = (By.XPATH, "//h1[@itemprop='name']")
     search_result_number_of_items_found = (By.ID, "lblNumberItem")
     pet_supplies_menu_item = (By.LINK_TEXT, "Chovatelské potřeby")
@@ -71,9 +70,6 @@ class MainPage(ElementHandler):
             price = price.replace(" ", "")
             price = price.replace(",-", "Kč")
             return price
-
-    def click_continue_to_basket_button(self):
-        self.element_handler_click(self.continue_to_basket_button)
 
     def click_first_computer_put_to_basket_button(self):
         self.element_handler_click(self.first_computer_put_to_basket_button, "'Do košíku' button", True)

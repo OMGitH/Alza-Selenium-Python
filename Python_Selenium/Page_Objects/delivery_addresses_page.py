@@ -8,7 +8,6 @@ class DeliveryAddresses(ElementHandler):
 
 	# Identification of elements on delivery addresses page.
 	delivery_address_item = (By.XPATH, "//div[@data-testid='address']")
-	without_delivery_address_items = (By.XPATH, "//div[@data-testid='deliveryAddressesRoot'][not(descendant::div[@data-testid='address'])]")
 	delivery_address_remove_button = (By.XPATH, "//button[@data-testid='button-deleteAddress']")
 	delivery_address_removal_confirmation_button = (By.XPATH, "//button[contains(@class, 'green')]")
 	remove_question_dialog = (By.XPATH, "//div[@role='dialog']")
@@ -43,40 +42,6 @@ class DeliveryAddresses(ElementHandler):
 		else:
 			logger.info(f"\t- {removed_addresses} delivery address(es) removed.")
 
-	# def delivery_addresses_remove_all_items_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
-	# 	if self.base_is_visible(self.delivery_address_item, 3, True):
-	# 		while self.base_is_visible(self.delivery_address_remove_button, 1, True):
-	# 			number_of_items = self.base_get_number_of_visible_elements(self.delivery_address_remove_button)
-	# 			self.base_click(self.delivery_address_remove_button, True)
-	# 			self.base_click(self.delivery_address_removal_confirmation_button)
-	# 			self.base_is_invisible(self.remove_question_dialog)
-	# 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for it to get refreshed.
-	# 			if number_of_items != 0:
-	# 				for check in range(number_of_checks):
-	# 					number_of_items_after_removal = self.base_get_number_of_visible_elements(self.delivery_address_remove_button)
-	# 					if number_of_items_after_removal == 0 or number_of_items_after_removal == number_of_items - 1:
-	# 						break
-	# 					time.sleep(check_wait)
-
-	"""
-	Code below uses get state method that is faster as it doesn't wait for timeout to make sure whether or not there is an item
-	identifying a state (if there is an address at delivery addresses page, True is returned, if not, False is returned).
-	"""
-	# def delivery_addresses_remove_all_items_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
-	# 	if self.base_get_state(self.delivery_address_item, self.without_delivery_address_items):
-	# 		while self.base_is_visible(self.delivery_address_remove_button, 1):
-	# 			number_of_items = self.base_get_number_of_elements(self.delivery_address_remove_button)
-	# 			self.base_click(self.delivery_address_remove_button, True)
-	# 			self.base_click(self.delivery_address_removal_confirmation_button)
-	# 			self.base_is_invisible(self.remove_question_dialog)
-	# 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for it to get refreshed.
-	# 			if number_of_items != 0:
-	# 				for check in range(number_of_checks):
-	# 					number_of_items_after_removal = self.base_get_number_of_elements(self.delivery_address_remove_button)
-	# 					if number_of_items_after_removal == 0 or number_of_items_after_removal == number_of_items - 1:
-	# 						break
-	# 					time.sleep(check_wait)
-
 	def click_add_new_address_button(self):
 		self.element_handler_click(self.add_new_delivery_address_button, "'Přidat novou adresu' button", True)
 
@@ -91,7 +56,7 @@ class DeliveryAddresses(ElementHandler):
 		addresses_street_and_number = self.element_handler_get_multiple_elements_text(self.street_and_number_text)
 		addresses_zip_and_city = self.element_handler_get_multiple_elements_text(self.zip_and_city_text)
 		addresses_phones = self.element_handler_get_multiple_elements_text(self.phone_text)
-		# Fill list with dictionary per delivery address with data so that it is similar to the list in TestData and return it.
+		# Fill list with dictionary per delivery address with data so that it is similar to the list in test_data and return it.
 		for index in range(number_of_addresses):
 			address = {}
 			delivery_addresses.append(address)

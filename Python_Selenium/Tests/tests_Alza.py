@@ -39,7 +39,7 @@ class TestsAlza:
         # Reject all cookies.
         logger.info("------- REJECT ALL COOKIES -------")
         self.alza_module.reject_all_cookies()
-        mixed_assert.is_true(self.driver, get_report_screenshots_folder_name, self.cookies_pane.cookies_pane_is_invisible(handle_TimeoutException=True), "Cookies pane is correctly invisible.", "Cookies pane is still visible but shall not be.")
+        mixed_assert.is_true(self.driver, get_report_screenshots_folder_name, self.cookies_pane.cookies_pane_is_invisible(handle_timeout_exception=True), "Cookies pane is correctly invisible.", "Cookies pane is still visible but shall not be.")
 
         # Unsuccessful login:
         # E-mail and password fields blank.
@@ -91,8 +91,6 @@ class TestsAlza:
         - Log out.
         """
 
-        self.login_page = LoginPage(self.driver)
-        self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
         self.main_page = MainPage(self.driver)
         self.basket_page = Basket(self.driver)
@@ -121,7 +119,7 @@ class TestsAlza:
         mixed_assert.equal(self.driver, get_report_screenshots_folder_name, actual_number_of_items_at_basket_icon, test_data.number_of_items_in_basket, f"Number of items at basket icon is correct: '{actual_number_of_items_at_basket_icon}'.", f"Wrong number of items at basket icon. Actual number is '{actual_number_of_items_at_basket_icon}' but it shall be '{test_data.number_of_items_in_basket}'.")
         self.top_section.click_basket_icon()
 
-        # On basket_page page:
+        # On basket page:
         # Check item name, count and price.
         logger.info("------- BASKET: CHECK CORRECT ITEM IS IN BASKET -------")
         actual_computer_name = self.basket_page.get_item_name()
@@ -154,9 +152,7 @@ class TestsAlza:
         - Log out.
         """
 
-        self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
-        self.login_page = LoginPage(self.driver)
         self.main_page = MainPage(self.driver)
         self.alza_module = AlzaModule(self.driver)
 
@@ -172,6 +168,7 @@ class TestsAlza:
         actual_search_result_title = self.main_page.get_search_result_header()
         mixed_assert.equal(self.driver, get_report_screenshots_folder_name, actual_search_result_title, test_data.search_result_header_via_search_button, f"Displayed header of looked up section is correct: '{actual_search_result_title}'.", f"Wrong header of looked up section is displayed. Actual header is '{actual_search_result_title}' but it shall be '{test_data.search_result_header_via_search_button}'. Seems wrong section is displayed.")
         mixed_assert.greater(self.driver, get_report_screenshots_folder_name, self.main_page.get_search_result_items_amount(), 0, "There are correctly items found.", "No items found, items shall be found.")
+
         # Search for "recenze" and choose from suggestion:
         logger.info("------- LOOK UP 'RECENZE' VIA FIRST SUGGESTION AND CHECK RESULT -------")
         self.top_section.search_provide_value(test_data.search_value_via_suggestion)
@@ -194,9 +191,7 @@ class TestsAlza:
         - Log out.
         """
 
-        self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
-        self.login_page = LoginPage(self.driver)
         self.main_page = MainPage(self.driver)
         self.my_account_page = MyAccount(self.driver)
         self.watchdogs_page = Watchdogs(self.driver)
@@ -262,9 +257,7 @@ class TestsAlza:
         Note: Number of addresses can be changed by adding or removing dictionaries from delivery_addresses_original and delivery_addresses_edited in test_data.py.
         """
 
-        self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
-        self.login_page = LoginPage(self.driver)
         self.delivery_addresses_page = DeliveryAddresses(self.driver)
         self.my_account_page = MyAccount(self.driver)
         self.alza_module = AlzaModule(self.driver)

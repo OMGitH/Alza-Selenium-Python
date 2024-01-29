@@ -35,25 +35,6 @@ class Watchdogs(ElementHandler):
 		else:
 			logger.info(f"\t- {removed_watchdogs} watchdog(s) removed.")
 
-
-	# def watchdogs_remove_all_items_from_watchdogs_page(self):
-	# 	if self.base_is_visible(self.item, 3, True):
-	# 		while self.base_is_visible(self.item_remove_button, 1, True):
-	# 			self.base_click(self.item_remove_button)
-	# 			self.base_click(self.item_removal_confirmation_button)
-	# 			self.base_is_invisible(self.remove_question_dialog)
-
-	"""
-	Code below uses get state method that is faster as it doesn't wait for timeout to make sure whether or not there is an item
-	identifying a state (if there is an item in watchdogs page, True is returned, if not, False is returned).
-	"""
-	# def watchdogs_remove_all_items_from_watchdogs_page(self):
-	# 	if self.base_get_state(self.item, self.all_items_removed_from_watchdogs_page_text):
-	# 		while self.base_is_visible(self.item_remove_button, 1):
-	# 			self.base_click(self.item_remove_button)
-	# 			self.base_click(self.item_removal_confirmation_button)
-	# 			self.base_is_invisible(self.remove_question_dialog)
-
 	def get_watchdog_item_name(self):
 		if self.element_handler_is_visible(self.item):
 			watchdog_item_name = self.element_handler_get_element_text(self.item)
@@ -66,7 +47,7 @@ class Watchdogs(ElementHandler):
 			return watchdog_price_limit
 
 	def check_alert_price_is_checked(self):
-		flag = self.element_handler_is_visible(self.alert_price_checkbox_checked, handle_TimeoutException=True)
+		flag = self.element_handler_is_visible(self.alert_price_checkbox_checked, handle_timeout_exception=True)
 		return flag
 
 	def get_text_once_all_items_removed(self):

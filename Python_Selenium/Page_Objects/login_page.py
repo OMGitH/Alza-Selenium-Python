@@ -17,7 +17,7 @@ class LoginPage(ElementHandler):
     def __init__(self, driver):
         super().__init__(driver)
 
-    # Actions on login dialog.
+    # Actions on login page.
     def provide_email(self, username):
         self.element_handler_clear_input(self.email_input, "'E-mail' input field", True)
         self.element_handler_send_keys(self.email_input, username, "'E-mail' input field", True)
@@ -30,11 +30,11 @@ class LoginPage(ElementHandler):
         self.element_handler_click(self.sign_in_button_active, "'Přihlásit se' button", True)
 
     def login_dialog_is_visible(self):
-        flag = self.element_handler_is_visible(self.login_dialog, handle_TimeoutException=True)
+        flag = self.element_handler_is_visible(self.login_dialog, handle_timeout_exception=True)
         return flag
 
     def login_dialog_is_invisible(self):
-        flag = self.element_handler_is_invisible(self.login_dialog, handle_TimeoutException=True)
+        flag = self.element_handler_is_invisible(self.login_dialog, handle_timeout_exception=True)
         return flag
 
     def get_blank_email_text(self):

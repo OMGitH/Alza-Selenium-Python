@@ -31,7 +31,7 @@ def save_screenshot_png_file(screenshot, path_to_screenshot_file):
 	screenshot.save(path_to_screenshot_file)
 
 
-# Method for creation of folder or folder with subfolder(s).
+# Method for creation of folder or folder with sub folder(s).
 def make_folders_if_dont_exist(path_to_folders):
 	if not os.path.exists(path_to_folders):
 		os.makedirs(path_to_folders)
@@ -51,7 +51,7 @@ def check_filename_is_correct(filename):
 # Method for getting last line from record.
 # Note:
 # - Can be used with failure record when looking for particular exception or error as it is mentioned at its last line. In such case
-# as a "record" a "report.longreprtext".
+# as a "record" a "report.longreprtext" is used.
 def get_last_line_from_record(record):
 	record_last_line = ""
 	if record != "":
@@ -227,7 +227,6 @@ def get_exception_error_log_record_from_previous_calls(exception_error):
 # Methods related to assertions and exceptions or errors:
 # Method for getting path to folder where screenshots for particular test are stored.
 def get_path_test_screenshots_folder(item):
-	# Get folder names and path to screenshots folder.
 	# Report folder for screenshots has the same name as report file except for ".html".
 	report_screenshots_folder = item.funcargs["get_report_screenshots_folder_name"]
 	# Test folder for screenshots has the same name as test itself.
@@ -356,8 +355,8 @@ def add_urls_to_html_report_delete_urls_file(extras):
 		os.remove(path_urls_file)
 
 
-# Method for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to Environment section of html report
-# as html report takes content of Environment table from pytest metadata.
+# Method for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to "Environment" table of html report
+# as html report takes content of "Environment" table from pytest metadata.
 def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
 	# Get Selenium version and add it to pytest metadata if it is not there.
 	if "Selenium" not in metadata:

@@ -36,12 +36,6 @@ class Basket(ElementHandler):
             item_price = item_price.replace(" ", "")
             return item_price
 
-    def click_down_arrow_price(self):
-        self.element_handler_click(self.down_arrow_price_button, "Down arrow price button", True)
-
-    def click_down_arrow_price_remove_item(self):
-        self.element_handler_click(self.down_arrow_price_menu_remove_item, "'Odstranit' down arrow menu item", True)
-
     def get_text_once_all_items_removed(self):
         if self.element_handler_is_visible(self.all_items_removed_from_basket_text):
             all_items_removed_message = self.element_handler_get_element_text(self.all_items_removed_from_basket_text)
@@ -64,8 +58,3 @@ class Basket(ElementHandler):
                     sleep(check_wait)
         if removed_items > 0:
             logger.info(f"\t- {removed_items} item(s) removed from basket.")
-
-    # def basket_remove_all_items_from_basket(self):
-    #     while self.base_is_visible(self.down_arrow_price_button, 1, True):
-    #         self.base_click(self.down_arrow_price_button)
-    #         self.base_click(self.down_arrow_price_menu_remove_item)

@@ -3,8 +3,9 @@ from utilities import process_assertion
 
 """
 Mixed assertions use pytest_check soft assertions.
-Mixed assertions add "interrupt_test" argument, once set to "True" if assertion fails rest of test is skipped. So assertion behaves as a hard assertion. 
-Contains only assertions actually used. If other assertion is needed it has to be added into this file.
+Mixed assertions add "interrupt_test" argument, once set to "True" if assertion fails rest of test is skipped. So assertion behaves as a hard assertion.
+Note:
+- Contains only assertions actually used. If other assertion is needed it has to be added into this file.
 """
 
 
