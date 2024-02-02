@@ -20,15 +20,15 @@ class TestsAlza:
     def test_login_logout(self, get_report_screenshots_folder_name):
         """
         Tests log in and log out:
-        - Reject all cookies, click login link.
+        - Reject all cookies, check that cookies pane is invisible, click login link.
         - Click signin button when credential fields are blank. Check that login dialog stays displayed and there are corresponding error messages displayed.
         - Provide wrong e-mail address and correct password, click signin button. Check that login dialog stays displayed and there is correct
         text on signin button.
         - Provide correct e-mail address and wrong password, click signin button. Check that login dialog stays displayed and there is correct
         text on signin button.
         - Provide correct e-mail address and password, click signin button. Check that login dialog disappears and correct user e-mail is displayed
-        in the upper part of the screen.
-        - Click logout link, check that login link is displayed.
+        in the top section of the screen.
+        - Click logout link, check that login link is displayed in the top section of the screen.
         """
 
         self.login_page = LoginPage(self.driver)
@@ -75,7 +75,7 @@ class TestsAlza:
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.driver, get_report_screenshots_folder_name, self.login_page.login_dialog_is_invisible(), "Login dialog is correctly invisible.", "Login dialog is still visible but shall not be.", True)
         actual_signed_in_text = self.top_section.get_signed_in_user_text()
-        mixed_assert.equal(self.driver, get_report_screenshots_folder_name, actual_signed_in_text, test_data.user_signed_in_text, f"Text in the top menu is correct: '{actual_signed_in_text}'.", f"Wrong text in the top menu. Actual text is '{actual_signed_in_text}' but shall be '{test_data.user_signed_in_text}'. Seems user is not logged in though shall be.", True)
+        mixed_assert.equal(self.driver, get_report_screenshots_folder_name, actual_signed_in_text, test_data.user_signed_in_text, f"Text in the top section is correct: '{actual_signed_in_text}'.", f"Wrong text in the top section. Actual text is '{actual_signed_in_text}' but shall be '{test_data.user_signed_in_text}'. Seems user is not logged in though shall be.", True)
 
         # Logout.
         logger.info("------- LOGOUT -------")
@@ -84,11 +84,12 @@ class TestsAlza:
     def test_basket_add_remove_item(self, get_report_screenshots_folder_name):
         """
         Tests adding and removing item from basket:
-        - Reject all cookies and log in, if there are items in basket, remove them.
+        - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
+        in the top section of the screen. If there are items in basket, remove them.
         - Add computer to basket and check number of items at basket icon.
         - Go to basket, check name of item present, its count and price.
         - Remove item from basket, check that basket is empty and there is no number at basket icon.
-        - Log out.
+        - Log out, check that login link is displayed in the top section of the screen.
         """
 
         self.top_section = TopSection(self.driver)
@@ -144,12 +145,13 @@ class TestsAlza:
     def test_search(self, get_report_screenshots_folder_name):
         """
         Tests searching via search button and by clicking suggestion:
-        - Reject all cookies and log in.
+        - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
+        in the top section of the screen.
         - Type "jízdní kola" into search input, press search button. Check that header of result page is "jízdní kola" and that amount of items found
         is bigger than 0.
         - Type "recenze" into search box, wait for suggestions to appear. Click first suggestion in suggestions and check that header of result page contains
         word "recenze".
-        - Log out.
+        - Log out, check that login link is displayed in the top section of the screen.
         """
 
         self.top_section = TopSection(self.driver)
@@ -184,11 +186,12 @@ class TestsAlza:
     def test_watchdogs_add_remove_item(self, get_report_screenshots_folder_name):
         """
         Tests adding and removing item from watchdogs page:
-        - Reject all cookies and log in, if there are items at watchdogs page, remove them.
+        - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
+        in the top section of the screen. If there are items at watchdogs page, remove them.
         - Add watchdog to pet supply item, go to watchdogs page. Check name of item present, its price limit and that checkbox for alerting when price
         decreases under price limit is checked.
         - Remove item from watchdogs page, check that watchdogs page is empty.
-        - Log out.
+        - Log out, check that login link is displayed in the top section of the screen.
         """
 
         self.top_section = TopSection(self.driver)
@@ -248,12 +251,13 @@ class TestsAlza:
     def test_delivery_addresses_add_remove_addresses(self, get_report_screenshots_folder_name):
         """
         Tests adding and removing addresses from delivery addresses page:
-        - Reject all cookies and log in, if there are addresses at delivery addresses page, remove them.
+        - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
+        in the top section of the screen. If there are addresses at delivery addresses page, remove them.
         - Add 2 delivery addresses, go to main page, then back to delivery addresses page. Check number of delivery addresses and that at both all provided
         data is correct.
         - Edit data at both addresses, go to main page, then back to delivery addresses page. Check that at both addresses all edited data is correct.
         - Remove both addresses from delivery addresses page and check that delivery addresses page is empty.
-        - Log out.
+        - Log out, check that login link is displayed in the top section of the screen.
         Note: Number of addresses can be changed by adding or removing dictionaries from delivery_addresses_original and delivery_addresses_edited in test_data.py.
         """
 
