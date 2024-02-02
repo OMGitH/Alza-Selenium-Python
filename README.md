@@ -24,10 +24,11 @@ GitHub repository content can be downloaded in 2 ways:
 
 ## PyCharm configuration
 - Run PyCharm. At „Import PyCharm Settings“ dialog, choose whether you want to import settings or not.
+- At „Data Sharing“ choose whether you want to share data or not.
 - At „Welcome to PyCharm“, click „Open“ button, go to location where „Alza-Selenium-Python“ folder is located. Open „Alza-Selenium-Python“ folder, select „Python_Selenium“ folder and click „OK“. If there is a question about trust, click „Trust Project“.
 - If there is a message about Java options environment variables displayed, it is OK to close it.
 - If there is a message about Invalid VCS root mapping, it is OK to close it.
-- Click hamburger menu in top left corner, go to „File“ – „Settings“ – „Project: Python_Selenium“ – „Python Interpreter“ and click „Add Interpreter“ – „Add Local Interpreter...“. In following window in field „Base interpreter“ there shall be prefilled path to installled Python. If not, select it there. Click „OK“ button, virtual environment will be created. In „Python Interpreter“ field there is now path to Python in virtual environment displayed. Click „Apply“ button and close window by „OK“ button.
+- Click hamburger menu in top left corner, go to „File“ – „Settings“ – „Project: Python_Selenium“ – „Python Interpreter“ and click „Add Interpreter“ – „Add Local Interpreter...“. In following window in field „Base interpreter“ there shall be prefilled path to installled Python. If not, select it there. Click „OK“ button, virtual environment will be created. In „Python Interpreter“ field there is now path to Python in virtual environment displayed. Click „Apply“ button, close window by „OK“ button and wait for the project to get updated.
 - Click hamburger menu in top left corner, go to „File“ – „Settings“ – „Tools“ – „Python Integrated Tools“:
    - In field „Package requirements file“ select „requirements.txt“ file that is in „Alza-Selenium-Python\Python_Selenium\Config“.
    - In field „Default test runner“ select „pytest“.
