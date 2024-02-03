@@ -1,4 +1,4 @@
-# Alza
+# UI test automation of Alza webpage
 Basic automated UI tests of Alza webpage build on Python, Selenium and pytest, using page object model. Tests are run in Chrome and Firefox browsers, include mixed assertions (soft by default, each can be set as hard) and html report (logging steps, failures, capturing screenshots and recording URL in case of failure, located under "Tests\Reports"). Code is stored in „Python_Selenium“ folder.\
 Following steps describe actions needed to run tests in PyCharm on Windows operating system. The steps are mostly described briefly so they don't cover all possible issues though some specific actions are described in more detail.
 
