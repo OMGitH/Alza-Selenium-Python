@@ -10,10 +10,10 @@ from utilities import (get_exception_error_name_possibly_screenshot, check_excep
 from Config.files_folders_names_paths import reports_folder, path_urls_file
 
 
-# Fixture method for initialization of driver before each test runs, after each test version of webdrivers and Selenium are obtained for html
-# report "Environment" table and driver is quit.
+# Fixture method for setup (initialization of driver) before each test runs, and teardown after each test ran (version of webdrivers
+# and Selenium are obtained for html report "Environment" table and driver is quit).
 @pytest.fixture(params=["chrome", "firefox"])
-def initialize_driver(request, metadata):
+def setup_and_teardown(request, metadata):
     if request.param == "chrome":
         driver = webdriver.Chrome()
     if request.param == "firefox":

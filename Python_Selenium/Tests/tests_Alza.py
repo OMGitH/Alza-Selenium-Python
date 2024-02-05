@@ -14,7 +14,7 @@ import mixed_assertions as mixed_assert
 from report_logger import logger
 
 
-@pytest.mark.usefixtures("initialize_driver")
+@pytest.mark.usefixtures("setup_and_teardown")
 class TestsAlza:
 
     def test_login_logout(self, get_report_screenshots_folder_name):
