@@ -45,7 +45,7 @@ def pytest_configure(config):
     config.option.htmlpath = report_location
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def get_report_screenshots_folder_name(pytestconfig):
     """Fixture method for getting report screenshots folder name from html report file name that is stored in pytest config and is created
     inside pytest_configure hook.
