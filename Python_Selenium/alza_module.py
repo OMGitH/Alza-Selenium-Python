@@ -11,14 +11,11 @@ from test_data import user_name, password, user_signed_in_text, delivery_address
 import mixed_assertions as mixed_assert
 from report_logger import logger
 
-"""
-Additional layer in which various methods can be defined, for example those used in more tests, that are just preconditions for test
-or which combine more page objects. Can serve also for extraction of complexity from test level.
-"""
-
 
 class AlzaModule:
-
+	"""Additional layer in which various methods can be defined, for example those used in more tests, that are just preconditions for test
+	or which combine more page objects. Can serve also for extraction of complexity from test level.
+	"""
 	# Initialization.
 	def __init__(self, driver):
 		self.driver = driver

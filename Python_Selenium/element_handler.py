@@ -5,15 +5,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from report_logger import logger
 
-"""
-Contains basic methods for handling web page elements that are used at all page objects and thus is a parent of all page objects.
-"""
 
 timeout_default = 20
 
 
 class ElementHandler:
-
+    """Contains basic methods for handling web page elements that are used at all page objects and thus is a parent of all page objects."""
     # Initialization.
     def __init__(self, driver):
         self.driver = driver
@@ -111,10 +108,11 @@ class ElementHandler:
         elements = WebDriverWait(self.driver, timeout).until(ec.visibility_of_all_elements_located(element_identifier))
         return elements
 
-    # Serves for checking which of multiple possible states is true without having to wait for timeout when checking whether an element is present or not.
-    # Can be used only if each state has an element that is not present in the other state as the state is identified based on presence of an element.
-    # In general speeds up process of checking state and adds reliability.
     def element_handler_get_state(self, *elements_identifiers, number_of_checks=40, check_wait=0.25):
+        """Serves for checking which of multiple possible states is true without having to wait for timeout when checking whether an element
+        is present or not. Can be used only if each state has an element that is not present in the other state as the state is identified
+        based on presence of an element. In general speeds up process of checking state and adds reliability.
+        """
         for check in range(number_of_checks):
             for element_identifier in elements_identifiers:
                 try:

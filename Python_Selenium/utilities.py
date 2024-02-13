@@ -1,3 +1,7 @@
+"""Contains additional methods. Contains also methods directly related to assertions like process_assertion as if these methods were directly
+inside mixed_assertions.py they would be offered via dot notation and that is not desired. There are also methods here used by methods in
+conftest.py file which are defined here in order to keep conftest.py less complex.
+"""
 import os
 from datetime import date
 from io import BytesIO
@@ -10,35 +14,29 @@ from PIL import Image
 from report_logger import logger
 from Config.files_folders_names_paths import path_urls_file, path_screenshots_folder, reports_folder
 
-"""
-Contains additional methods. Contains also methods directly related to assertions like process_assertion as if these methods were directly
-inside mixed_assertions.py they would be offered via dot notation and that is not desired. There are also methods here used by methods in
-conftest.py file which are defined here in order to keep conftest.py less complex.
-"""
-
 
 # General methods:
-# Method for taking screenshot into memory.
 def take_screenshot_memory(driver):
+	"""Method for taking screenshot into memory."""
 	screenshot = driver.get_screenshot_as_png()
 	return screenshot
 
 
-# Method for saving screenshot from memory to png file.
 def save_screenshot_png_file(screenshot, path_to_screenshot_file):
+	"""Method for saving screenshot from memory to png file."""
 	# Transform screenshot into format that can be saved as png file.
 	screenshot = Image.open(BytesIO(screenshot))
 	screenshot.save(path_to_screenshot_file)
 
 
-# Method for creation of folder or folder with sub folder(s).
 def make_folders_if_dont_exist(path_to_folders):
+	"""Method for creation of folder or folder with sub folder(s)."""
 	if not os.path.exists(path_to_folders):
 		os.makedirs(path_to_folders)
 
 
-# Method for checking filename if it is correct, i.e. doesn't contain character that can't be present in filename.
 def check_filename_is_correct(filename):
+	"""Method for checking filename if it is correct, i.e. doesn't contain character that can't be present in filename."""
 	restricted_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
 	flag = True
 	for char in restricted_chars:
@@ -48,22 +46,24 @@ def check_filename_is_correct(filename):
 	return flag
 
 
-# Method for getting last line from record.
-# Note:
-# - Can be used with failure record when looking for particular exception or error as it is mentioned at its last line. In such case
-# as a "record" a "report.longreprtext" is used.
 def get_last_line_from_record(record):
+	"""Method for getting last line from record.
+	Note:
+	- Can be used with failure record when looking for particular exception or error as it is mentioned at its last line. In such case
+	as a "record" a "report.longreprtext" is used.
+	"""
 	record_last_line = ""
 	if record != "":
 		record_last_line = record.splitlines()[-1]
 	return record_last_line
 
 
-# Method for getting filename and line number of code inside calling method.
-# Note:
-# - Can be used for getting test filename and code line number inside test from which code leading to the assertion was executed.
-# This info is used in name of failed assertions screenshot.
 def get_calling_method_filename_code_line_number(calling_method):
+	"""Method for getting filename and line number of code inside calling method.
+	Note:
+	- Can be used for getting test filename and code line number inside test from which code leading to the assertion was executed.
+	This info is used in name of failed assertions screenshot.
+	"""
 	# Loop back through frames and look for a frame that contains name of calling method. From this frame name of file
 	# and code line number are obtained.
 	previous_frame = currentframe().f_back
@@ -75,8 +75,8 @@ def get_calling_method_filename_code_line_number(calling_method):
 
 
 # Methods related to assertions:
-# Method for processing test execution based on outcome of assertion like taking a screenshot if failed, stopping test execution or logging a message.
 def process_assertion(driver, report_screenshots_folder, assertion_type, flag, assertion_pass_message, assertion_fail_message, interrupt_test, value1="", value2="", boolean_value=""):
+	"""Method for processing test execution based on outcome of assertion like taking a screenshot if failed, stopping test execution or logging a message."""
 	assertion_pass_note = "Assertion PASSED: "
 	assertion_fail_note = "Assertion FAILED: "
 	interrupt_message = "\n\t\t\t\t- Rest of the test skipped as 'interrupt_test' is set to 'True'."
@@ -97,18 +97,20 @@ def process_assertion(driver, report_screenshots_folder, assertion_type, flag, a
 		logger.debug(assertion_pass_message)
 
 
-# Method for taking and saving screenshot if assertion fails. Name of the screenshot is similar to failed assertion so that it is clear which assertion
-# it belongs to, thus contains assertion values, assertion type, name of test file and code line number inside test from which code leading to the assertion was executed.
-# Screenshots for tests are saved under "Tests\Reports\Screenshots\<name of report>\<name of test>\<name of screenshot>.png".
 def take_screenshot_assertion_failed(driver, report_screenshots_folder, assertion_type, value1="", value2="", boolean_value=""):
+	"""Method for taking and saving screenshot if assertion fails. Name of the screenshot is similar to failed assertion so that it is clear
+	which assertion	it belongs to, thus contains assertion values, assertion type, name of test file and code line number inside test
+	from which code leading to the assertion was executed. Screenshots for tests are saved under
+	"Tests\Reports\Screenshots\<name of report>\<name of test>\<name of screenshot>.png".
+	"""
 	screenshot = take_screenshot_memory(driver)
 	screenshot_name, path_to_actual_screenshot = create_screenshot_filename_path_assertion_failed(report_screenshots_folder, assertion_type, value1, value2, boolean_value)
 	save_screenshot_png_file(screenshot, path_to_actual_screenshot)
 	return screenshot_name
 
 
-# Method for creating name of screenshot file and path to it when assertion fails.
 def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, assertion_type, value1="", value2="", boolean_value=""):
+	"""Method for creation of name of screenshot file and path to it when assertion fails."""
 	running_test_name_including_browser = os.environ.get("PYTEST_CURRENT_TEST").split(":")[-1].split(" ")[0]
 	test_screenshots_folder = running_test_name_including_browser
 	# Get only running test name without additional information like browser.
@@ -146,8 +148,8 @@ def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, 
 
 
 # Methods related to exceptions or errors:
-# Method for checking if exception or error occurred.
 def check_exception_error_occurred(failure_record):
+	"""Method for checking if exception or error occurred."""
 	flag = False
 	# Get last line of failure record, as name of exception or error is there.
 	failure_record_last_line = get_last_line_from_record(failure_record)
@@ -157,14 +159,15 @@ def check_exception_error_occurred(failure_record):
 	return flag
 
 
-# Method for getting actual exception or error if it occurred and also can be set to take screenshot (and save it to a file among failed assertions screenshots)
-# of application once the exception or error occurred.
-# Note:
-# - Should be called only when there was an exception or error (i.e. when method "check_exception_error_occurred" returns True).
-# - Method returns 1 or 2 values:
-# - - In case screenshot shall NOT be taken, 1 value is returned (the exception or error itself as "exception_error").
-# - - In case screenshot shall be taken, 2 values are returned (the exception or error itself as "exception_error" and "screenshot_name").
 def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot=False, item="", path_test_screenshots_folder=""):
+	"""Method for getting actual exception or error if it occurred and also can be set to take screenshot
+	(and save it to a file among failed assertions screenshots)	of application once the exception or error occurred.
+	Note:
+	- Should be called only when there was an exception or error (i.e. when method "check_exception_error_occurred" returns True).
+	- Method returns 1 or 2 values:
+	- - In case screenshot shall NOT be taken, 1 value is returned (the exception or error itself as "exception_error").
+	- - In case screenshot shall be taken, 2 values are returned (the exception or error itself as "exception_error" and "screenshot_name").
+	"""
 	# If set to "True" takes screenshot into memory as soon as possible.
 	if take_screenshot:
 		driver = item.cls.driver
@@ -192,8 +195,8 @@ def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot
 			return exception_error
 
 
-# Method for creation of a log record in case of exception or error.
 def log_exception_error(screenshot_name, exception_error, url_report_link_title):
+	"""Method for creation of a log record in case of exception or error."""
 	screenshot_message = f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken."
 	url_message = f"\n\t\t\t\t- URL '{url_report_link_title}' recorded."
 	test_stop_message = f"\n\t\t\t\t- Test execution stopped."
@@ -201,10 +204,11 @@ def log_exception_error(screenshot_name, exception_error, url_report_link_title)
 	logger.warning(exception_error_message)
 
 
-# Method for obtaining log record about exception or error from previous calls by looping back through frames.
-# Note:
-# - Should be called only when there was an exception or error (i.e. when method "check_exception_error_occurred" returns True).
 def get_exception_error_log_record_from_previous_calls(exception_error):
+	"""Method for obtaining log record about exception or error from previous calls by looping back through frames.
+	Note:
+	- Should be called only when there was an exception or error (i.e. when method "check_exception_error_occurred" returns True).
+	"""
 	exception_error_log_record = ""
 	separator = "\x1b[0m\n"
 	# Loop back through frames and look for a frame that contains report from teardown phase and that contains in capstdout actual exception
@@ -225,8 +229,8 @@ def get_exception_error_log_record_from_previous_calls(exception_error):
 
 
 # Methods related to assertions and exceptions or errors:
-# Method for getting path to folder where screenshots for particular test are stored.
 def get_path_test_screenshots_folder(item):
+	""""Method for getting path to folder where screenshots for particular test are stored."""
 	# Report folder for screenshots has the same name as report file except for ".html".
 	report_screenshots_folder = item.funcargs["get_report_screenshots_folder_name"]
 	# Test folder for screenshots has the same name as test itself.
@@ -235,9 +239,10 @@ def get_path_test_screenshots_folder(item):
 	return path_test_screenshots_folder
 
 
-# Method for getting current url address and saving it to a file. File is temporary just for actual test, so it is created during test run
-# and deleted at the end of test run (in method add_urls_to_html_report_delete_urls_file)
 def get_url_save_to_file(driver, screenshot_name):
+	""""Method for getting current url address and saving it to a file. File is temporary just for actual test, so it is created during test run
+	and deleted at the end of test run (in method add_urls_to_html_report_delete_urls_file)
+	"""
 	url_address = driver.current_url
 	# Title of url in report contains name of screenshot.
 	url_report_link_title = screenshot_name.replace(".png", "")
@@ -251,8 +256,8 @@ def get_url_save_to_file(driver, screenshot_name):
 
 
 # Methods related to html report:
-# Method for manipulation of log section of html report.
 def html_report_log_section_manipulation(report, data, exception_error_log_record):
+	"""Method for manipulation of log section of html report."""
 	# Data manipulation to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
 	# to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole section "Captured log call".
 	# Data manipulation has effect only when report is in "call" phase (there are 3 phases, first is "setup", second is "call" third is "teardown").
@@ -310,10 +315,11 @@ def html_report_log_section_manipulation(report, data, exception_error_log_recor
 				break
 
 
-# Method for changing date format in sentence below title in html report. It is done directly in report html file.
-# At first whole content of current html report file is read by lines into list, then in list there is found line with sentence
-# and in this sentence date is rewritten with today's date in correct format. Whole list with correction is then written into html report file.
 def change_date_format_subtitle_html_report(path_actual_html_report_file):
+	"""Method for changing date format in sentence below title in html report. It is done directly in report html file.
+	At first whole content of current html report file is read by lines into list, then in list there is found line with sentence
+	and in this sentence date is rewritten with today's date in correct format. Whole list with correction is then written into html report file.
+	"""
 	with open(path_actual_html_report_file, "r") as html_report:
 		html_report_content = html_report.readlines()
 
@@ -330,8 +336,8 @@ def change_date_format_subtitle_html_report(path_actual_html_report_file):
 		html_report.writelines(html_report_content)
 
 
-# Method for adding screenshots of failed assertions and exception or error to html report.
 def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
+	"""Method for adding screenshots of failed assertions and exception or error to html report."""
 	if os.path.exists(path_test_screenshots_folder):
 		screenshots = os.scandir(path_test_screenshots_folder)
 		path_separator = os.sep
@@ -342,8 +348,8 @@ def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
 			extras.append(pytest_html.extras.png(path_screenshot_file, screenshot.name))
 
 
-# Method for adding urls of failed assertions and exception or error to html report and deleting file afterwards so that there is a new file per test.
 def add_urls_to_html_report_delete_urls_file(extras):
+	"""Method for adding urls of failed assertions and exception or error to html report and deleting file afterwards so that there is a new file per test."""
 	if os.path.isfile(path_urls_file):
 		with open(path_urls_file) as urls_file:
 			for url in urls_file:
@@ -355,9 +361,10 @@ def add_urls_to_html_report_delete_urls_file(extras):
 		os.remove(path_urls_file)
 
 
-# Method for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to "Environment" table of html report
-# as html report takes content of "Environment" table from pytest metadata.
 def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
+	"""Method for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to "Environment" table of html report
+	as html report takes content of "Environment" table from pytest metadata.
+	"""
 	# Get Selenium version and add it to pytest metadata if it is not there.
 	if "Selenium" not in metadata:
 		selenium_version = __version__

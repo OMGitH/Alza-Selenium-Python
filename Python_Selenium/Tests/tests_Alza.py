@@ -18,8 +18,7 @@ from report_logger import logger
 class TestsAlza:
 
     def test_login_logout(self, get_report_screenshots_folder_name):
-        """
-        Tests log in and log out:
+        """Tests log in and log out:
         - Reject all cookies, check that cookies pane is invisible, click login link.
         - Click signin button when credential fields are blank. Check that login dialog stays displayed and there are corresponding error messages displayed.
         - Provide wrong e-mail address and correct password, click signin button. Check that login dialog stays displayed and there is correct
@@ -30,7 +29,6 @@ class TestsAlza:
         in the top section of the screen.
         - Click logout link, check that login link is displayed in the top section of the screen.
         """
-
         self.login_page = LoginPage(self.driver)
         self.cookies_pane = CookiesPane(self.driver)
         self.top_section = TopSection(self.driver)
@@ -82,8 +80,7 @@ class TestsAlza:
         self.alza_module.logout(self.driver, get_report_screenshots_folder_name, True)
 
     def test_basket_add_remove_item(self, get_report_screenshots_folder_name):
-        """
-        Tests adding and removing item from basket:
+        """Tests adding and removing item from basket:
         - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
         in the top section of the screen. If there are items in basket, remove them.
         - Add computer to basket and check number of items at basket icon.
@@ -91,7 +88,6 @@ class TestsAlza:
         - Remove item from basket, check that basket is empty and there is no number at basket icon.
         - Log out, check that login link is displayed in the top section of the screen.
         """
-
         self.top_section = TopSection(self.driver)
         self.main_page = MainPage(self.driver)
         self.basket_page = Basket(self.driver)
@@ -143,8 +139,7 @@ class TestsAlza:
         self.alza_module.logout(self.driver, get_report_screenshots_folder_name)
 
     def test_search(self, get_report_screenshots_folder_name):
-        """
-        Tests searching via search button and by clicking suggestion:
+        """Tests searching via search button and by clicking suggestion:
         - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
         in the top section of the screen.
         - Type "jízdní kola" into search input, press search button. Check that header of result page is "jízdní kola" and that amount of items found
@@ -153,7 +148,6 @@ class TestsAlza:
         word "recenze".
         - Log out, check that login link is displayed in the top section of the screen.
         """
-
         self.top_section = TopSection(self.driver)
         self.main_page = MainPage(self.driver)
         self.alza_module = AlzaModule(self.driver)
@@ -184,8 +178,7 @@ class TestsAlza:
         self.alza_module.logout(self.driver, get_report_screenshots_folder_name)
 
     def test_watchdogs_add_remove_item(self, get_report_screenshots_folder_name):
-        """
-        Tests adding and removing item from watchdogs page:
+        """Tests adding and removing item from watchdogs page:
         - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
         in the top section of the screen. If there are items at watchdogs page, remove them.
         - Add watchdog to pet supply item, go to watchdogs page. Check name of item present, its price limit and that checkbox for alerting when price
@@ -193,7 +186,6 @@ class TestsAlza:
         - Remove item from watchdogs page, check that watchdogs page is empty.
         - Log out, check that login link is displayed in the top section of the screen.
         """
-
         self.top_section = TopSection(self.driver)
         self.main_page = MainPage(self.driver)
         self.my_account_page = MyAccount(self.driver)
@@ -249,8 +241,7 @@ class TestsAlza:
         self.alza_module.logout(self.driver, get_report_screenshots_folder_name)
 
     def test_delivery_addresses_add_remove_addresses(self, get_report_screenshots_folder_name):
-        """
-        Tests adding and removing addresses from delivery addresses page:
+        """Tests adding and removing addresses from delivery addresses page:
         - Reject all cookies and log in, check that login dialog disappears and correct user e-mail is displayed
         in the top section of the screen. If there are addresses at delivery addresses page, remove them.
         - Add 2 delivery addresses, go to main page, then back to delivery addresses page. Check number of delivery addresses and that at both all provided
@@ -260,7 +251,6 @@ class TestsAlza:
         - Log out, check that login link is displayed in the top section of the screen.
         Note: Number of addresses can be changed by adding or removing dictionaries from delivery_addresses_original and delivery_addresses_edited in test_data.py.
         """
-
         self.top_section = TopSection(self.driver)
         self.delivery_addresses_page = DeliveryAddresses(self.driver)
         self.my_account_page = MyAccount(self.driver)

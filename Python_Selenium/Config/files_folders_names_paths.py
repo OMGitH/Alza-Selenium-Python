@@ -1,8 +1,5 @@
+"""Contains names of files, folders and paths to files and folders."""
 from os import path
-
-"""
-Contains names of files, folders and paths to files and folders.
-"""
 
 
 # Name of folder where test reports are stored (it is under folder "Tests" where file with test and other test related files reside).

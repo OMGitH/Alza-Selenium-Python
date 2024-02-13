@@ -1,9 +1,6 @@
+"""Configuration of report logger, uses colorlog for coloring log records."""
 from sys import stdout
 import colorlog
-
-"""
-Configuration of report logger, uses colorlog for coloring log records.
-"""
 
 
 # Create report logger and set level to debug.

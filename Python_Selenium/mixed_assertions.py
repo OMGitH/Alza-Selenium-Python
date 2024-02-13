@@ -1,12 +1,10 @@
-from pytest_check import check
-from utilities import process_assertion
-
-"""
-Mixed assertions use pytest_check soft assertions.
+"""Mixed assertions use pytest_check soft assertions.
 Mixed assertions add "interrupt_test" argument, once set to "True" if assertion fails rest of test is skipped. So assertion behaves as a hard assertion.
 Note:
 - Contains only assertions actually used. If other assertion is needed it has to be added into this file.
 """
+from pytest_check import check
+from utilities import process_assertion
 
 
 def equal(driver, report_screenshots_folder, value1, value2, assertion_pass_message, assertion_fail_message, interrupt_test=False):
