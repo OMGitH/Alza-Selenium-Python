@@ -349,7 +349,9 @@ def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
 
 
 def add_urls_to_html_report_delete_urls_file(extras):
-	"""Method for adding urls of failed assertions and exception or error to html report and deleting file afterwards so that there is a new file per test."""
+	"""Method for adding URLs of failed assertions and exception or error to html report and deleting url file afterwards
+	so that there is a new file per test and browser run.
+	"""
 	if os.path.isfile(path_urls_file):
 		with open(path_urls_file) as urls_file:
 			for url in urls_file:

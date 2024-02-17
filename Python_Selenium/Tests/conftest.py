@@ -57,8 +57,8 @@ def get_report_screenshots_folder_name(pytestconfig):
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
-    """Hook method used for taking a screenshot in case of exception or an error, creation of a log record about exception or error and adding
-    all screenshots to corresponding test in html report in case test fails.
+    """Hook method used for taking a screenshot in case of exception or an error, creation of a log record about exception or error.
+    Also for adding all screenshots and URLs to corresponding test in html report in case test fails.
     """
     outcome = yield
     report = outcome.get_result()
