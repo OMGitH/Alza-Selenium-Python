@@ -1,5 +1,4 @@
-from time import monotonic
-from selenium.common import StaleElementReferenceException, TimeoutException
+from selenium.common import TimeoutException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -16,17 +15,8 @@ class ElementHandler:
         self.driver = driver
 
     # Methods:
-    def element_handler_click(self, element_identifier, element_name, report_entry, handle_stale_element_reference_exception=False, timeout=timeout_default):
-        if not handle_stale_element_reference_exception:
-            WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier)).click()
-        else:
-            end_time = monotonic() + timeout
-            while monotonic() <= end_time:
-                try:
-                    WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier)).click()
-                    break
-                except StaleElementReferenceException:
-                    pass
+    def element_handler_click(self, element_identifier, element_name, report_entry, timeout=timeout_default):
+        WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier)).click()
         if report_entry:
             logger.info(f"{element_name} clicked.")
 
