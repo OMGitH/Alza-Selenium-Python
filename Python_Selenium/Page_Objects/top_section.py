@@ -19,10 +19,6 @@ class TopSection(ElementHandler):
     basket_icon = (By.XPATH, "//a[@data-testid='headerBasketIcon']")
     basket_icon_item_inside = (By.XPATH, "//a[@data-testid='headerBasketIcon']//span")
 
-    # Initialization.
-    def __init__(self, driver):
-        super().__init__(driver)
-
     # Actions in top section of the page.
     def click_login_link(self):
         self.element_handler_click(self.login_link, "'Přihlásit se' link", True)

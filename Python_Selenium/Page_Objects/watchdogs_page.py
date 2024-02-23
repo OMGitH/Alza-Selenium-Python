@@ -16,10 +16,6 @@ class Watchdogs(ElementHandler):
 	success_add_note_close_button = (By.XPATH, "//*[name()='svg' and contains(@class, 'priceBoxProcessorProxy')]/*[name()='path']")
 	success_remove_note_close_button = (By.XPATH, "//div[contains(@class, 'react-page')]//*[name()='svg' and @xmlns]")
 
-	# Initialization.
-	def __init__(self, driver):
-		super().__init__(driver)
-
 	# Actions on watchdogs page.
 	def remove_all_items_from_watchdogs_page(self):
 		removed_watchdogs = 0

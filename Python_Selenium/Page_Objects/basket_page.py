@@ -15,10 +15,6 @@ class Basket(ElementHandler):
     down_arrow_price_menu_remove_item = (By.XPATH, "//div[@style='']//li[contains(@class, '-del')]")
     all_items_removed_from_basket_text = (By.XPATH, "//div[@id='blocke'][not(contains(@style, 'none'))]//span")
 
-    # Initialization.
-    def __init__(self, driver):
-        super().__init__(driver)
-
     # Actions on basket page.
     def get_item_name(self):
         if self.element_handler_is_visible(self.item):

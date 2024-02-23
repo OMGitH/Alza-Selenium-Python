@@ -23,10 +23,6 @@ class MainPage(ElementHandler):
     sync_frame = (By.XPATH, "//iframe[contains(@src, 'creativecdn.com')]")
     document_body_in_sync_frame = (By.XPATH, "//body")
 
-    # Initialization.
-    def __init__(self, driver):
-        super().__init__(driver)
-
     # Actions on main page.
     def hover_click_computers_notebooks_menu_item(self):
         self.element_handler_hover_click(self.computers_notebooks_menu_item, "'Počítače a notebooky' menu item", True)

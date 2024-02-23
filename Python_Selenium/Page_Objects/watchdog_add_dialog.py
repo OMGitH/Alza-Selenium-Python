@@ -10,10 +10,6 @@ class WatchdogAdd(ElementHandler):
 	price_limit_input = (By.NAME, "price")
 	confirm_button = (By.XPATH, "//button[contains(@class, 'blue')][contains(@class, 'price-box')]")
 
-	# Initialization.
-	def __init__(self, driver):
-		super().__init__(driver)
-
 	# Actions on watchdog add dialog.
 	def get_email(self):
 		if self.element_handler_is_visible(self.email_input):

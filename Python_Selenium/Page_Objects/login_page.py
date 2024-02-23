@@ -13,10 +13,6 @@ class LoginPage(ElementHandler):
     provide_email_text = (By.XPATH, "//label[@for='userName']/parent::div/span")
     provide_password_text = (By.XPATH, "//label[@for='password']/parent::div/span")
 
-    # Initialization.
-    def __init__(self, driver):
-        super().__init__(driver)
-
     # Actions on login page.
     def provide_email(self, username):
         self.element_handler_clear_input(self.email_input, "'E-mail' input field", True)

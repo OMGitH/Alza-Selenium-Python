@@ -8,10 +8,6 @@ class MyAccount(ElementHandler):
     watchdogs_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
     delivery_addresses_menu_item = (By.XPATH, "//a[@data-testid='menuButton-DeliveryAddresses']")
 
-    # Initialization.
-    def __init__(self, driver):
-        super().__init__(driver)
-
     # Actions on my account page.
     def click_watchdogs_menu_item(self):
         self.element_handler_click(self.watchdogs_menu_item, "'Hlídací psi' menu item", True)

@@ -17,10 +17,6 @@ class DeliveryAddresses(ElementHandler):
 	phone_text = (By.XPATH, "//span[@data-testid='phone']")
 	add_new_delivery_address_button = (By.XPATH, "//button[@data-testid='button-addAddress']")
 
-	# Initialization.
-	def __init__(self, driver):
-		super().__init__(driver)
-
 	# Actions on delivery addresses page.
 	def remove_all_addresses_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 		removed_addresses = 0

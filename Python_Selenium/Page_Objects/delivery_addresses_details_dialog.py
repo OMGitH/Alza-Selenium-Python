@@ -13,10 +13,6 @@ class DeliveryAddressesDetails(ElementHandler):
 	phone_input = (By.NAME, "phone")
 	save_button = (By.XPATH, "//button[@data-testid='button-submit']")
 
-	# Initialization.
-	def __init__(self, driver):
-		super().__init__(driver)
-
 	# Actions on delivery addresses details dialog.
 	def fill_in_new_address_details(self, data):
 		self.element_handler_send_keys(self.name_surname_input, data["name surname"], "'Jméno a příjmení' input field", True)
