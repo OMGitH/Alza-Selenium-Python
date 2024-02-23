@@ -12,9 +12,12 @@ from Config.files_folders_names_paths import reports_folder, path_urls_file
 
 @pytest.fixture(params=["chrome", "firefox"])
 def setup_and_teardown(request, metadata):
-    """Fixture method for setup (initialization of driver) before each test runs, and teardown after each test ran (version of webdrivers
+    """Fixture method for setup (as precondition urls file is deleted if it exists (shall be deleted at the end of previous test after URLs
+    are added to html report) and initialization of driver) before each test runs, and teardown after each test ran (version of webdrivers
     and Selenium are obtained for html report "Environment" table and driver is quit).
     """
+    if path.exists(path_urls_file):
+        remove(path_urls_file)
     if request.param == "chrome":
         driver = webdriver.Chrome()
     if request.param == "firefox":
@@ -26,14 +29,6 @@ def setup_and_teardown(request, metadata):
     # Get version of webdrivers (Chrome, Firefox) and Selenium and save it to pytest metadata therefore add it to "Environment" section of html report.
     get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata)
     driver.quit()
-
-
-def pytest_sessionstart():
-    """Hook method that runs at the beginning of whole test run session inside which a urls file is deleted if it exists (shall be deleted at the end
-    of previous test after urls are added to html report).
-    """
-    if path.exists(path_urls_file):
-        remove(path_urls_file)
 
 
 @pytest.hookimpl(tryfirst=True)
