@@ -3,9 +3,7 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from report_logger import logger
-
-
-timeout_default = 20
+from Config.config import timeout_default
 
 
 class ElementHandler:

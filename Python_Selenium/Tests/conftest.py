@@ -7,10 +7,10 @@ from utilities import (get_exception_error_name_possibly_screenshot, check_excep
                        get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
                        add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
                        change_date_format_subtitle_html_report)
-from Config.files_folders_names_paths import reports_folder, path_urls_file
+from Config.config import browsers, path_urls_file, reports_folder
 
 
-@pytest.fixture(params=["chrome", "firefox"])
+@pytest.fixture(params=browsers)
 def setup_and_teardown(request, metadata):
     """Fixture method for setup (as precondition urls file is deleted if it exists (shall be deleted at the end of previous test after URLs
     are added to html report) and initialization of driver) before each test runs, and teardown after each test ran (version of webdrivers
@@ -20,8 +20,10 @@ def setup_and_teardown(request, metadata):
         remove(path_urls_file)
     if request.param == "chrome":
         driver = webdriver.Chrome()
-    if request.param == "firefox":
+    elif request.param == "firefox":
         driver = webdriver.Firefox()
+    else:
+        raise ValueError(f"Browser value '{request.param}' is not supported. Supported values are 'chrome' and 'firefox'. Check browsers in config.py file.")
     driver.maximize_window()
     driver.get(url)
     request.cls.driver = driver

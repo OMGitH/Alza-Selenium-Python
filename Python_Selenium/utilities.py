@@ -12,7 +12,7 @@ import pytest
 import pytest_html
 from PIL import Image
 from report_logger import logger
-from Config.files_folders_names_paths import path_urls_file, path_screenshots_folder, reports_folder
+from Config.config import path_urls_file, path_screenshots_folder, reports_folder
 
 
 # General methods:

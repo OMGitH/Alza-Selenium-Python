@@ -1,6 +1,12 @@
-"""Contains names of files, folders and paths to files and folders."""
+"""Contains basic configuration like default timeout for waits, browsers, names of files, folders and paths to files and folders."""
 from os import path
 
+
+# Default timeout for waits in seconds.
+timeout_default = 20
+
+# Browsers for which tests shall be run. Conftest.py is prepared to run tests in "chrome" and "firefox".
+browsers = ["chrome", "firefox"]
 
 # Name of folder where test reports are stored (it is under folder "Tests" where file with test and other test related files reside).
 reports_folder = "Reports"
