@@ -1,5 +1,5 @@
 import pytest
-import test_data
+from Tests import test_data
 from Page_Objects.basket_page import Basket
 from Page_Objects.login_page import LoginPage
 from Page_Objects.main_page import MainPage

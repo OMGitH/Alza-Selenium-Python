@@ -7,7 +7,7 @@ from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from Page_Objects.delivery_addresses_details_dialog import DeliveryAddressesDetails
 from Page_Objects.main_page import MainPage
-from test_data import user_name, password, user_signed_in_text, delivery_addresses_original
+from Tests.test_data import user_name, password, user_signed_in_text, delivery_addresses_original
 import mixed_assertions as mixed_assert
 from report_logger import logger
 
