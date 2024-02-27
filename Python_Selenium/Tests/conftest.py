@@ -23,7 +23,7 @@ def setup_and_teardown(request, metadata):
     elif request.param == "firefox":
         driver = webdriver.Firefox()
     else:
-        raise ValueError(f"Browser value '{request.param}' is not supported. Supported values are 'chrome' and 'firefox'. Check browsers in config.py file.")
+        raise ValueError(f"FAILED during setup phase: Browser value '{request.param}' is not supported. Supported values are 'chrome' and 'firefox', check browsers in config.py file. No screenshot taken, no URL recorded. Test execution stopped.")
     driver.maximize_window()
     driver.get(url)
     request.cls.driver = driver
@@ -91,7 +91,7 @@ def pytest_html_results_table_html(report, data):
     exception_error_log_record = ""
     # If exception or error occurred, get actual exception or error and get log record about the exception or error that shall be added to "Steps".
     # The log record about exception or error is not present in "report" or "data" (at least not in time to use it and change html report).
-    if check_exception_error_occurred(report.longreprtext):
+    if report.when == "call" and check_exception_error_occurred(report.longreprtext):
         exception_error = get_exception_error_name_possibly_screenshot(report.longreprtext)
         exception_error_log_record = get_exception_error_log_record_from_previous_calls(exception_error)
     # Manipulations to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
