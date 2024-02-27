@@ -12,7 +12,7 @@ from Config.config import browsers, path_urls_file, reports_folder
 
 @pytest.fixture(params=browsers)
 def setup_and_teardown(request, metadata):
-    """Fixture method for setup (as precondition urls file is deleted if it exists (shall be deleted at the end of previous test after URLs
+    """Fixture function for setup (as precondition urls file is deleted if it exists (shall be deleted at the end of previous test after URLs
     are added to html report) and initialization of driver) before each test runs, and teardown after each test ran (version of webdrivers
     and Selenium are obtained for html report "Environment" table and driver is quit).
     """
@@ -35,7 +35,7 @@ def setup_and_teardown(request, metadata):
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
-    """Hook method used for configuration of location and name of html report file."""
+    """Hook function used for configuration of location and name of html report file."""
     make_folders_if_dont_exist(reports_folder)
     report_file = "Test_report_" + datetime.now().strftime("%d-%m-%Y_%H-%M-%S") + ".html"
     report_location = path.join(reports_folder, report_file)
@@ -44,7 +44,7 @@ def pytest_configure(config):
 
 @pytest.fixture(scope="session")
 def get_report_screenshots_folder_name(pytestconfig):
-    """Fixture method for getting report screenshots folder name from html report file name that is stored in pytest config and is created
+    """Fixture function for getting report screenshots folder name from html report file name that is stored in pytest config and is created
     inside pytest_configure hook.
     """
     path_to_html_report = pytestconfig.getoption("htmlpath")
@@ -54,7 +54,7 @@ def get_report_screenshots_folder_name(pytestconfig):
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
-    """Hook method used for taking a screenshot in case of exception or an error, creation of a log record about exception or error.
+    """Hook function used for taking a screenshot in case of exception or an error, creation of a log record about exception or error.
     Also for adding all screenshots and URLs to corresponding test in html report in case test fails.
     """
     outcome = yield
@@ -64,26 +64,26 @@ def pytest_runtest_makereport(item):
         if report.failed:
             # Get path to folder where screenshots for actual test are stored.
             path_test_screenshots_folder = get_path_test_screenshots_folder(item)
-            # Take screenshot and record url in case of an exception or an error, save it and create log record in html report.
+            # Take screenshot and record URL in case of an exception or an error, save it and create log record in html report.
             # There can be either exception or error not both.
             if check_exception_error_occurred(report.longreprtext):
                 exception_error, screenshot_name = get_exception_error_name_possibly_screenshot(report.longreprtext, take_screenshot=True, item=item, path_test_screenshots_folder=path_test_screenshots_folder)
                 url_report_link_title = get_url_save_to_file(item.cls.driver, screenshot_name)
                 log_exception_error(screenshot_name, exception_error, url_report_link_title)
-            # Add all screenshots from screenshots folder and urls from urls file to html report.
+            # Add all screenshots from screenshots folder and URLs from urls file to html report.
             add_screenshots_to_html_report(path_test_screenshots_folder, extras)
             add_urls_to_html_report_delete_urls_file(extras)
         report.extras = extras
 
 
 def pytest_html_report_title(report):
-    """Hook method used for configuration of html report title."""
+    """Hook function used for configuration of html report title."""
     report_title = "Test execution report, " + datetime.now().strftime("%d.%m.%Y %H:%M:%S")
     report.title = report_title
 
 
 def pytest_html_results_table_html(report, data):
-    """Hook method used for configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps"
+    """Hook function used for configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps"
     there is added log record about exception or error (if occurred) from "Captured stdout teardown" section. Then date and time is removed
     at desired log records, section "Captured stdout teardown" is removed (if it doesn't contain any other info) as well as whole section
     "Captured log call" that is uncolored duplicate "Steps" section.
@@ -101,7 +101,7 @@ def pytest_html_results_table_html(report, data):
 
 
 def pytest_unconfigure(config):
-    """Hook method called after whole test run is finished (even after pytest_sessionfinish hook), at that time actual html report file is created.
+    """Hook function called after whole test run is finished (even after pytest_sessionfinish hook), at that time actual html report file is created.
     Format of date in subtitle is changed directly in html report file.
     """
     path_actual_html_report_file = config.option.htmlpath
