@@ -33,7 +33,7 @@ class MainPage(ElementHandler):
         self.element_handler_is_visible(self.category_section_header)
 
     def click_computers_tile(self):
-        self.element_handler_click(self.computers_tile, "'Počítače' tile", True, 40)
+        self.element_handler_click(self.computers_tile, "'Počítače' tile", True, 50)
 
     def click_first_pet_suppy_item(self):
         self.element_handler_click(self.first_pet_supply_item_link, "'Chovatelské potřeby' item", True)
