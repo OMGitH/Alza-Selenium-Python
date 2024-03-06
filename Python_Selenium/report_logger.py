@@ -18,7 +18,7 @@ message_format = colorlog.ColoredFormatter(
 	log_colors={
 		"DEBUG":    "green",     # Used for assertion passed messages.
 		"INFO":     "blue",      # Used for info messages.
-		"WARNING":  "red"        # Used for assertion failed messages.
+		"WARNING":  "red"        # Used for assertion failed and exception messages.
 	}
 )
 handler.setFormatter(message_format)

@@ -101,7 +101,7 @@ class ElementHandler:
         is present or not. Can be used only if each state has an element that is not present in the other state as the state is identified
         based on presence of an element. In general speeds up process of checking state and adds reliability.
         """
-        for check in range(number_of_checks):
+        for _ in range(number_of_checks):
             for element_identifier in elements_identifiers:
                 try:
                     WebDriverWait(self.driver, check_wait).until(ec.visibility_of_element_located(element_identifier))

@@ -11,12 +11,12 @@ browsers = ["chrome", "firefox"]
 # Name of folder where test reports are stored (it is under folder "Tests" where file with test and other test related files reside).
 reports_folder = "Reports"
 
-# Name and location of folder where screenshots are stored in case of failed assertion, exception or error for actual test.
+# Name and location of folder where screenshots are stored in case of failed assertion or exception for actual test.
 # It is stored under "Reports" folder.
 screenshots_folder = "Screenshots"
 path_screenshots_folder = path.join(reports_folder, screenshots_folder)
 
-# Filename and location of temporary file that stores URLs recorded in case of failed assertion, exception or error for actual test.
+# Filename and location of temporary file that stores URLs recorded in case of failed assertion or exception for actual test.
 # It is stored under "Reports" folder.
 urls_filename = "urls.txt"
 path_urls_file = path.join(reports_folder, urls_filename)

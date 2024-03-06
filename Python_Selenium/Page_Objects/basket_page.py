@@ -47,7 +47,7 @@ class Basket(ElementHandler):
             removed_items += 1
             # It seems Firefox doesn't wait for the basket page to be fully refreshed, following code waits for page to get refreshed.
             if number_of_items != 0:
-                for check in range(number_of_checks):
+                for _ in range(number_of_checks):
                     number_of_items_after_removal = self.element_handler_get_number_of_visible_elements(self.down_arrow_price_button)
                     if number_of_items_after_removal == 0 or number_of_items_after_removal == number_of_items - 1:
                         break

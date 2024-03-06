@@ -28,7 +28,7 @@ class DeliveryAddresses(ElementHandler):
 			removed_addresses += 1
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for page to get refreshed.
 			if number_of_addresses != 0:
-				for check in range(number_of_checks):
+				for _ in range(number_of_checks):
 					number_of_addresses_after_removal = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
 					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break

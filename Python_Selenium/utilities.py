@@ -49,7 +49,7 @@ def check_filename_is_correct(filename):
 def get_last_line_from_record(record):
 	"""Function for getting last line from record.
 	Note:
-	- Can be used with failure record when looking for particular exception or error as it is mentioned at its last line. In such case
+	- Can be used with failure record when looking for particular exception as it is mentioned at its last line. In such case
 	as a "record" a "report.longreprtext" is used.
 	"""
 	record_last_line = ""
@@ -147,11 +147,11 @@ def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, 
 	return screenshot_name, path_to_actual_screenshot
 
 
-# Functions related to exceptions or errors:
-def check_exception_error_occurred(failure_record):
-	"""Function for checking if exception or error occurred."""
+# Functions related to exceptions:
+def check_exception_occurred(failure_record):
+	"""Function for checking if exception occurred."""
 	flag = False
-	# Get last line of failure record, as name of exception or error is there.
+	# Get last line of failure record, as name of exception is there.
 	failure_record_last_line = get_last_line_from_record(failure_record)
 	if failure_record_last_line != "":
 		if "Exception" in failure_record_last_line or "Error" in failure_record_last_line:
@@ -159,76 +159,76 @@ def check_exception_error_occurred(failure_record):
 	return flag
 
 
-def get_exception_error_name_possibly_screenshot(failure_record, take_screenshot=False, item="", path_test_screenshots_folder=""):
-	"""Function for getting actual exception or error if it occurred and also can be set to take screenshot
-	(and save it to a file among failed assertions screenshots)	of application once the exception or error occurred.
+def get_exception_name_possibly_screenshot(failure_record, take_screenshot=False, item="", path_test_screenshots_folder=""):
+	"""Function for getting actual exception if it occurred and also can be set to take screenshot
+	(and save it to a file among failed assertions screenshots)	of application once the exception occurred.
 	Note:
-	- Should be called only when there was an exception or error (i.e. when function "check_exception_error_occurred" returns True).
+	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns True).
 	- Function returns 1 or 2 values:
-	- - In case screenshot shall NOT be taken, 1 value is returned (the exception or error itself as "exception_error").
-	- - In case screenshot shall be taken, 2 values are returned (the exception or error itself as "exception_error" and "screenshot_name").
+	- - In case screenshot shall NOT be taken, 1 value is returned (the exception itself as "exception").
+	- - In case screenshot shall be taken, 2 values are returned (the exception itself as "exception" and "screenshot_name").
 	"""
 	# If set to "True" takes screenshot into memory as soon as possible.
 	if take_screenshot:
 		driver = item.cls.driver
 		screenshot = take_screenshot_memory(driver)
-	# Get last line of failure record, as name of exception or error is there.
+	# Get last line of failure record, as name of exception is there.
 	failure_record_last_line = get_last_line_from_record(failure_record)
 	fail_words = ["Exception", "Error"]
 	for fail_word in fail_words:
 		# Get all words containing "Exception" or "Error" that are at last line of failure record.
-		exceptions_errors = findall(f"[a-zA-Z]*{fail_word}[a-zA-Z]*", failure_record_last_line)
-		if exceptions_errors:
-			# Get actual exception or error by returning the last occurrence of the word as the actual exception or error
-			# is mentioned at the end of failure record.
-			exception_error = exceptions_errors[-1]
+		exceptions = findall(f"[a-zA-Z]*{fail_word}[a-zA-Z]*", failure_record_last_line)
+		if exceptions:
+			# Get actual exception by returning the last occurrence of the word as the actual exception is mentioned
+			# at the end of failure record.
+			exception = exceptions[-1]
 			if take_screenshot:
-				screenshot_name = f"{exception_error}.png"
-				# If there is a character in exception or error name that cannot be present in filename then name of exception or error
-				# is replaced by general "exception_or_error".
+				screenshot_name = f"{exception}.png"
+				# If there is a character in exception name that cannot be present in filename then name of exception
+				# is replaced by general "exception".
 				if not check_filename_is_correct(screenshot_name):
-					screenshot_name = "exception_or_error.png"
+					screenshot_name = "exception.png"
 				path_screenshot_file = os.path.join(path_test_screenshots_folder, screenshot_name)
 				make_folders_if_dont_exist(path_test_screenshots_folder)
 				save_screenshot_png_file(screenshot, path_screenshot_file)
-				return exception_error, screenshot_name
-			return exception_error
+				return exception, screenshot_name
+			return exception
 
 
-def log_exception_error(screenshot_name, exception_error, url_report_link_title):
-	"""Function for creation of a log record in case of exception or error."""
+def log_exception(screenshot_name, exception, url_report_link_title):
+	"""Function for creation of a log record in case of exception."""
 	screenshot_message = f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken."
 	url_message = f"\n\t\t\t\t- URL '{url_report_link_title}' recorded."
 	test_stop_message = f"\n\t\t\t\t- Test execution stopped."
-	exception_error_message = f"'{exception_error}' occurred." + screenshot_message + url_message + test_stop_message
-	logger.warning(exception_error_message)
+	exception_message = f"'{exception}' occurred." + screenshot_message + url_message + test_stop_message
+	logger.warning(exception_message)
 
 
-def get_exception_error_log_record_from_previous_calls(exception_error):
-	"""Function for obtaining log record about exception or error from previous calls by looping back through frames.
+def get_exception_log_record_from_previous_calls(exception):
+	"""Function for obtaining log record about exception from previous calls by looping back through frames.
 	Note:
-	- Should be called only when there was an exception or error (i.e. when function "check_exception_error_occurred" returns True).
+	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns True).
 	"""
-	exception_error_log_record = ""
+	exception_log_record = ""
 	separator = "\x1b[0m\n"
-	# Loop back through frames and look for a frame that contains report from teardown phase and that contains in capstdout actual exception
-	# or error. A list of log records is created from this frame capstdout and from this list the actual exception or error log record is obtained.
+	# Loop back through frames and look for a frame that contains report from teardown phase and that contains in capstdout actual exception.
+	# A list of log records is created from this frame capstdout and from this list the actual exception log record is obtained.
 	# At the end there is a separator added to this record because as a separator formatting characters from end of log records are used.
 	previous_frame = currentframe().f_back
-	while not exception_error_log_record:
+	while not exception_log_record:
 		if previous_frame.f_locals.get("report"):
-			if previous_frame.f_locals["report"].when == "teardown" and exception_error in previous_frame.f_locals["report"].capstdout:
+			if previous_frame.f_locals["report"].when == "teardown" and exception in previous_frame.f_locals["report"].capstdout:
 				log_records = previous_frame.f_locals["report"].capstdout.split(separator)
 				for record in log_records:
-					if exception_error in record:
-						exception_error_log_record = record
-						exception_error_log_record += separator
+					if exception in record:
+						exception_log_record = record
+						exception_log_record += separator
 						break
 		previous_frame = previous_frame.f_back
-	return exception_error_log_record
+	return exception_log_record
 
 
-# Functions related to assertions and exceptions or errors:
+# Functions related to assertions and exceptions:
 def get_path_test_screenshots_folder(item):
 	"""Function for getting path to folder where screenshots for particular test are stored."""
 	# Report folder for screenshots has the same name as report file except for ".html".
@@ -256,9 +256,9 @@ def get_url_save_to_file(driver, screenshot_name):
 
 
 # Functions related to html report:
-def html_report_log_section_manipulation(report, data, exception_error_log_record):
+def html_report_log_section_manipulation(report, data, exception_log_record):
 	"""Function for manipulation of log section of html report."""
-	# Data manipulation to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
+	# Data manipulation to rename section "Captured stdout call" to "Steps", to add log record about exception (if occurred)
 	# to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole section "Captured log call".
 	# Data manipulation has effect only when report is in "call" phase (there are 3 phases, first is "setup", second is "call" third is "teardown").
 	if report.when == "call":
@@ -268,11 +268,11 @@ def html_report_log_section_manipulation(report, data, exception_error_log_recor
 		item_to_remove_index = -1
 		section_captured_stdout_call_present = False
 		for index, section in enumerate(data):
-			# Renaming section "Captured stdout call" to "Steps", adding log record about exception or error to section "Steps", removing
+			# Renaming section "Captured stdout call" to "Steps", adding log record about exception to section "Steps", removing
 			# date and time and setting presence of this section to "True".
 			if title_to_replace in section:
 				data[index] = section.replace(title_to_replace, new_title)
-				data[index] += exception_error_log_record
+				data[index] += exception_log_record
 				# Removing date and time:
 				replace_by = r"                   \1"
 				# From log headers.
@@ -293,19 +293,19 @@ def html_report_log_section_manipulation(report, data, exception_error_log_recor
 		# Removing item with section "Captured log call".
 		if item_to_remove_index > -1:
 			data.pop(item_to_remove_index)
-		# In case there was no log record, section "Captured stdout call" is not created. If exception or error occurs then there will not be a
-		# log record about this exception on error. In such a case it is needed to create this section with name "Steps" and with log record
-		# about occurred exception or error and append it to "data" in order to make it present in html report.
+		# In case there was no log record, section "Captured stdout call" is not created. If exception occurs then there will not be a
+		# log record about this exception. In such a case it is needed to create this section with name "Steps" and with log record
+		# about occurred exception and append it to "data" in order to make it present in html report.
 		if not section_captured_stdout_call_present:
 			section_header = "----------------------------- Steps -----------------------------\n"
-			section_body = exception_error_log_record
+			section_body = exception_log_record
 			whole_section = section_header + section_body
 			data.append(whole_section)
 	# Removal of "Captured stdout teardown" section from html report has to be done on "report" object. If done on "data" it doesn't have any impact
 	# on html report, the section stays there. It is removed only if "Captured stdout teardown" section doesn't contain any other information
-	# than the exception or error log record, so if the section (that is a tuple) has 2 elements, header (section[0]) is "Captured stdout teardown"
-	# and body (section[1]) contains "Screenshot '" (that is inside exception or error log record) and contains just one set of formatting characters
-	# by which record begins (i.e. there is just one record) then the assumption is that it contains only record about that particular exception or error.
+	# than the exception log record, so if the section (that is a tuple) has 2 elements, header (section[0]) is "Captured stdout teardown"
+	# and body (section[1]) contains "Screenshot '" (that is inside exception log record) and contains just one set of formatting characters
+	# by which record begins (i.e. there is just one record) then the assumption is that it contains only record about that particular exception.
 	# Teardown section is present only when report is in "teardown" phase (there are 3 phases, first is "setup", second is "call" third is "teardown").
 	if report.when == "teardown":
 		section_teardown_to_remove = "Captured stdout teardown"
@@ -337,7 +337,7 @@ def change_date_format_subtitle_html_report(path_actual_html_report_file):
 
 
 def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
-	"""Function for adding screenshots of failed assertions and exception or error to html report."""
+	"""Function for adding screenshots of failed assertions and exception to html report."""
 	if os.path.exists(path_test_screenshots_folder):
 		screenshots = os.scandir(path_test_screenshots_folder)
 		path_separator = os.sep
@@ -349,7 +349,7 @@ def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
 
 
 def add_urls_to_html_report_delete_urls_file(extras):
-	"""Function for adding URLs of failed assertions and exception or error to html report and deleting urls file afterwards
+	"""Function for adding URLs of failed assertions and exception to html report and deleting urls file afterwards
 	so that there is a new file per test and browser run.
 	"""
 	if os.path.isfile(path_urls_file):
@@ -378,6 +378,6 @@ def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
 	if "chrome" in driver.capabilities and "chrome" not in metadata["Webdriver(s)"]:
 		driver_version = driver.capabilities['chrome']['chromedriverVersion'].split()[0]
 		metadata["Webdriver(s)"]["chrome"] = driver_version
-	elif "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"]:
+	if "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"]:
 		driver_version = driver.capabilities['moz:geckodriverVersion']
 		metadata["Webdriver(s)"]["firefox"] = driver_version

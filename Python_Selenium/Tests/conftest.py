@@ -3,8 +3,8 @@ from datetime import datetime
 from selenium import webdriver
 import pytest
 from Tests.test_data import url
-from utilities import (get_exception_error_name_possibly_screenshot, check_exception_error_occurred, log_exception_error, add_screenshots_to_html_report,
-                       get_exception_error_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
+from utilities import (get_exception_name_possibly_screenshot, check_exception_occurred, log_exception, add_screenshots_to_html_report,
+                       get_exception_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
                        add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
                        change_date_format_subtitle_html_report)
 from Config.config import browsers, path_urls_file, reports_folder
@@ -54,7 +54,7 @@ def get_report_screenshots_folder_name(pytestconfig):
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
-    """Hook function used for taking a screenshot in case of exception or an error, creation of a log record about exception or error.
+    """Hook function used for taking a screenshot in case of exception, creation of a log record about exception.
     Also for adding all screenshots and URLs to corresponding test in html report in case test fails.
     """
     outcome = yield
@@ -64,12 +64,11 @@ def pytest_runtest_makereport(item):
         if report.failed:
             # Get path to folder where screenshots for actual test are stored.
             path_test_screenshots_folder = get_path_test_screenshots_folder(item)
-            # Take screenshot and record URL in case of an exception or an error, save it and create log record in html report.
-            # There can be either exception or error not both.
-            if check_exception_error_occurred(report.longreprtext):
-                exception_error, screenshot_name = get_exception_error_name_possibly_screenshot(report.longreprtext, take_screenshot=True, item=item, path_test_screenshots_folder=path_test_screenshots_folder)
+            # Take screenshot and record URL in case of an exception, save it and create log record in html report.
+            if check_exception_occurred(report.longreprtext):
+                exception, screenshot_name = get_exception_name_possibly_screenshot(report.longreprtext, take_screenshot=True, item=item, path_test_screenshots_folder=path_test_screenshots_folder)
                 url_report_link_title = get_url_save_to_file(item.cls.driver, screenshot_name)
-                log_exception_error(screenshot_name, exception_error, url_report_link_title)
+                log_exception(screenshot_name, exception, url_report_link_title)
             # Add all screenshots from screenshots folder and URLs from urls file to html report.
             add_screenshots_to_html_report(path_test_screenshots_folder, extras)
             add_urls_to_html_report_delete_urls_file(extras)
@@ -84,20 +83,20 @@ def pytest_html_report_title(report):
 
 def pytest_html_results_table_html(report, data):
     """Hook function used for configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps"
-    there is added log record about exception or error (if occurred) from "Captured stdout teardown" section. Then date and time is removed
+    there is added log record about exception (if occurred) from "Captured stdout teardown" section. Then date and time is removed
     at desired log records, section "Captured stdout teardown" is removed (if it doesn't contain any other info) as well as whole section
     "Captured log call" that is uncolored duplicate "Steps" section.
     """
-    exception_error_log_record = ""
-    # If exception or error occurred, get actual exception or error and get log record about the exception or error that shall be added to "Steps".
-    # The log record about exception or error is not present in "report" or "data" (at least not in time to use it and change html report).
-    if report.when == "call" and check_exception_error_occurred(report.longreprtext):
-        exception_error = get_exception_error_name_possibly_screenshot(report.longreprtext)
-        exception_error_log_record = get_exception_error_log_record_from_previous_calls(exception_error)
-    # Manipulations to rename section "Captured stdout call" to "Steps", to add log record about exception or error (if occurred)
+    exception_log_record = ""
+    # If exception occurred, get actual exception and get log record about the exception that shall be added to "Steps".
+    # The log record about exception is not present in "report" or "data" (at least not in time to use it and change html report).
+    if report.when == "call" and check_exception_occurred(report.longreprtext):
+        exception = get_exception_name_possibly_screenshot(report.longreprtext)
+        exception_log_record = get_exception_log_record_from_previous_calls(exception)
+    # Manipulations to rename section "Captured stdout call" to "Steps", to add log record about exception (if occurred)
     # to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole sections
     # "Captured log call" and "Captured stdout teardown".
-    html_report_log_section_manipulation(report, data, exception_error_log_record)
+    html_report_log_section_manipulation(report, data, exception_log_record)
 
 
 def pytest_unconfigure(config):
