@@ -108,3 +108,4 @@ class ElementHandler:
                     return element_identifier
                 except TimeoutException:
                     pass
+        raise Exception("None of expected states found.")
