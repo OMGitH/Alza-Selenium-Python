@@ -42,14 +42,14 @@ def pytest_configure(config):
     config.option.htmlpath = report_location
 
 
-@pytest.fixture(scope="session")
-def get_report_screenshots_folder_name(pytestconfig):
+@pytest.fixture(scope="class")
+def get_report_screenshots_folder_name(request):
     """Fixture function for getting report screenshots folder name from html report file name that is stored in pytest config and is created
     inside pytest_configure hook.
     """
-    path_to_html_report = pytestconfig.getoption("htmlpath")
+    path_to_html_report = request.config.getoption("htmlpath")
     report_screenshots_folder = path.splitext(path.basename(path_to_html_report))[0]
-    return report_screenshots_folder
+    request.cls.report_screenshots_folder = report_screenshots_folder
 
 
 @pytest.hookimpl(hookwrapper=True)

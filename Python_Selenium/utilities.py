@@ -232,7 +232,7 @@ def get_exception_log_record_from_previous_calls(exception):
 def get_path_test_screenshots_folder(item):
 	"""Function for getting path to folder where screenshots for particular test are stored."""
 	# Report folder for screenshots has the same name as report file except for ".html".
-	report_screenshots_folder = item.funcargs["get_report_screenshots_folder_name"]
+	report_screenshots_folder = item.cls.report_screenshots_folder
 	# Test folder for screenshots has the same name as test itself.
 	test_screenshots_folder = item.name
 	path_test_screenshots_folder = os.path.join(path_screenshots_folder, report_screenshots_folder, test_screenshots_folder)
