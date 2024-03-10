@@ -12,7 +12,7 @@ import pytest
 import pytest_html
 from PIL import Image
 from report_logger import logger
-from Config.config import path_urls_file, path_screenshots_folder, reports_folder
+from Config.config import path_screenshots_folder, reports_folder
 
 
 # General functions:
@@ -75,7 +75,7 @@ def get_calling_function_filename_code_line_number(calling_function):
 
 
 # Functions related to assertions:
-def process_assertion(driver, report_screenshots_folder, assertion_type, flag, assertion_pass_message, assertion_fail_message, interrupt_test, value1="", value2="", boolean_value=""):
+def process_assertion(driver, report_screenshots_folder, tmp_test_urls_file_path, assertion_type, flag, assertion_pass_message, assertion_fail_message, interrupt_test, value1="", value2="", boolean_value=""):
 	"""Function for processing test execution based on outcome of assertion like taking a screenshot if failed, stopping test execution or logging a message."""
 	assertion_pass_note = "Assertion PASSED: "
 	assertion_fail_note = "Assertion FAILED: "
@@ -83,14 +83,14 @@ def process_assertion(driver, report_screenshots_folder, assertion_type, flag, a
 
 	if not flag and interrupt_test:
 		screenshot_name = take_screenshot_assertion_failed(driver, report_screenshots_folder, assertion_type, value1, value2, boolean_value)
-		url_report_title = get_url_save_to_file(driver, screenshot_name)
-		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken." + f"\n\t\t\t\t- URL '{url_report_title}' recorded." + interrupt_message
+		url_report_link_title = get_url_save_to_file(driver, screenshot_name, tmp_test_urls_file_path)
+		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken." + f"\n\t\t\t\t- URL '{url_report_link_title}' recorded." + interrupt_message
 		logger.warning(assertion_fail_message)
 		pytest.skip(interrupt_message)
 	elif not flag:
 		screenshot_name = take_screenshot_assertion_failed(driver, report_screenshots_folder, assertion_type, value1, value2, boolean_value)
-		url_report_title = get_url_save_to_file(driver, screenshot_name)
-		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken." + f"\n\t\t\t\t- URL '{url_report_title}' recorded."
+		url_report_link_title = get_url_save_to_file(driver, screenshot_name, tmp_test_urls_file_path)
+		assertion_fail_message = assertion_fail_note + assertion_fail_message + f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken." + f"\n\t\t\t\t- URL '{url_report_link_title}' recorded."
 		logger.warning(assertion_fail_message)
 	else:
 		assertion_pass_message = assertion_pass_note + assertion_pass_message
@@ -239,18 +239,18 @@ def get_path_test_screenshots_folder(item):
 	return path_test_screenshots_folder
 
 
-def get_url_save_to_file(driver, screenshot_name):
-	"""Function for getting current URL address and saving it to a file. File is temporary just for actual test, so it is created during test run
-	and deleted at the end of test run (in function "add_urls_to_html_report_delete_urls_file").
+def get_url_save_to_file(driver, screenshot_name, tmp_test_urls_file_path):
+	"""Function for getting current URL address and saving it to a file. File is temporary just for actual test, it is handled by
+	pytest fixture tmp_path.
 	"""
-	url_address = driver.current_url
+	current_url_address = driver.current_url
 	# Title of URL in report contains name of screenshot.
 	url_report_link_title = screenshot_name.replace(".png", "")
 	url_report_link_title = f"URL-{url_report_link_title}"
 	# Each line in file represents one URL in format <title of URL in report>;<actual URL address>.
-	urls_file_line = f"{url_report_link_title};{url_address}\n"
+	urls_file_line = f"{url_report_link_title};{current_url_address}\n"
 	# Open file or create and append current URL information.
-	with open(path_urls_file, "a") as urls_file:
+	with open(tmp_test_urls_file_path, "a") as urls_file:
 		urls_file.write(urls_file_line)
 	return url_report_link_title
 
@@ -348,24 +348,21 @@ def add_screenshots_to_html_report(path_test_screenshots_folder, extras):
 			extras.append(pytest_html.extras.png(path_screenshot_file, screenshot.name))
 
 
-def add_urls_to_html_report_delete_urls_file(extras):
-	"""Function for adding URLs of failed assertions and exception to html report and deleting urls file afterwards
-	so that there is a new file per test and browser run.
-	"""
-	if os.path.isfile(path_urls_file):
-		with open(path_urls_file) as urls_file:
+def add_urls_to_html_report(extras, tmp_test_urls_file_path):
+	"""Function for adding URLs of failed assertions and exception to html report."""
+	if os.path.isfile(tmp_test_urls_file_path):
+		with open(tmp_test_urls_file_path) as urls_file:
 			for url in urls_file:
 				url = url.strip()
 				url = url.split(";")
 				url_report_link_title = url[0]
 				url_address = url[1]
 				extras.append(pytest_html.extras.url(url_address, url_report_link_title))
-		os.remove(path_urls_file)
 
 
 def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
-	"""Function for getting version of webdriver(s) and Selenium and adding them to pytest metadata and thus adding it to "Environment" table of html report
-	as html report takes content of "Environment" table from pytest metadata.
+	"""Function for getting versions of webdriver(s) and Selenium and adding them to pytest metadata and thus adding them to "Environment" table
+	of html report as html report takes content of "Environment" table from pytest metadata.
 	"""
 	# Get Selenium version and add it to pytest metadata if it is not there.
 	if "Selenium" not in metadata:
@@ -373,8 +370,7 @@ def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
 		metadata["Selenium"] = selenium_version
 	# Get version of webdrivers (Chrome, Firefox) and add them to pytest metadata if they are not there.
 	if "Webdriver(s)" not in metadata:
-		webdrivers = {}
-		metadata["Webdriver(s)"] = webdrivers
+		metadata["Webdriver(s)"] = {}
 	if "chrome" in driver.capabilities and "chrome" not in metadata["Webdriver(s)"]:
 		driver_version = driver.capabilities['chrome']['chromedriverVersion'].split()[0]
 		metadata["Webdriver(s)"]["chrome"] = driver_version

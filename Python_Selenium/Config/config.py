@@ -16,7 +16,6 @@ reports_folder = "Reports"
 screenshots_folder = "Screenshots"
 path_screenshots_folder = path.join(reports_folder, screenshots_folder)
 
-# Filename and location of temporary file that stores URLs recorded in case of failed assertion or exception for actual test.
-# It is stored under "Reports" folder.
+# Filename of temporary file that stores URLs recorded in case of failed assertions or exception for actual test.
+# It is stored via pytest fixture "tmp_path".
 urls_filename = "urls.txt"
-path_urls_file = path.join(reports_folder, urls_filename)

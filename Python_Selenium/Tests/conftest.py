@@ -1,23 +1,20 @@
-from os import path, remove
+from os import path
 from datetime import datetime
 from selenium import webdriver
 import pytest
 from Tests.test_data import url
 from utilities import (get_exception_name_possibly_screenshot, check_exception_occurred, log_exception, add_screenshots_to_html_report,
                        get_exception_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
-                       add_urls_to_html_report_delete_urls_file, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
+                       add_urls_to_html_report, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
                        change_date_format_subtitle_html_report)
-from Config.config import browsers, path_urls_file, reports_folder
+from Config.config import browsers, urls_filename, reports_folder
 
 
 @pytest.fixture(params=browsers)
 def setup_and_teardown(request, metadata):
-    """Fixture function for setup (as precondition urls file is deleted if it exists (shall be deleted at the end of previous test after URLs
-    are added to html report) and initialization of driver) before each test runs, and teardown after each test ran (version of webdrivers
+    """Fixture function for setup (initialization of driver) before each test runs, and teardown after each test ran (version of webdrivers
     and Selenium are obtained for html report "Environment" table and driver is quit).
     """
-    if path.exists(path_urls_file):
-        remove(path_urls_file)
     if request.param == "chrome":
         driver = webdriver.Chrome()
     elif request.param == "firefox":
@@ -52,6 +49,15 @@ def get_report_screenshots_folder_name(request):
     request.cls.report_screenshots_folder = report_screenshots_folder
 
 
+@pytest.fixture
+def get_tmp_test_urls_file_path(tmp_path, request):
+    """Fixture function for getting path to a file that stores URLs recorded in case of failed assertions or exception for actual test. File
+    is stored via pytest fixture "tmp_path".
+    """
+    tmp_test_urls_file_path = path.join(tmp_path, urls_filename)
+    request.cls.tmp_test_urls_file_path = tmp_test_urls_file_path
+
+
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     """Hook function used for taking a screenshot in case of exception, creation of a log record about exception.
@@ -67,11 +73,11 @@ def pytest_runtest_makereport(item):
             # Take screenshot and record URL in case of an exception, save it and create log record in html report.
             if check_exception_occurred(report.longreprtext):
                 exception, screenshot_name = get_exception_name_possibly_screenshot(report.longreprtext, take_screenshot=True, item=item, path_test_screenshots_folder=path_test_screenshots_folder)
-                url_report_link_title = get_url_save_to_file(item.cls.driver, screenshot_name)
+                url_report_link_title = get_url_save_to_file(item.cls.driver, screenshot_name, item.cls.tmp_test_urls_file_path)
                 log_exception(screenshot_name, exception, url_report_link_title)
             # Add all screenshots from screenshots folder and URLs from urls file to html report.
             add_screenshots_to_html_report(path_test_screenshots_folder, extras)
-            add_urls_to_html_report_delete_urls_file(extras)
+            add_urls_to_html_report(extras, item.cls.tmp_test_urls_file_path)
         report.extras = extras
 
 
@@ -103,5 +109,5 @@ def pytest_unconfigure(config):
     """Hook function called after whole test run is finished (even after pytest_sessionfinish hook), at that time actual html report file is created.
     Format of date in subtitle is changed directly in html report file.
     """
-    path_actual_html_report_file = config.option.htmlpath
+    path_actual_html_report_file = config.getoption("htmlpath")
     change_date_format_subtitle_html_report(path_actual_html_report_file)

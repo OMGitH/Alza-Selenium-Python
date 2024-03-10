@@ -1,4 +1,4 @@
-# Alza url
+# Alza URL
 url = "https://www.alza.cz/"
 
 # test_login_logout
