@@ -46,15 +46,15 @@ class AlzaModule:
 		# Fill in credentials and login.
 		self.login_page.successful_login(user_name, password)
 		# Check successful login.
-		mixed_assert.is_true(driver, report_screenshots_folder, tmp_test_urls_file_path, self.login_page.login_dialog_is_invisible(), "Login dialog is correctly invisible.", "Login dialog is still visible but shall not be.", interrupt_test)
+		mixed_assert.is_true(self.login_page.login_dialog_is_invisible(), "Login dialog is correctly invisible.", "Login dialog is still visible but shall not be.", driver, report_screenshots_folder, tmp_test_urls_file_path, interrupt_test)
 		actual_signed_in_text = self.top_section.get_signed_in_user_text()
-		mixed_assert.equal(driver, report_screenshots_folder, tmp_test_urls_file_path, actual_signed_in_text, user_signed_in_text, f"Text in the top section is correct: '{actual_signed_in_text}'.", f"Wrong text in the top section. Actual text is '{actual_signed_in_text}' but shall be '{user_signed_in_text}'. Seems user is not logged in though shall be.", interrupt_test)
+		mixed_assert.equal(actual_signed_in_text, user_signed_in_text, f"Text in the top section is correct: '{actual_signed_in_text}'.", f"Wrong text in the top section. Actual text is '{actual_signed_in_text}' but shall be '{user_signed_in_text}'. Seems user is not logged in though shall be.", driver, report_screenshots_folder, tmp_test_urls_file_path, interrupt_test)
 
 	def logout(self, driver, report_screenshots_folder, tmp_test_urls_file_path, interrupt_test=False):
 		self.top_section.click_signed_in_user_link()
 		self.top_section.click_logout_link()
 		# Check successful logout.
-		mixed_assert.is_true(driver, report_screenshots_folder, tmp_test_urls_file_path, self.top_section.login_link_is_visible(), "Login link in the top section is correctly visible.", "Login link in the top section is not visible though it shall be.", interrupt_test)
+		mixed_assert.is_true(self.top_section.login_link_is_visible(), "Login link in the top section is correctly visible.", "Login link in the top section is not visible though it shall be.", driver, report_screenshots_folder, tmp_test_urls_file_path, interrupt_test)
 
 	# test_basket_add_remove_item: Empty basket if there are items inside and go back to Alza main page.
 	def empty_basket_if_items_inside(self):
