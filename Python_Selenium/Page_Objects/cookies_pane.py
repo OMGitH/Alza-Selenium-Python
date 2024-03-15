@@ -5,8 +5,8 @@ from element_handler import ElementHandler
 class CookiesPane(ElementHandler):
 
     # Identification of elements on cookies pane.
-    cookies_pane = (By.XPATH, "//div[@class='cookies-info__container']")
-    reject_all_button = (By.XPATH, "//a[contains(@class, 'cookies-info-reject')]")
+    cookies_pane = (By.CLASS_NAME, "cookies-info__container")
+    reject_all_button = (By.CLASS_NAME, "js-cookies-info-reject")
 
     # Actions on cookies pane.
     def click_reject_all_button(self):

@@ -11,7 +11,7 @@ class DeliveryAddressesDetails(ElementHandler):
 	zip_input = (By.NAME, "zip")
 	city_input = (By.NAME, "city")
 	phone_input = (By.NAME, "phone")
-	save_button = (By.XPATH, "//button[@data-testid='button-submit']")
+	save_button = (By.CSS_SELECTOR, "[data-testid='button-submit']")
 
 	# Actions on delivery addresses details dialog.
 	def fill_in_new_address_details(self, data):

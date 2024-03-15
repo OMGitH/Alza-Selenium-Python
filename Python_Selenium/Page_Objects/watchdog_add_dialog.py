@@ -6,9 +6,9 @@ class WatchdogAdd(ElementHandler):
 
 	# Identification of elements on watchdog add dialog.
 	email_input = (By.NAME, "email")
-	price_limit_checkbox = (By.XPATH, "//input[contains(@class, 'price-box')][not(@name)]/following-sibling::*[name()='svg']")
+	price_limit_checkbox = (By.CSS_SELECTOR, "svg[class*='Checkbox'][class*='price-box'] g[fill]")
 	price_limit_input = (By.NAME, "price")
-	confirm_button = (By.XPATH, "//button[contains(@class, 'blue')][contains(@class, 'price-box')]")
+	confirm_button = (By.CSS_SELECTOR, "button[class*='blue'][class*='price-box']")
 
 	# Actions on watchdog add dialog.
 	def get_email(self):

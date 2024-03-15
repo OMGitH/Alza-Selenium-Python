@@ -8,12 +8,12 @@ class Basket(ElementHandler):
 
     # Identification of elements on basket page.
     item = (By.CLASS_NAME, "mainItem")
-    item_count_text = (By.XPATH, "//div[@class='countInput']//input")
-    item_price_text = (By.XPATH, "//span[contains(@class, 'item-options') and not(text())]//ancestor::tr/td[@class='c5']")
-    down_arrow_price_button = (By.XPATH, "//span[contains(@class, 'item-options') and not(text())]")
-    down_arrow_price_menu = (By.XPATH, "//div[contains(@class, 'item-options')][@style='']")
-    down_arrow_price_menu_remove_item = (By.XPATH, "//div[@style='']//li[contains(@class, '-del')]")
-    all_items_removed_from_basket_text = (By.XPATH, "//div[@id='blocke'][not(contains(@style, 'none'))]//span")
+    item_count_text = (By.CSS_SELECTOR, "div.countEdit input")
+    item_price_text = (By.CSS_SELECTOR, "tr[data-code] td.c5")
+    down_arrow_price_button = (By.CLASS_NAME, "item-options__trigger")
+    down_arrow_price_menu = (By.CSS_SELECTOR, "div.item-options__container[style='']")
+    down_arrow_price_menu_remove_item = (By.CSS_SELECTOR, "div.item-options__container[style=''] li.item-options__option--del")
+    all_items_removed_from_basket_text = (By.CSS_SELECTOR, "div#blocke span")
 
     # Actions on basket page.
     def get_item_name(self):

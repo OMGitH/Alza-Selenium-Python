@@ -5,13 +5,13 @@ from element_handler import ElementHandler
 class LoginPage(ElementHandler):
 
     # Identification of elements on login page.
-    email_input = (By.XPATH, "//input[@id='userName' and not(@readonly)]")
-    password_input = (By.XPATH, "//input[@id='password' and not(@readonly)]")
-    sign_in_button_active = (By.XPATH, "//button[@id='btnLogin'][@class='btn btn-login mt-2']")
-    sign_in_button_disabled = (By.XPATH, "//button[@id='btnLogin'][@class='btn btn-login mt-2 invalid']")
+    email_input = (By.CSS_SELECTOR, "input#userName:not([readonly])")
+    password_input = (By.CSS_SELECTOR, "input#password:not([readonly])")
+    sign_in_button_active = (By.CSS_SELECTOR, "button#btnLogin:not(.invalid)")
+    sign_in_button_disabled = (By.CSS_SELECTOR, "button#btnLogin.invalid")
     login_dialog = (By.CLASS_NAME, "login-body")
-    provide_email_text = (By.XPATH, "//label[@for='userName']/parent::div/span")
-    provide_password_text = (By.XPATH, "//label[@for='password']/parent::div/span")
+    provide_email_error_text = (By.XPATH, "//label[@for='userName']/following-sibling::span")
+    provide_password_error_text = (By.XPATH, "//label[@for='password']/following-sibling::span")
 
     # Actions on login page.
     def provide_email(self, username):
@@ -34,13 +34,13 @@ class LoginPage(ElementHandler):
         return flag
 
     def get_blank_email_text(self):
-        if self.element_handler_is_visible(self.provide_email_text):
-            email_text = self.element_handler_get_element_text(self.provide_email_text)
+        if self.element_handler_is_visible(self.provide_email_error_text):
+            email_text = self.element_handler_get_element_text(self.provide_email_error_text)
             return email_text
 
     def get_blank_password_text(self):
-        if self.element_handler_is_visible(self.provide_password_text):
-            password_text = self.element_handler_get_element_text(self.provide_password_text)
+        if self.element_handler_is_visible(self.provide_password_error_text):
+            password_text = self.element_handler_get_element_text(self.provide_password_error_text)
             return password_text
 
     def get_disabled_login_button_text(self):

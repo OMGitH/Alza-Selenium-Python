@@ -5,19 +5,19 @@ from element_handler import ElementHandler
 class TopSection(ElementHandler):
 
     # Identification of elements in top section of the page.
-    login_link = (By.XPATH, "//span[@data-testid='headerContextMenuToggleLogin']")
-    alza_main_page_icon = (By.XPATH, "//a[@data-testid='headerLogo']")
-    my_profile_link = (By.XPATH, "//a[@data-testid='headerNavigationMyProfile']/span")
-    signed_in_user_link = (By.XPATH, "//button[@data-testid='headerContextMenuToggle']")
-    logout_link = (By.XPATH, "//span[@data-testid='headerNavigationLogout']/*[name()='svg']")
-    alzaplus_image = (By.XPATH, "//img[contains(@src, 'Logo-AlzaPlus')]")
-    search_input = (By.XPATH, "//input[@data-testid='searchInput']")
-    search_button = (By.XPATH, "//button[@data-testid='button-search']")
-    search_suggestion = (By.XPATH, "//div[@data-testid='searchResultsContainer']")
-    search_suggestion_1st_item = (By.XPATH, "//div[contains(@data-testid, 'section')][1]/a[@data-testid='suggestion-item'][1]//span[text()]")
-    search_suggestion_show_all_results_button = (By.XPATH, "//a[@data-testid='button-showAllResults']")
-    basket_icon = (By.XPATH, "//a[@data-testid='headerBasketIcon']")
-    basket_icon_item_inside = (By.XPATH, "//a[@data-testid='headerBasketIcon']//span")
+    login_link = (By.CSS_SELECTOR, "[data-testid='headerContextMenuToggleLogin']")
+    alza_main_page_icon = (By.CSS_SELECTOR, "[data-testid='headerLogo']")
+    my_profile_link = (By.CSS_SELECTOR, "[data-testid='headerNavigationMyProfile'] span")
+    signed_in_user_link = (By.CSS_SELECTOR, "[data-testid='headerContextMenuToggle']")
+    logout_link_icon = (By.CSS_SELECTOR, "[data-testid='headerNavigationLogout'] svg")
+    alzaplus_image = (By.CSS_SELECTOR, "img[src*='Logo-AlzaPlus']")
+    search_input = (By.CSS_SELECTOR, "input[data-testid='searchInput']")
+    search_button = (By.CSS_SELECTOR, "[data-testid='button-search']")
+    search_suggestions = (By.CSS_SELECTOR, "[data-testid='searchResultsContainer']")
+    search_suggestions_1st_item = (By.XPATH, "(//a[@data-testid='suggestion-item']//span[text()])[1]")
+    search_suggestions_show_all_results_button = (By.CSS_SELECTOR, "[data-testid='button-showAllResults']")
+    basket_icon = (By.CSS_SELECTOR, "[data-testid='headerBasketIcon']")
+    basket_icon_item_inside = (By.CSS_SELECTOR, "[data-testid='headerBasketIcon'] span")
 
     # Actions in top section of the page.
     def click_login_link(self):
@@ -30,22 +30,22 @@ class TopSection(ElementHandler):
         self.element_handler_click(self.my_profile_link, "'Můj profil' link", True)
 
     def click_logout_link(self):
-        if self.element_handler_is_visible(self.logout_link):
-            self.element_handler_click(self.logout_link, "'Odhlásit se' link", True)
+        if self.element_handler_is_visible(self.logout_link_icon):
+            self.element_handler_click(self.logout_link_icon, "'Odhlásit se' link", True)
 
     def search_provide_value(self, value):
         self.element_handler_clear_input_by_pressing_backspace(self.search_input, "value", "search input field", True)
         self.element_handler_send_keys(self.search_input, value, "search input field", True)
-        self.element_handler_is_visible(self.search_suggestion)
+        self.element_handler_is_visible(self.search_suggestions)
 
     def click_search_button(self):
         self.element_handler_click(self.search_button, "'Hledat' button", True)
-        self.element_handler_is_invisible(self.search_suggestion)
+        self.element_handler_is_invisible(self.search_suggestions)
 
     def search_suggestion_click_1st_item(self):
-        if self.element_handler_is_visible(self.search_suggestion_1st_item) and self.element_handler_is_visible(self.search_suggestion_show_all_results_button):
-            self.element_handler_click(self.search_suggestion_1st_item, "Search suggestion 1st item", True)
-        self.element_handler_is_invisible(self.search_suggestion)
+        if self.element_handler_is_visible(self.search_suggestions_1st_item) and self.element_handler_is_visible(self.search_suggestions_show_all_results_button):
+            self.element_handler_click(self.search_suggestions_1st_item, "Search suggestion 1st item", True)
+        self.element_handler_is_invisible(self.search_suggestions)
 
     def login_link_is_visible(self):
         flag = self.element_handler_is_visible(self.login_link, handle_timeout_exception=True)

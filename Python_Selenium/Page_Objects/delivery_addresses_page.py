@@ -7,15 +7,15 @@ from report_logger import logger
 class DeliveryAddresses(ElementHandler):
 
 	# Identification of elements on delivery addresses page.
-	delivery_address_item = (By.XPATH, "//div[@data-testid='address']")
-	delivery_address_remove_button = (By.XPATH, "//button[@data-testid='button-deleteAddress']")
-	delivery_address_removal_confirmation_button = (By.XPATH, "//button[contains(@class, 'green')]")
-	remove_question_dialog = (By.XPATH, "//div[@role='dialog']")
-	name_text = (By.XPATH, "//span[@data-testid='name']")
-	street_and_number_text = (By.XPATH, "//span[@data-testid='street']")
-	zip_and_city_text = (By.XPATH, "//span[@data-testid='postCodeAndCityContainer']")
-	phone_text = (By.XPATH, "//span[@data-testid='phone']")
-	add_new_delivery_address_button = (By.XPATH, "//button[@data-testid='button-addAddress']")
+	delivery_address_item = (By.CSS_SELECTOR, "[data-testid='address']")
+	delivery_address_remove_button = (By.CSS_SELECTOR, "[data-testid='button-deleteAddress']")
+	delivery_address_removal_confirmation_button = (By.CSS_SELECTOR, "button.green")
+	remove_question_dialog = (By.CSS_SELECTOR, "div[role='dialog']")
+	name_text = (By.CSS_SELECTOR, "[data-testid='name']")
+	street_and_number_text = (By.CSS_SELECTOR, "[data-testid='street']")
+	zip_and_city_text = (By.CSS_SELECTOR, "[data-testid='postCodeAndCityContainer']")
+	phone_text = (By.CSS_SELECTOR, "[data-testid='phone']")
+	add_new_delivery_address_button = (By.CSS_SELECTOR, "[data-testid='button-addAddress']")
 
 	# Actions on delivery addresses page.
 	def remove_all_addresses_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):

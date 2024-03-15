@@ -5,8 +5,8 @@ from element_handler import ElementHandler
 class MyAccount(ElementHandler):
 
     # Identification of elements on my account page.
-    watchdogs_menu_item = (By.XPATH, "//a[@data-testid='menuButton-UserWatchDog']")
-    delivery_addresses_menu_item = (By.XPATH, "//a[@data-testid='menuButton-DeliveryAddresses']")
+    watchdogs_menu_item = (By.CSS_SELECTOR, "[data-testid='menuButton-UserWatchDog']")
+    delivery_addresses_menu_item = (By.CSS_SELECTOR, "[data-testid='menuButton-DeliveryAddresses']")
 
     # Actions on my account page.
     def click_watchdogs_menu_item(self):
