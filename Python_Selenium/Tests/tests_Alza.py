@@ -9,6 +9,7 @@ from Page_Objects.cookies_pane import CookiesPane
 from Page_Objects.watchdogs_page import Watchdogs
 from Page_Objects.watchdog_add_dialog import WatchdogAdd
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
+from Page_Objects.item_page import ItemPage
 from alza_module import AlzaModule
 import mixed_assertions as mixed_assert
 from report_logger import logger
@@ -165,7 +166,7 @@ class TestsAlza:
         mixed_assert.equal(actual_search_result_title, test_data.search_result_header_via_search_button, f"Displayed header of looked up section is correct: '{actual_search_result_title}'.", f"Wrong header of looked up section is displayed. Actual header is '{actual_search_result_title}' but it shall be '{test_data.search_result_header_via_search_button}'. Seems wrong section is displayed.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
         mixed_assert.greater(self.main_page.get_search_result_items_amount(), 0, "There are correctly items found.", "No items found, items shall be found.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
 
-        # Search for "recenze" and choose from suggestion:
+        # Search for "recenze" and choose from suggestions:
         logger.info("------- LOOK UP 'RECENZE' VIA FIRST SUGGESTION AND CHECK RESULT -------")
         self.top_section.search_provide_value(test_data.search_value_via_suggestion)
         self.top_section.search_suggestion_click_1st_item()
@@ -191,6 +192,7 @@ class TestsAlza:
         self.my_account_page = MyAccount(self.driver)
         self.watchdogs_page = Watchdogs(self.driver)
         self.watchdog_add_dialog = WatchdogAdd(self.driver)
+        self.item_page = ItemPage(self.driver)
         self.alza_module = AlzaModule(self.driver)
 
         # Reject all cookies and log into application, stop test execution if login failed.
@@ -204,19 +206,19 @@ class TestsAlza:
         # Navigate to pet supplies, open first pet supply, handle dialog if appears and get supply name.
         logger.info("------- GO TO PET SUPPLIES, AT FIRST PET SUPPLY SET WATCHDOG -------")
         self.main_page.hover_click_pet_supplies_menu_item()
-        self.main_page.click_first_pet_suppy_item()
-        self.main_page.pet_supply_close_dialog()
-        first_pet_supply_name = self.main_page.get_first_pet_supply_name()
+        self.main_page.click_first_pet_supply_item()
+        self.item_page.close_pet_supply_restricted_dialog()
+        first_pet_supply_name = self.item_page.get_pet_supply_name()
 
         # Watchdog dialog:
-        self.main_page.click_watch_price_link()
+        self.item_page.click_watch_price_link()
         # Check prefilled e-mail address.
         actual_email = self.watchdog_add_dialog.get_email()
         mixed_assert.equal(actual_email, test_data.user_name, f"Prefilled e-mail address is correct: '{actual_email}'.", f"Incorrect e-mail address prefilled. There is '{actual_email}' but there shall be '{test_data.user_name}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
         # Set watch price, confirm and close success popup.
         self.watchdog_add_dialog.set_price_limit(test_data.watchdog_price_limit)
         self.watchdog_add_dialog.click_confirm_button()
-        self.main_page.close_watchdog_success_add_note()
+        self.item_page.close_watchdog_success_add_note()
 
         # Check watchdogs page and remove item:
         # Go to watchdogs page.

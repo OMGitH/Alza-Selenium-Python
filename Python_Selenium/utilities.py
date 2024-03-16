@@ -97,7 +97,7 @@ def process_assertion(driver, report_screenshots_folder, tmp_test_urls_file_path
 		logger.debug(assertion_pass_message)
 
 
-def take_screenshot_assertion_failed(driver, report_screenshots_folder, assertion_type, value1="", value2="", boolean_value=""):
+def take_screenshot_assertion_failed(driver, report_screenshots_folder, assertion_type, value1, value2, boolean_value):
 	"""Function for taking and saving screenshot if assertion fails. Name of the screenshot is similar to failed assertion so that it is clear
 	which assertion	it belongs to, thus contains assertion values, assertion type, name of test file and code line number inside test
 	from which code leading to the assertion was executed. Screenshots for tests are saved under
