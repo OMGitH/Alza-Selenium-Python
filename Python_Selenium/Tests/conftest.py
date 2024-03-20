@@ -3,10 +3,10 @@ from datetime import datetime
 from selenium import webdriver
 import pytest
 from Tests.test_data import url
-from utilities import (get_exception_name_possibly_screenshot, check_exception_occurred, log_exception, add_screenshots_to_html_report,
-                       get_exception_log_record_from_previous_calls, html_report_log_section_manipulation, get_path_test_screenshots_folder,
-                       add_urls_to_html_report, get_url_save_to_file, make_folders_if_dont_exist, get_webdrivers_selenium_version_save_to_pytest_metadata,
-                       change_date_format_subtitle_html_report)
+from utilities import (check_exception_occurred, take_screenshot_into_memory, get_exception_name, get_exception_message, save_exception_screenshot_to_file,
+                       log_exception, add_screenshots_to_html_report, get_exception_log_record_from_previous_calls, html_report_log_section_manipulation,
+                       get_path_test_screenshots_folder, add_urls_to_html_report, get_url_save_to_file, make_folders_if_dont_exist,
+                       get_webdrivers_selenium_version_save_to_pytest_metadata, change_date_format_subtitle_html_report)
 from Config.config import browsers, urls_filename, reports_folder
 
 
@@ -20,7 +20,7 @@ def setup_and_teardown(request, metadata):
     elif request.param == "firefox":
         driver = webdriver.Firefox()
     else:
-        raise ValueError(f"FAILED during setup phase: Browser value '{request.param}' is not supported. Supported values are 'chrome' and 'firefox', check browsers in config.py file. No screenshot taken, no URL recorded. Test execution stopped.")
+        raise ValueError(f"FAILED during setup phase: Browser value '{request.param}' is not supported. Supported values are 'chrome' and 'firefox', check browsers in config.py file. No screenshot taken, no URL recorded. Test execution for browser '{request.param}' stopped.")
     driver.maximize_window()
     driver.get(url)
     request.cls.driver = driver
@@ -70,11 +70,14 @@ def pytest_runtest_makereport(item):
         if report.failed:
             # Get path to folder where screenshots for actual test are stored.
             path_test_screenshots_folder = get_path_test_screenshots_folder(item)
-            # Take screenshot and record URL in case of an exception, save it and create log record in html report.
+            # In case of exception take screenshot, get exception name and message, record URL and save it and create log record in html report.
             if check_exception_occurred(report.longreprtext):
-                exception, screenshot_name = get_exception_name_possibly_screenshot(report.longreprtext, take_screenshot=True, item=item, path_test_screenshots_folder=path_test_screenshots_folder)
-                url_report_link_title = get_url_save_to_file(item.cls.driver, screenshot_name, item.cls.tmp_test_urls_file_path)
-                log_exception(screenshot_name, exception, url_report_link_title)
+                exception_screenshot_in_memory = take_screenshot_into_memory(item.cls.driver)
+                exception_name = get_exception_name(report.longreprtext)
+                exception_message = get_exception_message(report.longreprtext)
+                exception_screenshot_name = save_exception_screenshot_to_file(exception_screenshot_in_memory, exception_name, path_test_screenshots_folder)
+                url_report_link_title = get_url_save_to_file(item.cls.driver, exception_screenshot_name, item.cls.tmp_test_urls_file_path)
+                log_exception(exception_screenshot_name, exception_name, url_report_link_title, exception_message)
             # Add all screenshots from screenshots folder and URLs from urls file to html report.
             add_screenshots_to_html_report(path_test_screenshots_folder, extras)
             add_urls_to_html_report(extras, item.cls.tmp_test_urls_file_path)
@@ -90,14 +93,14 @@ def pytest_html_report_title(report):
 def pytest_html_results_table_html(report, data):
     """Hook function used for configuration of tests log records in html report. Title "Captured stdout call" is changed to "Steps", under "Steps"
     there is added log record about exception (if occurred) from "Captured stdout teardown" section. Then date and time is removed
-    at desired log records, section "Captured stdout teardown" is removed (if it doesn't contain any other info) as well as whole section
+    at desired log records, section "Captured stdout teardown" is removed (if it doesn't contain any other info than exception) as well as whole section
     "Captured log call" that is uncolored duplicate "Steps" section.
     """
     exception_log_record = ""
     # If exception occurred, get actual exception and get log record about the exception that shall be added to "Steps".
     # The log record about exception is not present in "report" or "data" (at least not in time to use it and change html report).
     if report.when == "call" and check_exception_occurred(report.longreprtext):
-        exception = get_exception_name_possibly_screenshot(report.longreprtext)
+        exception = get_exception_name(report.longreprtext)
         exception_log_record = get_exception_log_record_from_previous_calls(exception)
     # Manipulations to rename section "Captured stdout call" to "Steps", to add log record about exception (if occurred)
     # to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole sections

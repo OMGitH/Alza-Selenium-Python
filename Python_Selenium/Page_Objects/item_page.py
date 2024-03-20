@@ -12,12 +12,12 @@ class ItemPage(ElementHandler):
 
     # Actions on item page.
     def close_pet_supply_restricted_dialog(self):
-        if self.element_handler_is_visible(self.pet_supply_restricted_dialog_agree_button, 2, True):
-            self.element_handler_click(self.pet_supply_restricted_dialog_agree_button, "'Souhlasím' button", True)
+        if self.element_handler_is_visible(self.pet_supply_restricted_dialog_agree_button, "'Souhlasím' button at restricted dialog", 2, True):
+            self.element_handler_click(self.pet_supply_restricted_dialog_agree_button, "'Souhlasím' button at restricted dialog", True)
 
     def get_pet_supply_name(self):
-        if self.element_handler_is_visible(self.pet_supply_item_name_header_text):
-            pet_supply_name = self.element_handler_get_element_text(self.pet_supply_item_name_header_text)
+        if self.element_handler_is_visible(self.pet_supply_item_name_header_text, "Pet supply item header"):
+            pet_supply_name = self.element_handler_get_element_text(self.pet_supply_item_name_header_text, "Pet supply item header")
             return pet_supply_name
 
     def click_watch_price_link(self):
@@ -25,4 +25,4 @@ class ItemPage(ElementHandler):
 
     def close_watchdog_success_add_note(self):
         self.element_handler_click(self.watchdog_success_add_note_close_button, "'X' button at 'Hlídací pes nastaven.' note", True)
-        self.element_handler_is_invisible(self.watchdog_success_add_note_close_button)
+        self.element_handler_is_invisible(self.watchdog_success_add_note_close_button, "'X' button at 'Hlídací pes nastaven.' note",)

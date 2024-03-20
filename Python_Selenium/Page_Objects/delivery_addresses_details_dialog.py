@@ -20,8 +20,8 @@ class DeliveryAddressesDetails(ElementHandler):
 		self.element_handler_send_keys(self.zip_input, data["zip"], "'PSČ' input field", True)
 		self.element_handler_send_keys(self.city_input, data["city"], "'Město' input field", True)
 		self.element_handler_send_keys(self.phone_input, data["phone"], "'Telefon' input field", True)
-		self.element_handler_click(self.save_button, "'Uložit' button", True)
-		self.element_handler_is_invisible(self.save_button)
+		self.element_handler_click(self.save_button, "'Uložit' button at delivery address details dialog", True)
+		self.element_handler_is_invisible(self.save_button, "'Uložit' button at delivery address details dialog")
 
 	def edit_address_details(self, index):
 		self.element_handler_clear_input_by_pressing_backspace(self.name_surname_input, "value", "'Jméno a příjmení' input field", True)
@@ -34,4 +34,4 @@ class DeliveryAddressesDetails(ElementHandler):
 		self.element_handler_send_keys(self.city_input, delivery_addresses_edited[index]["city"], "'Město' input field", True)
 		self.element_handler_clear_input_by_pressing_backspace(self.phone_input, "value", "'Telefon' input field", True)
 		self.element_handler_send_keys(self.phone_input, delivery_addresses_edited[index]["phone"], "'Telefon' input field", True)
-		self.element_handler_click(self.save_button, "'Uložit' button", True)
+		self.element_handler_click(self.save_button, "'Uložit' button at delivery address details dialog", True)

@@ -14,86 +14,86 @@ class ElementHandler:
 
     # Methods:
     def element_handler_click(self, element_identifier, element_name, report_entry, timeout=timeout_default):
-        WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier)).click()
+        WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier), f"{element_name} cannot be clicked.").click()
         if report_entry:
             logger.info(f"{element_name} clicked.")
 
     def element_handler_hover_click(self, element_identifier, element_name, report_entry, timeout=timeout_default):
-        element_hover_click = self.element_handler_is_visible(element_identifier, timeout=timeout)
+        element_hover_click = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier), f"{element_name} cannot be hovered over and clicked.")
         action = ActionChains(self.driver)
         action.move_to_element(element_hover_click).click().perform()
         if report_entry:
             logger.info(f"{element_name} hovered and clicked.")
 
     def element_handler_send_keys(self, element_identifier, value, element_name, report_entry, timeout=timeout_default):
-        WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier)).send_keys(value)
+        WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier), f"'{value}' cannot be typed into {element_name}.").send_keys(value)
         if report_entry:
             logger.info(f"'{value}' entered into {element_name}.")
 
     def element_handler_switch_to_frame(self, element_identifier, timeout=timeout_default):
-        WebDriverWait(self.driver, timeout).until(ec.frame_to_be_available_and_switch_to_it(element_identifier))
+        WebDriverWait(self.driver, timeout).until(ec.frame_to_be_available_and_switch_to_it(element_identifier), f"Cannot switch to frame.")
 
-    def element_handler_switch_back_from_frame(self):
+    def element_handler_switch_back_to_default_content(self):
         self.driver.switch_to.default_content()
 
-    def element_handler_is_visible(self, element_identifier, timeout=timeout_default, handle_timeout_exception=False):
+    def element_handler_is_visible(self, element_identifier, element_name, timeout=timeout_default, handle_timeout_exception=False):
         if not handle_timeout_exception:
-            element = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier))
+            element = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier), f"{element_name} is not visible.")
             return element
         else:
             try:
-                WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier))
+                WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier), f"{element_name} is not visible.")
                 flag = True
             except TimeoutException:
                 flag = False
         return flag
 
-    def element_handler_is_invisible(self, element_identifier, timeout=timeout_default, handle_timeout_exception=False):
+    def element_handler_is_invisible(self, element_identifier, element_name, timeout=timeout_default, handle_timeout_exception=False):
         if not handle_timeout_exception:
-            flag = WebDriverWait(self.driver, timeout).until(ec.invisibility_of_element_located(element_identifier))
+            flag = WebDriverWait(self.driver, timeout).until(ec.invisibility_of_element_located(element_identifier), f"{element_name} is not invisible.")
         else:
             try:
-                WebDriverWait(self.driver, timeout).until(ec.invisibility_of_element_located(element_identifier))
+                WebDriverWait(self.driver, timeout).until(ec.invisibility_of_element_located(element_identifier), f"{element_name} is not invisible.")
                 flag = True
             except TimeoutException:
                 flag = False
         return flag
 
-    def element_handler_get_element_text(self, element_identifier, timeout=timeout_default):
-        element_text = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier)).text
+    def element_handler_get_element_text(self, element_identifier, element_name, timeout=timeout_default):
+        element_text = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier), f"{element_name} cannot be obtained.").text
         return element_text
 
-    def element_handler_get_multiple_elements_text(self, element_identifier, timeout=timeout_default):
-        elements = WebDriverWait(self.driver, timeout).until(ec.visibility_of_all_elements_located(element_identifier))
+    def element_handler_get_multiple_elements_text(self, element_identifier, element_name, timeout=timeout_default):
+        elements = WebDriverWait(self.driver, timeout).until(ec.visibility_of_all_elements_located(element_identifier), f"{element_name} cannot be obtained.")
         elements_text = [element.text for element in elements]
         return elements_text
 
-    def element_handler_get_element_attribute_value(self, element_identifier, attribute, timeout=timeout_default):
-        element_attribute_value = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier)).get_attribute(attribute)
+    def element_handler_get_element_attribute(self, element_identifier, attribute, element_name, timeout=timeout_default):
+        element_attribute_value = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier), f"Attribute '{attribute}' of {element_name} cannot be obtained.").get_attribute(attribute)
         return element_attribute_value
 
     def element_handler_clear_input(self, element_identifier, element_name, report_entry, timeout=timeout_default):
-        WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier)).clear()
+        WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier), f"{element_name} cannot be cleared.").clear()
         if report_entry:
             logger.info(f"{element_name} cleared.")
 
     def element_handler_clear_input_by_pressing_backspace(self, element_identifier, attribute, element_name, report_entry, timeout=timeout_default):
-        element_attribute_value = self.element_handler_get_element_attribute_value(element_identifier, attribute, timeout)
+        element_attribute_value = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_identifier), f"{element_name} cannot be cleared.").get_attribute(attribute)
         number_of_hits = len(element_attribute_value)
-        WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier)).send_keys(number_of_hits * Keys.BACKSPACE)
+        WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable(element_identifier), f"{element_name} cannot be cleared.").send_keys(number_of_hits * Keys.BACKSPACE)
         if report_entry:
             logger.info(f"{element_name} cleared by pressing backspace.")
 
-    def element_handler_get_number_of_visible_elements(self, element_identifier, timeout=2):
+    def element_handler_get_number_of_visible_elements(self, element_identifier, element_name, timeout=2):
         try:
-            elements = WebDriverWait(self.driver, timeout).until(ec.visibility_of_all_elements_located(element_identifier))
+            elements = WebDriverWait(self.driver, timeout).until(ec.visibility_of_all_elements_located(element_identifier), f"Number of {element_name} cannot be obtained.")
             number_of_elements = len(elements)
         except TimeoutException:
             number_of_elements = 0
         return number_of_elements
 
-    def element_handler_get_multiple_visible_elements(self, element_identifier, timeout=timeout_default):
-        elements = WebDriverWait(self.driver, timeout).until(ec.visibility_of_all_elements_located(element_identifier))
+    def element_handler_get_multiple_visible_elements(self, element_identifier, element_name, timeout=timeout_default):
+        elements = WebDriverWait(self.driver, timeout).until(ec.visibility_of_all_elements_located(element_identifier), f"{element_name} cannot be obtained.")
         return elements
 
     def element_handler_get_state(self, *elements_identifiers, number_of_checks=40, check_wait=0.25):

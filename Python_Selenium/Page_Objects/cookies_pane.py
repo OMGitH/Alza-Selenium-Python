@@ -13,5 +13,5 @@ class CookiesPane(ElementHandler):
         self.element_handler_click(self.reject_all_button, "'Odmítnout vše' button", True)
 
     def cookies_pane_is_invisible(self, handle_timeout_exception=False):
-        flag = self.element_handler_is_invisible(self.cookies_pane, handle_timeout_exception=handle_timeout_exception)
+        flag = self.element_handler_is_invisible(self.cookies_pane, "Cookies pane", handle_timeout_exception=handle_timeout_exception)
         return flag

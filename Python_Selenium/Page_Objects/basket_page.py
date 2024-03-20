@@ -17,38 +17,38 @@ class Basket(ElementHandler):
 
     # Actions on basket page.
     def get_item_name(self):
-        if self.element_handler_is_visible(self.item):
-            item_name = self.element_handler_get_element_text(self.item)
+        if self.element_handler_is_visible(self.item, "Item name in basket"):
+            item_name = self.element_handler_get_element_text(self.item, "Item name in basket")
             return item_name
 
     def get_item_count(self):
-        if self.element_handler_is_visible(self.item_count_text):
-            item_count = self.element_handler_get_element_attribute_value(self.item_count_text, "value")
+        if self.element_handler_is_visible(self.item_count_text, "Item count in basket"):
+            item_count = self.element_handler_get_element_attribute(self.item_count_text, "value", "Item count in basket")
             return int(item_count)
 
     def get_item_price(self):
-        if self.element_handler_is_visible(self.item_price_text):
-            item_price = self.element_handler_get_element_text(self.item_price_text)
+        if self.element_handler_is_visible(self.item_price_text, "Item price in basket"):
+            item_price = self.element_handler_get_element_text(self.item_price_text, "Item price in basket")
             item_price = item_price.replace(" ", "")
             return item_price
 
     def get_text_once_all_items_removed(self):
-        if self.element_handler_is_visible(self.all_items_removed_from_basket_text):
-            all_items_removed_message = self.element_handler_get_element_text(self.all_items_removed_from_basket_text)
+        if self.element_handler_is_visible(self.all_items_removed_from_basket_text, "Text 'Jsem tak prázdný...'"):
+            all_items_removed_message = self.element_handler_get_element_text(self.all_items_removed_from_basket_text, "Text 'Jsem tak prázdný...'")
             return all_items_removed_message
 
     def remove_all_items_from_basket(self, number_of_checks=10, check_wait=0.5):
         removed_items = 0
         while self.element_handler_get_state(self.down_arrow_price_button, self.all_items_removed_from_basket_text) == self.down_arrow_price_button:
-            number_of_items = self.element_handler_get_number_of_visible_elements(self.down_arrow_price_button)
+            number_of_items = self.element_handler_get_number_of_visible_elements(self.down_arrow_price_button, "Down arrow price button")
             self.element_handler_click(self.down_arrow_price_button, "Down arrow price button", True)
-            self.element_handler_click(self.down_arrow_price_menu_remove_item, "'Odstranit' down arrow menu item", True)
-            self.element_handler_is_invisible(self.down_arrow_price_menu)
+            self.element_handler_click(self.down_arrow_price_menu_remove_item, "'Odstranit' down arrow price menu item", True)
+            self.element_handler_is_invisible(self.down_arrow_price_menu, "Down arrow price menu")
             removed_items += 1
             # It seems Firefox doesn't wait for the basket page to be fully refreshed, following code waits for page to get refreshed.
             if number_of_items != 0:
                 for _ in range(number_of_checks):
-                    number_of_items_after_removal = self.element_handler_get_number_of_visible_elements(self.down_arrow_price_button)
+                    number_of_items_after_removal = self.element_handler_get_number_of_visible_elements(self.down_arrow_price_button, "Down arrow price button")
                     if number_of_items_after_removal == 0 or number_of_items_after_removal == number_of_items - 1:
                         break
                     sleep(check_wait)

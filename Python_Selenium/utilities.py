@@ -5,7 +5,7 @@ conftest.py file which are defined here in order to keep conftest.py less comple
 import os
 from datetime import date
 from io import BytesIO
-from re import findall, sub
+from re import sub
 from inspect import currentframe
 from selenium import __version__
 import pytest
@@ -16,7 +16,7 @@ from Config.config import path_screenshots_folder, reports_folder
 
 
 # General functions:
-def take_screenshot_memory(driver):
+def take_screenshot_into_memory(driver):
 	"""Function for taking screenshot into memory."""
 	screenshot = driver.get_screenshot_as_png()
 	return screenshot
@@ -103,14 +103,14 @@ def take_screenshot_assertion_failed(driver, report_screenshots_folder, assertio
 	from which code leading to the assertion was executed. Screenshots for tests are saved under
 	"Tests\Reports\Screenshots\<name of report>\<name of test>\<name of screenshot>.png".
 	"""
-	screenshot = take_screenshot_memory(driver)
+	screenshot = take_screenshot_into_memory(driver)
 	screenshot_name, path_to_actual_screenshot = create_screenshot_filename_path_assertion_failed(report_screenshots_folder, assertion_type, value1, value2, boolean_value)
 	save_screenshot_png_file(screenshot, path_to_actual_screenshot)
 	return screenshot_name
 
 
 def create_screenshot_filename_path_assertion_failed(report_screenshots_folder, assertion_type, value1="", value2="", boolean_value=""):
-	"""Function for creation of name of screenshot file and path to it when assertion fails."""
+	"""Function for creation of screenshot filename and path to it when assertion fails."""
 	running_test_name_including_browser = os.environ.get("PYTEST_CURRENT_TEST").split(":")[-1].split(" ")[0]
 	test_screenshots_folder = running_test_name_including_browser
 	# Get only running test name without additional information like browser.
@@ -159,55 +159,67 @@ def check_exception_occurred(failure_record):
 	return flag
 
 
-def get_exception_name_possibly_screenshot(failure_record, take_screenshot=False, item="", path_test_screenshots_folder=""):
-	"""Function for getting actual exception if it occurred and also can be set to take screenshot
-	(and save it to a file among failed assertions screenshots)	of application once the exception occurred.
+def get_exception_name(failure_record):
+	"""Function for getting actual exception name if it occurred.
 	Note:
-	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns True).
-	- Function returns 1 or 2 values:
-	- - In case screenshot shall NOT be taken, 1 value is returned (the exception itself as "exception").
-	- - In case screenshot shall be taken, 2 values are returned (the exception itself as "exception" and "screenshot_name").
+	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns "True").
 	"""
-	# If set to "True" takes screenshot into memory as soon as possible.
-	if take_screenshot:
-		driver = item.cls.driver
-		screenshot = take_screenshot_memory(driver)
-	# Get last line of failure record, as name of exception is there.
+	# Actual exception name is the last word at last line of failure record.
 	failure_record_last_line = get_last_line_from_record(failure_record)
-	fail_words = ["Exception", "Error"]
-	for fail_word in fail_words:
-		# Get all words containing "Exception" or "Error" that are at last line of failure record.
-		exceptions = findall(f"[a-zA-Z]*{fail_word}[a-zA-Z]*", failure_record_last_line)
-		if exceptions:
-			# Get actual exception by returning the last occurrence of the word as the actual exception is mentioned
-			# at the end of failure record.
-			exception = exceptions[-1]
-			if take_screenshot:
-				screenshot_name = f"{exception}.png"
-				# If there is a character in exception name that cannot be present in filename then name of exception
-				# is replaced by general "exception".
-				if not check_filename_is_correct(screenshot_name):
-					screenshot_name = "exception.png"
-				path_screenshot_file = os.path.join(path_test_screenshots_folder, screenshot_name)
-				make_folders_if_dont_exist(path_test_screenshots_folder)
-				save_screenshot_png_file(screenshot, path_screenshot_file)
-				return exception, screenshot_name
-			return exception
+	exception_name = failure_record_last_line.split()[-1]
+	exception_name = exception_name.strip()
+	return exception_name
 
 
-def log_exception(screenshot_name, exception, url_report_link_title):
+def get_exception_message(failure_record):
+	"""Function for getting actual exception message (if it is present) if exception occurred.
+	Note:
+	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns "True").
+	"""
+	exception_message = ""
+	failure_record_lines = failure_record.splitlines()
+	for line in failure_record_lines:
+		if "Message:" in line:
+			exception_message = line.split("Message:")[-1]
+			exception_message = exception_message.strip()
+			break
+	return exception_message
+
+
+def save_exception_screenshot_to_file(screenshot_in_memory, exception_name, path_test_screenshots_folder):
+	"""Function for saving exception screenshot that is in memory to file with exception name (among failed assertions screenshots) once the exception occurred.
+	Note:
+	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns "True").
+	"""
+	screenshot_name = f"{exception_name}.png"
+	# If there is a character in exception name that cannot be present in filename then name of exception
+	# is replaced by general "exception".
+	if not check_filename_is_correct(screenshot_name):
+		screenshot_name = "exception.png"
+	path_screenshot_file = os.path.join(path_test_screenshots_folder, screenshot_name)
+	make_folders_if_dont_exist(path_test_screenshots_folder)
+	save_screenshot_png_file(screenshot_in_memory, path_screenshot_file)
+	return screenshot_name
+
+
+def log_exception(screenshot_name, exception_name, url_report_link_title, exception_msg):
 	"""Function for creation of a log record in case of exception."""
 	screenshot_message = f"\n\t\t\t\t- Screenshot '{screenshot_name}' taken."
 	url_message = f"\n\t\t\t\t- URL '{url_report_link_title}' recorded."
 	test_stop_message = f"\n\t\t\t\t- Test execution stopped."
-	exception_message = f"'{exception}' occurred." + screenshot_message + url_message + test_stop_message
-	logger.warning(exception_message)
+	# If exception message is not empty, it is added to exception log record.
+	if exception_msg:
+		exception_message = f"\n\t\t\t\t- {exception_msg}"
+		exception_log_message = f"'{exception_name}' occurred:" + exception_message + screenshot_message + url_message + test_stop_message
+	else:
+		exception_log_message = f"'{exception_name}' occurred:" + screenshot_message + url_message + test_stop_message
+	logger.warning(exception_log_message)
 
 
 def get_exception_log_record_from_previous_calls(exception):
 	"""Function for obtaining log record about exception from previous calls by looping back through frames.
 	Note:
-	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns True).
+	- Should be called only when there was an exception (i.e. when function "check_exception_occurred" returns "True").
 	"""
 	exception_log_record = ""
 	separator = "\x1b[0m\n"

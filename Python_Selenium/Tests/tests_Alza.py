@@ -7,7 +7,7 @@ from Page_Objects.my_account_page import MyAccount
 from Page_Objects.top_section import TopSection
 from Page_Objects.cookies_pane import CookiesPane
 from Page_Objects.watchdogs_page import Watchdogs
-from Page_Objects.watchdog_add_dialog import WatchdogAdd
+from Page_Objects.watchdogs_add_dialog import WatchdogAdd
 from Page_Objects.delivery_addresses_page import DeliveryAddresses
 from Page_Objects.item_page import ItemPage
 from alza_module import AlzaModule
@@ -203,7 +203,7 @@ class TestsAlza:
         logger.info("------- PRECONDITION: EMPTY WATCHDOGS PAGE IF THERE ARE ITEMS AND GO BACK TO ALZA MAIN PAGE -------")
         self.alza_module.empty_watchdogs_page_if_watched_items()
 
-        # Navigate to pet supplies, open first pet supply, handle dialog if appears and get supply name.
+        # Navigate to pet supplies, open first pet supply, handle restricted dialog if appears and get supply name.
         logger.info("------- GO TO PET SUPPLIES, AT FIRST PET SUPPLY SET WATCHDOG -------")
         self.main_page.hover_click_pet_supplies_menu_item()
         self.main_page.click_first_pet_supply_item()

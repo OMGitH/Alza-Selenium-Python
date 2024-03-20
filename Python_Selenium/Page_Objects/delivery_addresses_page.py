@@ -20,16 +20,16 @@ class DeliveryAddresses(ElementHandler):
 	# Actions on delivery addresses page.
 	def remove_all_addresses_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
 		removed_addresses = 0
-		while self.element_handler_is_visible(self.delivery_address_remove_button, 2, True):
-			number_of_addresses = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
+		while self.element_handler_is_visible(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", 2, True):
+			number_of_addresses = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses")
 			self.element_handler_click(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", True)
 			self.element_handler_click(self.delivery_address_removal_confirmation_button, "'Smazat' button", True)
-			self.element_handler_is_invisible(self.remove_question_dialog)
+			self.element_handler_is_invisible(self.remove_question_dialog, "Delivery address remove question dialog")
 			removed_addresses += 1
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for page to get refreshed.
 			if number_of_addresses != 0:
 				for _ in range(number_of_checks):
-					number_of_addresses_after_removal = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button)
+					number_of_addresses_after_removal = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses")
 					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break
 					sleep(check_wait)
@@ -42,16 +42,16 @@ class DeliveryAddresses(ElementHandler):
 		self.element_handler_click(self.add_new_delivery_address_button, "'Přidat novou adresu' button", True)
 
 	def get_number_of_addresses(self):
-		number_of_addresses = self.element_handler_get_number_of_visible_elements(self.delivery_address_item)
+		number_of_addresses = self.element_handler_get_number_of_visible_elements(self.delivery_address_item, "Delivery address item")
 		return number_of_addresses
 
 	def get_addresses_data(self, number_of_addresses):
 		delivery_addresses = []
 		# Get name and surname, street and number, zip and city and phone for all delivery addresses.
-		addresses_names_surnames = self.element_handler_get_multiple_elements_text(self.name_text)
-		addresses_street_and_number = self.element_handler_get_multiple_elements_text(self.street_and_number_text)
-		addresses_zip_and_city = self.element_handler_get_multiple_elements_text(self.zip_and_city_text)
-		addresses_phones = self.element_handler_get_multiple_elements_text(self.phone_text)
+		addresses_names_surnames = self.element_handler_get_multiple_elements_text(self.name_text, "Names and surnames at all delivery addresses")
+		addresses_street_and_number = self.element_handler_get_multiple_elements_text(self.street_and_number_text, "Streets and numbers at all delivery addresses")
+		addresses_zip_and_city = self.element_handler_get_multiple_elements_text(self.zip_and_city_text, "Zips and cities at all delivery addresses")
+		addresses_phones = self.element_handler_get_multiple_elements_text(self.phone_text, "Phones at all delivery addresses")
 		# Fill list with dictionary per delivery address with data so that it is similar to the list in test_data and return it.
 		for index in range(number_of_addresses):
 			address = {}
@@ -66,7 +66,7 @@ class DeliveryAddresses(ElementHandler):
 		return delivery_addresses
 
 	def get_addresses(self):
-		addresses = self.element_handler_get_multiple_visible_elements(self.delivery_address_item)
+		addresses = self.element_handler_get_multiple_visible_elements(self.delivery_address_item, "Delivery address item")
 		return addresses
 
 	def click_address_item_as_argument(self, address):

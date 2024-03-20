@@ -22,21 +22,21 @@ class MainPage(ElementHandler):
     # Actions on main page.
     def hover_click_computers_notebooks_menu_item(self):
         self.element_handler_hover_click(self.computers_notebooks_menu_item, "'Počítače a notebooky' menu item", True)
-        self.element_handler_is_visible(self.category_section_header_text)
+        self.element_handler_is_visible(self.category_section_header_text, "'Počítače a notebooky' section header")
 
     def hover_click_pet_supplies_menu_item(self):
         self.element_handler_hover_click(self.pet_supplies_menu_item, "'Chovatelské potřeby' menu item", True)
-        self.element_handler_is_visible(self.category_section_header_text)
+        self.element_handler_is_visible(self.category_section_header_text, "'Chovatelské potřeby' section header")
 
     def click_computers_tile(self):
         self.element_handler_click(self.computers_tile, "'Počítače' tile", True, 50)
 
     def click_first_pet_supply_item(self):
-        self.element_handler_click(self.first_pet_supply_item_name_link, "'Chovatelské potřeby' item", True)
+        self.element_handler_click(self.first_pet_supply_item_name_link, "First pet supply item name link", True)
 
     def get_first_computer_name(self):
-        if self.element_handler_is_visible(self.first_computer_name_text):
-            first_computer_name = self.element_handler_get_element_text(self.first_computer_name_text)
+        if self.element_handler_is_visible(self.first_computer_name_text, "First computer name"):
+            first_computer_name = self.element_handler_get_element_text(self.first_computer_name_text, "First computer name")
             # It may happen there is a note in name, either inside "()", starting by "-" or with word "záruka" and following text. It is needed to remove such a note
             # as it is not present in item name inside basket.
             unwanted_texts = ["(", "-", "záruka"]
@@ -48,27 +48,27 @@ class MainPage(ElementHandler):
             return first_computer_name
 
     def get_first_computer_price(self):
-        if self.element_handler_is_visible(self.first_computer_price_text):
-            price = self.element_handler_get_element_text(self.first_computer_price_text)
+        if self.element_handler_is_visible(self.first_computer_price_text, "First computer price"):
+            price = self.element_handler_get_element_text(self.first_computer_price_text, "First computer price")
             price = price.replace(" ", "")
             price = price.replace(",-", "Kč")
             return price
 
     def click_first_computer_put_to_basket_button(self):
-        self.element_handler_click(self.first_computer_put_to_basket_button, "'Do košíku' button", True)
-        self.element_handler_is_visible(self.first_computer_added_to_basket_text)
+        self.element_handler_click(self.first_computer_put_to_basket_button, "'Do košíku' button at first computer", True)
+        self.element_handler_is_visible(self.first_computer_added_to_basket_text, "Text 'Přidáno do košíku' at first computer")
 
     def get_search_result_header(self):
-        if self.element_handler_is_visible(self.search_result_header_text):
-            result_header = self.element_handler_get_element_text(self.search_result_header_text)
+        if self.element_handler_is_visible(self.search_result_header_text, "Search result header"):
+            result_header = self.element_handler_get_element_text(self.search_result_header_text, "Search result header")
             return result_header
 
     def get_search_result_items_amount(self):
-        if self.element_handler_is_visible(self.search_result_number_of_items_found_text):
-            result_items_amount = self.element_handler_get_element_text(self.search_result_number_of_items_found_text)
+        if self.element_handler_is_visible(self.search_result_number_of_items_found_text, "Amount of items found"):
+            result_items_amount = self.element_handler_get_element_text(self.search_result_number_of_items_found_text, "Amount of items found")
             return int(result_items_amount)
 
     def main_page_loaded_after_cookies_rejected(self):
         self.element_handler_switch_to_frame(self.sync_frame)
-        self.element_handler_is_visible(self.document_body_in_sync_frame)
-        self.element_handler_switch_back_from_frame()
+        self.element_handler_is_visible(self.document_body_in_sync_frame, "Document body in sync frame")
+        self.element_handler_switch_back_to_default_content()

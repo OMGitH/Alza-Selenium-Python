@@ -52,7 +52,7 @@ class AlzaModule:
 
 	def logout(self, driver, report_screenshots_folder, tmp_test_urls_file_path, interrupt_test=False):
 		self.top_section.click_signed_in_user_link()
-		self.top_section.click_logout_link()
+		self.top_section.click_logout_link_icon()
 		# Check successful logout.
 		mixed_assert.is_true(self.top_section.login_link_is_visible(), "Login link in the top section is correctly visible.", "Login link in the top section is not visible though it shall be.", driver, report_screenshots_folder, tmp_test_urls_file_path, interrupt_test)
 
