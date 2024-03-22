@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from element_handler import ElementHandler
+from Tests.test_data import blank_email_error_text, blank_password_error_text, signin_button_incorrect_user_name_password_error_text
 
 
 class LoginPage(ElementHandler):
@@ -34,19 +35,16 @@ class LoginPage(ElementHandler):
         return flag
 
     def get_blank_email_text(self):
-        if self.element_handler_is_visible(self.provide_email_error_text, "Error text 'Zadejte e-mailovou adresu'"):
-            email_text = self.element_handler_get_element_text(self.provide_email_error_text, "Error text 'Zadejte e-mailovou adresu'")
-            return email_text
+        email_error_text = self.element_handler_get_element_text(self.provide_email_error_text, f"E-mail error text '{blank_email_error_text}'")
+        return email_error_text
 
     def get_blank_password_text(self):
-        if self.element_handler_is_visible(self.provide_password_error_text, "Error text 'Zadejte prosím heslo'"):
-            password_text = self.element_handler_get_element_text(self.provide_password_error_text, "Error text 'Zadejte prosím heslo'")
-            return password_text
+        password_error_text = self.element_handler_get_element_text(self.provide_password_error_text, f"Password error text '{blank_password_error_text}'")
+        return password_error_text
 
     def get_disabled_login_button_text(self):
-        if self.element_handler_is_visible(self.sign_in_button_disabled, "Disabled sign in button"):
-            disabled_button_text = self.element_handler_get_element_text(self.sign_in_button_disabled, "Disabled sign in button text")
-            return disabled_button_text
+        disabled_button_text = self.element_handler_get_element_text(self.sign_in_button_disabled, f"Disabled sign in button text '{signin_button_incorrect_user_name_password_error_text}'")
+        return disabled_button_text
 
     def successful_login(self, username, password):
         self.provide_email(username)

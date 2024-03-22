@@ -6,9 +6,9 @@ user_name = "wedey95103@haizail.com"
 password = "PasHes12"
 incorrect_user_name = "aa@haizail.com"
 incorrect_password = "aaHes12"
-signin_button_incorrect_user_name_password_text = "Neplatné uživatelské jméno nebo heslo"
-blank_email_text = "Zadejte e-mailovou adresu"
-blank_password_text = "Zadejte prosím heslo"
+signin_button_incorrect_user_name_password_error_text = "Neplatné uživatelské jméno nebo heslo"
+blank_email_error_text = "Zadejte e-mailovou adresu"
+blank_password_error_text = "Zadejte prosím heslo"
 user_signed_in_text = user_name
 
 # test_basket_add_remove_item

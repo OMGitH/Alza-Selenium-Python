@@ -81,7 +81,7 @@ class AlzaModule:
 
 	# test_add_remove_delivery_addresses: Edit delivery addresses.
 	def delivery_addresses_edit_addresses(self):
-		addresses = self.delivery_addresses_page.get_addresses()
-		for index, address in enumerate(addresses):
-			self.delivery_addresses_page.click_address_item_as_argument(address)
+		delivery_addresses = self.delivery_addresses_page.get_delivery_addresses()
+		for index, delivery_address in enumerate(delivery_addresses):
+			self.delivery_addresses_page.click_delivery_address_item_as_argument(delivery_address)
 			self.delivery_addresses_details_dialog.edit_address_details(index)

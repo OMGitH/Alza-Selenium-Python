@@ -35,38 +35,34 @@ class MainPage(ElementHandler):
         self.element_handler_click(self.first_pet_supply_item_name_link, "First pet supply item name link", True)
 
     def get_first_computer_name(self):
-        if self.element_handler_is_visible(self.first_computer_name_text, "First computer name"):
-            first_computer_name = self.element_handler_get_element_text(self.first_computer_name_text, "First computer name")
-            # It may happen there is a note in name, either inside "()", starting by "-" or with word "záruka" and following text. It is needed to remove such a note
-            # as it is not present in item name inside basket.
-            unwanted_texts = ["(", "-", "záruka"]
-            for text in unwanted_texts:
-                text_index = str(first_computer_name).find(text)
-                if text_index != -1:
-                    first_computer_name = str(first_computer_name)[:text_index]
-                    first_computer_name = first_computer_name.strip()
-            return first_computer_name
+        first_computer_name = self.element_handler_get_element_text(self.first_computer_name_text, "First computer name")
+        # It may happen there is a note in name, either inside "()", starting by "-" or with word "záruka" and following text. It is needed to remove such a note
+        # as it is not present in item name inside basket.
+        unwanted_texts = ["(", "-", "záruka"]
+        for text in unwanted_texts:
+            text_index = str(first_computer_name).find(text)
+            if text_index != -1:
+                first_computer_name = str(first_computer_name)[:text_index]
+                first_computer_name = first_computer_name.strip()
+        return first_computer_name
 
     def get_first_computer_price(self):
-        if self.element_handler_is_visible(self.first_computer_price_text, "First computer price"):
-            price = self.element_handler_get_element_text(self.first_computer_price_text, "First computer price")
-            price = price.replace(" ", "")
-            price = price.replace(",-", "Kč")
-            return price
+        first_computer_price = self.element_handler_get_element_text(self.first_computer_price_text, "First computer price")
+        first_computer_price = first_computer_price.replace(" ", "")
+        first_computer_price = first_computer_price.replace(",-", "Kč")
+        return first_computer_price
 
     def click_first_computer_put_to_basket_button(self):
         self.element_handler_click(self.first_computer_put_to_basket_button, "'Do košíku' button at first computer", True)
         self.element_handler_is_visible(self.first_computer_added_to_basket_text, "Text 'Přidáno do košíku' at first computer")
 
     def get_search_result_header(self):
-        if self.element_handler_is_visible(self.search_result_header_text, "Search result header"):
-            result_header = self.element_handler_get_element_text(self.search_result_header_text, "Search result header")
-            return result_header
+        result_header = self.element_handler_get_element_text(self.search_result_header_text, "Search result header")
+        return result_header
 
-    def get_search_result_items_amount(self):
-        if self.element_handler_is_visible(self.search_result_number_of_items_found_text, "Amount of items found"):
-            result_items_amount = self.element_handler_get_element_text(self.search_result_number_of_items_found_text, "Amount of items found")
-            return int(result_items_amount)
+    def get_search_result_items_number(self):
+        result_items_number = self.element_handler_get_element_text(self.search_result_number_of_items_found_text, "Number of items found")
+        return int(result_items_number)
 
     def main_page_loaded_after_cookies_rejected(self):
         self.element_handler_switch_to_frame(self.sync_frame)

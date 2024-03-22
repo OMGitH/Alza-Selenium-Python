@@ -333,19 +333,19 @@ def change_date_format_subtitle_html_report(path_actual_html_report_file):
 	and in this sentence date is rewritten with today's date in correct format. Whole list with correction is then written into html report file.
 	"""
 	with open(path_actual_html_report_file, "r") as html_report:
-		html_report_content = html_report.readlines()
+		html_report_content_lines = html_report.readlines()
 
 	todays_date = date.today()
 	todays_date_formatted = todays_date.strftime("%d.%m.%Y")
 	pattern = "(on) \d{2}-[a-zA-Z]*-\d{4} (at)"
 	replace_by = rf"\1 {todays_date_formatted} \2"
-	for index, line in enumerate(html_report_content):
+	for index, line in enumerate(html_report_content_lines):
 		if "<p>Report generated on" in line:
-			html_report_content[index] = sub(pattern, replace_by, line)
+			html_report_content_lines[index] = sub(pattern, replace_by, line)
 			break
 
 	with open(path_actual_html_report_file, "w") as html_report:
-		html_report.writelines(html_report_content)
+		html_report.writelines(html_report_content_lines)
 
 
 def add_screenshots_to_html_report(path_test_screenshots_folder, extras):

@@ -107,8 +107,8 @@ def pytest_html_results_table_html(report, data):
     # If exception occurred, get actual exception and get log record about the exception that shall be added to "Steps".
     # The log record about exception is not present in "report" or "data" (at least not in time to use it and change html report).
     if report.when == "call" and check_exception_occurred(report.longreprtext):
-        exception = get_exception_name(report.longreprtext)
-        exception_log_record = get_exception_log_record_from_previous_calls(exception)
+        exception_name = get_exception_name(report.longreprtext)
+        exception_log_record = get_exception_log_record_from_previous_calls(exception_name)
     # Manipulations to rename section "Captured stdout call" to "Steps", to add log record about exception (if occurred)
     # to section "Steps", to remove date and time from log headers and log records about item removal and to remove whole sections
     # "Captured log call" and "Captured stdout teardown".

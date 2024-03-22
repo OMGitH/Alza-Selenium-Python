@@ -11,14 +11,13 @@ class ItemPage(ElementHandler):
     watchdog_success_add_note_close_button = (By.CSS_SELECTOR, "svg[class*='priceBox'][xmlns]")
 
     # Actions on item page.
-    def close_pet_supply_restricted_dialog(self):
+    def close_pet_supply_restricted_dialog_if_present(self):
         if self.element_handler_is_visible(self.pet_supply_restricted_dialog_agree_button, "'Souhlasím' button at restricted dialog", 2, True):
             self.element_handler_click(self.pet_supply_restricted_dialog_agree_button, "'Souhlasím' button at restricted dialog", True)
 
     def get_pet_supply_name(self):
-        if self.element_handler_is_visible(self.pet_supply_item_name_header_text, "Pet supply item header"):
-            pet_supply_name = self.element_handler_get_element_text(self.pet_supply_item_name_header_text, "Pet supply item header")
-            return pet_supply_name
+        pet_supply_item_name = self.element_handler_get_element_text(self.pet_supply_item_name_header_text, "Pet supply item header")
+        return pet_supply_item_name
 
     def click_watch_price_link(self):
         self.element_handler_click(self.watch_price_link, "'Hlídat cenu' link", True)

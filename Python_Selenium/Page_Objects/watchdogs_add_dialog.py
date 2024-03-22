@@ -12,9 +12,8 @@ class WatchdogAdd(ElementHandler):
 
 	# Actions on watchdog add dialog.
 	def get_email(self):
-		if self.element_handler_is_visible(self.email_input, "E-mail input field at watchdogs add dialog"):
-			email_address = self.element_handler_get_element_attribute(self.email_input, "value", "E-mail input field value at watchdogs add dialog")
-			return email_address
+		email_address = self.element_handler_get_element_attribute(self.email_input, "value", "E-mail input field value at watchdogs add dialog")
+		return email_address
 
 	def set_price_limit(self, value):
 		self.element_handler_hover_click(self.item_price_limit_checkbox, "'Při snížení ceny pod' checkbox", True)

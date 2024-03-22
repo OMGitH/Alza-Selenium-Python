@@ -47,9 +47,9 @@ class TestsAlza:
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is correctly visible.", "Login dialog is not visible though it shall be.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path, True)
         actual_blank_email_text = self.login_page.get_blank_email_text()
-        mixed_assert.equal(actual_blank_email_text, test_data.blank_email_text, f"Message for blank e-mail input field is correct: '{actual_blank_email_text}'.", f"Wrong message for blank e-mail input field. Actual message is '{actual_blank_email_text}' but it shall be '{test_data.blank_email_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        mixed_assert.equal(actual_blank_email_text, test_data.blank_email_error_text, f"Message for blank e-mail input field is correct: '{actual_blank_email_text}'.", f"Wrong message for blank e-mail input field. Actual message is '{actual_blank_email_text}' but it shall be '{test_data.blank_email_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
         actual_blank_password_text = self.login_page.get_blank_password_text()
-        mixed_assert.equal(actual_blank_password_text, test_data.blank_password_text, f"Message for blank password input field is correct: '{actual_blank_password_text}'.", f"Wrong message for blank password input field. Actual message is '{actual_blank_password_text}' but it shall be '{test_data.blank_password_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        mixed_assert.equal(actual_blank_password_text, test_data.blank_password_error_text, f"Message for blank password input field is correct: '{actual_blank_password_text}'.", f"Wrong message for blank password input field. Actual message is '{actual_blank_password_text}' but it shall be '{test_data.blank_password_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
         # Wrong e-mail and correct password provided.
         logger.info("------- UNSUCCESSFUL LOGIN: WRONG E-MAIL AND CORRECT PASSWORD PROVIDED -------")
         self.login_page.provide_email(test_data.incorrect_user_name)
@@ -57,7 +57,7 @@ class TestsAlza:
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is correctly visible.", "Login dialog is not visible though it shall be.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path, True)
         actual_disabled_login_button_text = self.login_page.get_disabled_login_button_text()
-        mixed_assert.equal(actual_disabled_login_button_text, test_data.signin_button_incorrect_user_name_password_text, f"Message at signin button when incorrect e-mail provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect e-mail provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        mixed_assert.equal(actual_disabled_login_button_text, test_data.signin_button_incorrect_user_name_password_error_text, f"Message at signin button when incorrect e-mail provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect e-mail provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
         # Correct e-mail and wrong password provided.
         logger.info("------- UNSUCCESSFUL LOGIN: CORRECT E-MAIL AND WRONG PASSWORD PROVIDED -------")
         self.login_page.provide_email(test_data.user_name)
@@ -65,7 +65,7 @@ class TestsAlza:
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is correctly visible.", "Login dialog is not visible though it shall be.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path, True)
         actual_disabled_login_button_text = self.login_page.get_disabled_login_button_text()
-        mixed_assert.equal(actual_disabled_login_button_text, test_data.signin_button_incorrect_user_name_password_text, f"Message at signin button when incorrect password provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect password provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        mixed_assert.equal(actual_disabled_login_button_text, test_data.signin_button_incorrect_user_name_password_error_text, f"Message at signin button when incorrect password provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect password provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
 
         # Successful login.
         logger.info("------- SUCCESSFUL LOGIN -------")
@@ -164,7 +164,7 @@ class TestsAlza:
         # Check result.
         actual_search_result_title = self.main_page.get_search_result_header()
         mixed_assert.equal(actual_search_result_title, test_data.search_result_header_via_search_button, f"Displayed header of looked up section is correct: '{actual_search_result_title}'.", f"Wrong header of looked up section is displayed. Actual header is '{actual_search_result_title}' but it shall be '{test_data.search_result_header_via_search_button}'. Seems wrong section is displayed.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
-        mixed_assert.greater(self.main_page.get_search_result_items_amount(), 0, "There are correctly items found.", "No items found, items shall be found.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        mixed_assert.greater(self.main_page.get_search_result_items_number(), 0, "There are correctly items found.", "No items found, items shall be found.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
 
         # Search for "recenze" and choose from suggestions:
         logger.info("------- LOOK UP 'RECENZE' VIA FIRST SUGGESTION AND CHECK RESULT -------")
@@ -207,7 +207,7 @@ class TestsAlza:
         logger.info("------- GO TO PET SUPPLIES, AT FIRST PET SUPPLY SET WATCHDOG -------")
         self.main_page.hover_click_pet_supplies_menu_item()
         self.main_page.click_first_pet_supply_item()
-        self.item_page.close_pet_supply_restricted_dialog()
+        self.item_page.close_pet_supply_restricted_dialog_if_present()
         first_pet_supply_name = self.item_page.get_pet_supply_name()
 
         # Watchdog dialog:

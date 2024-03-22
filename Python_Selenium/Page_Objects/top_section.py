@@ -30,8 +30,7 @@ class TopSection(ElementHandler):
         self.element_handler_click(self.my_profile_link, "'Můj profil' link", True)
 
     def click_logout_link_icon(self):
-        if self.element_handler_is_visible(self.logout_link_icon, "'Odhlásit se' link icon"):
-            self.element_handler_click(self.logout_link_icon, "'Odhlásit se' link icon", True)
+        self.element_handler_click(self.logout_link_icon, "'Odhlásit se' link icon", True)
 
     def search_provide_value(self, value):
         self.element_handler_clear_input_by_pressing_backspace(self.search_input, "value", "Search input field", True)
@@ -52,9 +51,8 @@ class TopSection(ElementHandler):
         return flag
 
     def get_signed_in_user_text(self):
-        if self.element_handler_is_visible(self.signed_in_user_link, "Signed in user link"):
-            signed_in_user_text = self.element_handler_get_element_text(self.signed_in_user_link, "Signed in user link text")
-            return signed_in_user_text
+        signed_in_user_text = self.element_handler_get_element_text(self.signed_in_user_link, "Signed in user link text")
+        return signed_in_user_text
 
     def click_signed_in_user_link(self):
         self.element_handler_click(self.signed_in_user_link, "Signed in user link", True)

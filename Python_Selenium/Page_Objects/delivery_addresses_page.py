@@ -19,13 +19,13 @@ class DeliveryAddresses(ElementHandler):
 
 	# Actions on delivery addresses page.
 	def remove_all_addresses_from_delivery_addresses_page(self, number_of_checks=10, check_wait=0.5):
-		removed_addresses = 0
+		removed_delivery_addresses = 0
 		while self.element_handler_is_visible(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", 2, True):
 			number_of_addresses = self.element_handler_get_number_of_visible_elements(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses")
 			self.element_handler_click(self.delivery_address_remove_button, "'X' button to remove address from delivery addresses", True)
 			self.element_handler_click(self.delivery_address_removal_confirmation_button, "'Smazat' button", True)
 			self.element_handler_is_invisible(self.remove_question_dialog, "Delivery address remove question dialog")
-			removed_addresses += 1
+			removed_delivery_addresses += 1
 			# It seems delivery addresses page UI is slow and not refreshed fast enough, following code waits for page to get refreshed.
 			if number_of_addresses != 0:
 				for _ in range(number_of_checks):
@@ -33,10 +33,10 @@ class DeliveryAddresses(ElementHandler):
 					if number_of_addresses_after_removal == 0 or number_of_addresses_after_removal == number_of_addresses - 1:
 						break
 					sleep(check_wait)
-		if removed_addresses == 0:
+		if removed_delivery_addresses == 0:
 			logger.info("\t- Nothing removed as there are no delivery addresses.")
 		else:
-			logger.info(f"\t- {removed_addresses} delivery address(es) removed.")
+			logger.info(f"\t- {removed_delivery_addresses} delivery address(es) removed.")
 
 	def click_add_new_address_button(self):
 		self.element_handler_click(self.add_new_delivery_address_button, "'Přidat novou adresu' button", True)
@@ -65,9 +65,9 @@ class DeliveryAddresses(ElementHandler):
 			delivery_addresses[index]["phone"] = addresses_phones[index].replace(" ", "").replace("+420", "")
 		return delivery_addresses
 
-	def get_addresses(self):
-		addresses = self.element_handler_get_multiple_visible_elements(self.delivery_address_item, "Delivery address item")
-		return addresses
+	def get_delivery_addresses(self):
+		delivery_addresses = self.element_handler_get_multiple_visible_elements(self.delivery_address_item, "Delivery address item")
+		return delivery_addresses
 
-	def click_address_item_as_argument(self, address):
-		self.element_handler_click(address, "Address tile", True)
+	def click_delivery_address_item_as_argument(self, delivery_address):
+		self.element_handler_click(delivery_address, "Delivery address tile", True)

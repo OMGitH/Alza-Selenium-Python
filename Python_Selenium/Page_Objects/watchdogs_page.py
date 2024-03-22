@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from element_handler import ElementHandler
 from report_logger import logger
+from Tests.test_data import text_once_all_items_removed_from_watchdogs_page
 
 
 class Watchdogs(ElementHandler):
@@ -31,21 +32,18 @@ class Watchdogs(ElementHandler):
 			logger.info(f"\t- {removed_watchdogs} watchdog(s) removed.")
 
 	def get_watchdog_item_name(self):
-		if self.element_handler_is_visible(self.item_name_link, "Item name link at watchdogs page"):
-			watchdog_item_name = self.element_handler_get_element_text(self.item_name_link, "Item name link text at watchdogs page")
-			return watchdog_item_name
+		watchdog_item_name = self.element_handler_get_element_text(self.item_name_link, "Item name link text at watchdogs page")
+		return watchdog_item_name
 
 	def get_price_limit_provided(self):
-		if self.element_handler_is_visible(self.item_price_limit_input, "'Při snížení ceny pod' input field"):
-			watchdog_price_limit = self.element_handler_get_element_attribute(self.item_price_limit_input, "value", "'Při snížení ceny pod' input field value")
-			watchdog_price_limit = watchdog_price_limit.replace(",-", "")
-			return watchdog_price_limit
+		watchdog_price_limit = self.element_handler_get_element_attribute(self.item_price_limit_input, "value", "'Při snížení ceny pod' input field value")
+		watchdog_price_limit = watchdog_price_limit.replace(",-", "")
+		return watchdog_price_limit
 
 	def check_alert_price_is_checked(self):
 		flag = self.element_handler_is_visible(self.item_alert_price_checkbox_checked, "Checked alert price checkbox", handle_timeout_exception=True)
 		return flag
 
 	def get_text_once_all_items_removed(self):
-		if self.element_handler_is_visible(self.all_items_removed_from_watchdogs_page_text, "Text 'Momentálně pro vás nehlídáme žádné produkty'"):
-			all_items_removed_message = self.element_handler_get_element_text(self.all_items_removed_from_watchdogs_page_text, "Text 'Momentálně pro vás nehlídáme žádné produkty'")
-			return all_items_removed_message
+		all_items_removed_message = self.element_handler_get_element_text(self.all_items_removed_from_watchdogs_page_text, f"Text when watchdogs page is empty '{text_once_all_items_removed_from_watchdogs_page}'")
+		return all_items_removed_message
