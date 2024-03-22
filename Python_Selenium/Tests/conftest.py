@@ -86,8 +86,15 @@ def pytest_runtest_makereport(item):
 
 def pytest_html_report_title(report):
     """Hook function used for configuration of html report title."""
-    report_title = "Test execution report, " + datetime.now().strftime("%d.%m.%Y %H:%M:%S")
-    report.title = report_title
+    # Removing .html from report title.
+    new_report_title = report.title.split(".")[0]
+    # Getting date and time, their formatting and adding to report title.
+    new_report_title_date = new_report_title.split("_")[-2]
+    new_report_title_time = new_report_title.split("_")[-1]
+    new_report_title_date = new_report_title_date.replace("-", ".")
+    new_report_title_time = new_report_title_time.replace("-", ":")
+    new_report_title = f"Test execution report, {new_report_title_date} {new_report_title_time}"
+    report.title = new_report_title
 
 
 def pytest_html_results_table_html(report, data):
