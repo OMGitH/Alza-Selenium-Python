@@ -56,16 +56,16 @@ class TestsAlza:
         self.login_page.provide_password(test_data.password)
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is correctly visible.", "Login dialog is not visible though it shall be.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path, True)
-        actual_disabled_login_button_text = self.login_page.get_disabled_login_button_text()
-        mixed_assert.equal(actual_disabled_login_button_text, test_data.signin_button_incorrect_user_name_password_error_text, f"Message at signin button when incorrect e-mail provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect e-mail provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        actual_disabled_signin_button_text = self.login_page.get_disabled_signin_button_text()
+        mixed_assert.equal(actual_disabled_signin_button_text, test_data.signin_button_incorrect_user_name_password_error_text, f"Message at signin button when incorrect e-mail provided is as expected: '{actual_disabled_signin_button_text}'.", f"Wrong message at signin button when incorrect e-mail provided. Actual message is '{actual_disabled_signin_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
         # Correct e-mail and wrong password provided.
         logger.info("------- UNSUCCESSFUL LOGIN: CORRECT E-MAIL AND WRONG PASSWORD PROVIDED -------")
         self.login_page.provide_email(test_data.user_name)
         self.login_page.provide_password(test_data.incorrect_password)
         self.login_page.click_signin_button()
         mixed_assert.is_true(self.login_page.login_dialog_is_visible(), "Login dialog is correctly visible.", "Login dialog is not visible though it shall be.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path, True)
-        actual_disabled_login_button_text = self.login_page.get_disabled_login_button_text()
-        mixed_assert.equal(actual_disabled_login_button_text, test_data.signin_button_incorrect_user_name_password_error_text, f"Message at signin button when incorrect password provided is as expected: '{actual_disabled_login_button_text}'.", f"Wrong message at signin button when incorrect password provided. Actual message is '{actual_disabled_login_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        actual_disabled_signin_button_text = self.login_page.get_disabled_signin_button_text()
+        mixed_assert.equal(actual_disabled_signin_button_text, test_data.signin_button_incorrect_user_name_password_error_text, f"Message at signin button when incorrect password provided is as expected: '{actual_disabled_signin_button_text}'.", f"Wrong message at signin button when incorrect password provided. Actual message is '{actual_disabled_signin_button_text}' but it shall be '{test_data.signin_button_incorrect_user_name_password_error_text}'.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
 
         # Successful login.
         logger.info("------- SUCCESSFUL LOGIN -------")
