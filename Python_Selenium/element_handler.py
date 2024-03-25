@@ -115,3 +115,7 @@ class ElementHandler:
                 except TimeoutException:
                     pass
         raise Exception("None of expected states found.")
+
+    def element_handler_is_present(self, element_locator, element_name, timeout=timeout_default):
+        element = WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located(element_locator), f"{element_name} is not present.")
+        return element

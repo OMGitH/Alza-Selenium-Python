@@ -18,7 +18,7 @@ class TopSection(ElementHandler):
         "name": "'Můj profil' link"
     }
     signed_in_user_link = {
-        "locator": (By.CSS_SELECTOR, "[data-testid='headerContextMenuToggle']"),
+        "locator": (By.CSS_SELECTOR, "[data-testid='headerContextMenuToggleTitle']"),
         "name": "Signed in user link"
     }
     logout_link_icon = {
@@ -57,6 +57,10 @@ class TopSection(ElementHandler):
         "locator": (By.CSS_SELECTOR, "[data-testid='headerBasketIcon'] span"),
         "name": "Number of items at basket icon"
     }
+    sync_element = {
+        "locator": (By.ID, "facebook-jssdk"),
+        "name": "Sync element signaling page is loaded"
+    }
 
     # Actions in top section of the page.
     def click_login_link(self):
@@ -67,6 +71,7 @@ class TopSection(ElementHandler):
 
     def click_my_profile_link(self):
         self.element_handler_click(self.my_profile_link["locator"], self.my_profile_link["name"], True)
+        self.element_handler_is_present(self.sync_element["locator"], self.sync_element["name"])
 
     def click_logout_link_icon(self):
         self.element_handler_click(self.logout_link_icon["locator"], self.logout_link_icon["name"], True)
