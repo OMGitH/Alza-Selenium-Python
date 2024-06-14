@@ -16,7 +16,12 @@ def setup_and_teardown(request, metadata):
     and Selenium are obtained for html report "Environment" table and driver is quit).
     """
     if request.param == "chrome":
-        driver = webdriver.Chrome()
+        # Add Chrome options preference for disabling save address popup in Chrome.
+        chrome_preferences = {"autofill.profile_enabled": False}
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_experimental_option("prefs", chrome_preferences)
+
+        driver = webdriver.Chrome(options=chrome_options)
     elif request.param == "firefox":
         driver = webdriver.Firefox()
     else:
