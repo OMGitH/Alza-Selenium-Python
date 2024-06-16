@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
-from element_handler import ElementHandler
 from Tests.test_data import delivery_addresses_edited
+from element_handler import ElementHandler
 
 
 class DeliveryAddressesDetails(ElementHandler):

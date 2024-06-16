@@ -1,9 +1,9 @@
 from selenium.common import TimeoutException
 from selenium.webdriver import ActionChains, Keys
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from report_logger import logger
+from selenium.webdriver.support.ui import WebDriverWait
 from Config.config import timeout_default
+from report_logger import logger
 
 
 class ElementHandler:

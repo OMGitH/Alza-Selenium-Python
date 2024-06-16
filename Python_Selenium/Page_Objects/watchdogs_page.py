@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
+from Tests.test_data import text_once_all_items_removed_from_watchdogs_page
 from element_handler import ElementHandler
 from report_logger import logger
-from Tests.test_data import text_once_all_items_removed_from_watchdogs_page
 
 
 class Watchdogs(ElementHandler):

@@ -4,15 +4,15 @@ conftest.py file which are defined here in order to keep conftest.py less comple
 """
 import os
 from datetime import date
+from inspect import currentframe
 from io import BytesIO
 from re import sub
-from inspect import currentframe
-from selenium import __version__
 import pytest
 import pytest_html
 from PIL import Image
-from report_logger import logger
+from selenium import __version__
 from Config.config import path_screenshots_folder, reports_folder
+from report_logger import logger
 
 
 # General functions:

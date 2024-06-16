@@ -1,13 +1,16 @@
-from os import path
 from datetime import datetime
-from selenium import webdriver
+from os import path
 import pytest
-from Tests.test_data import url
-from utilities import (check_exception_occurred, take_screenshot_into_memory, get_exception_name, get_exception_message, save_exception_screenshot_to_file,
-                       log_exception, add_screenshots_to_html_report, get_exception_log_record_from_previous_calls, html_report_log_section_manipulation,
-                       get_path_test_screenshots_folder, add_urls_to_html_report, get_url_save_to_file, make_folders_if_dont_exist,
-                       get_webdrivers_selenium_version_save_to_pytest_metadata, change_date_format_subtitle_html_report)
+from selenium.webdriver import ChromeOptions, Chrome, Firefox
 from Config.config import browsers, urls_filename, reports_folder
+from Tests.test_data import url
+from utilities import (check_exception_occurred, take_screenshot_into_memory, get_exception_name, get_exception_message,
+                       save_exception_screenshot_to_file,
+                       log_exception, add_screenshots_to_html_report, get_exception_log_record_from_previous_calls,
+                       html_report_log_section_manipulation,
+                       get_path_test_screenshots_folder, add_urls_to_html_report, get_url_save_to_file,
+                       make_folders_if_dont_exist,
+                       get_webdrivers_selenium_version_save_to_pytest_metadata, change_date_format_subtitle_html_report)
 
 
 @pytest.fixture(params=browsers)
@@ -18,12 +21,12 @@ def setup_and_teardown(request, metadata):
     if request.param == "chrome":
         # Add Chrome options preference for disabling save address popup in Chrome.
         chrome_preferences = {"autofill.profile_enabled": False}
-        chrome_options = webdriver.ChromeOptions()
+        chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("prefs", chrome_preferences)
 
-        driver = webdriver.Chrome(options=chrome_options)
+        driver = Chrome(options=chrome_options)
     elif request.param == "firefox":
-        driver = webdriver.Firefox()
+        driver = Firefox()
     else:
         raise ValueError(f"FAILED during setup phase: Browser value '{request.param}' is not supported. Supported values are 'chrome' and 'firefox', check browsers in config.py file. No screenshot taken, no URL recorded. Test execution for browser '{request.param}' stopped.")
     driver.maximize_window()

@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
-from element_handler import ElementHandler
 from Tests.test_data import blank_email_error_text, blank_password_error_text, signin_button_incorrect_user_name_password_error_text
+from element_handler import ElementHandler
 
 
 class LoginPage(ElementHandler):
