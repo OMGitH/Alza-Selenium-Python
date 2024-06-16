@@ -99,6 +99,7 @@ class TopSection(ElementHandler):
         return signed_in_user_text
 
     def click_signed_in_user_link(self):
+        self.element_handler_is_present(self.sync_element["locator"], self.sync_element["name"])
         self.element_handler_click(self.signed_in_user_link["locator"], self.signed_in_user_link["name"], True)
         self.element_handler_is_visible(self.alzaplus_image["locator"], self.alzaplus_image["name"])
 
