@@ -37,7 +37,7 @@ class TestsAlza:
 
         # Reject all cookies.
         logger.info("------- REJECT ALL COOKIES -------")
-        self.alza_module.reject_all_cookies()
+        self.cookies_pane.click_reject_all_button()
         mixed_assert.is_true(self.cookies_pane.cookies_pane_is_invisible(handle_timeout_exception=True), "Cookies pane is correctly invisible.", "Cookies pane is still visible but shall not be.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
 
         # Unsuccessful login:

@@ -5,7 +5,6 @@ from element_handler import ElementHandler
 class MainPage(ElementHandler):
 
     # Identification of elements on main page.
-    sync_frame = (By.CSS_SELECTOR, "iframe[src*='creativecdn.com']")
     category_section_header_text = {
         "locator": (By.CSS_SELECTOR, "[class='categoryPage'] [itemprop='name']"),
         "computers notebooks name": "'Počítače a notebooky' section header",
@@ -50,10 +49,6 @@ class MainPage(ElementHandler):
     first_pet_supply_item_name_link = {
         "locator": (By.CSS_SELECTOR, "div[data-react-client-component-id='carousel0'] swiper-slide.swiper-slide-active [data-testid='itemName']"),
         "name": "First pet supply item name link"
-    }
-    document_body_in_sync_frame = {
-        "locator": (By.CSS_SELECTOR, "body"),
-        "name": "Document body in sync frame"
     }
 
     # Actions on main page.
@@ -100,8 +95,3 @@ class MainPage(ElementHandler):
     def get_search_result_items_number(self):
         result_items_number = self.element_handler_get_element_text(self.search_result_number_of_items_found_text["locator"], self.search_result_number_of_items_found_text["name"])
         return int(result_items_number)
-
-    def main_page_loaded_after_cookies_rejected(self):
-        self.element_handler_switch_to_frame(self.sync_frame)
-        self.element_handler_is_visible(self.document_body_in_sync_frame["locator"], self.document_body_in_sync_frame["name"])
-        self.element_handler_switch_back_to_default_content()
