@@ -377,15 +377,15 @@ def get_webdrivers_selenium_version_save_to_pytest_metadata(driver, metadata):
 	of html report as html report takes content of "Environment" table from pytest metadata.
 	"""
 	# Get Selenium version and add it to pytest metadata if it is not there.
-	if "Selenium" not in metadata:
+	if "Selenium" not in metadata.keys():
 		selenium_version = __version__
 		metadata["Selenium"] = selenium_version
 	# Get version of webdrivers (Chrome, Firefox) and add them to pytest metadata if they are not there.
-	if "Webdriver(s)" not in metadata:
+	if "Webdriver(s)" not in metadata.keys():
 		metadata["Webdriver(s)"] = {}
-	if "chrome" in driver.capabilities and "chrome" not in metadata["Webdriver(s)"]:
+	if "chrome" in driver.capabilities and "chrome" not in metadata["Webdriver(s)"].keys():
 		driver_version = driver.capabilities['chrome']['chromedriverVersion'].split()[0]
 		metadata["Webdriver(s)"]["chrome"] = driver_version
-	if "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"]:
+	if "moz:geckodriverVersion" in driver.capabilities and "firefox" not in metadata["Webdriver(s)"].keys():
 		driver_version = driver.capabilities['moz:geckodriverVersion']
 		metadata["Webdriver(s)"]["firefox"] = driver_version
