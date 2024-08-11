@@ -23,6 +23,8 @@ def setup_and_teardown(request, metadata):
         chrome_preferences = {"autofill.profile_enabled": False}
         chrome_options = ChromeOptions()
         chrome_options.add_experimental_option("prefs", chrome_preferences)
+        # Add Chrome options for disabling search engine choice window.
+        chrome_options.add_argument("--disable-search-engine-choice-screen")
 
         driver = Chrome(options=chrome_options)
     elif request.param == "firefox":
