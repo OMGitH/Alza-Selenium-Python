@@ -163,8 +163,9 @@ class TestsAlza:
         self.top_section.click_search_button()
         # Check result.
         actual_search_result_title = self.main_page.get_search_result_header()
+        actual_search_result_bicycles_number = self.main_page.get_search_result_items_number()
         mixed_assert.equal(actual_search_result_title, test_data.search_result_header_via_search_button, f"Displayed header of looked up section is correct: '{actual_search_result_title}'.", f"Wrong header of looked up section is displayed. Actual header is '{actual_search_result_title}' but it shall be '{test_data.search_result_header_via_search_button}'. Seems wrong section is displayed.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
-        mixed_assert.greater(self.main_page.get_search_result_items_number(), 0, "There are correctly items found.", "No items found, items shall be found.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
+        mixed_assert.greater(actual_search_result_bicycles_number, 0, "There are correctly items found.", "No items found, items shall be found.", self.driver, self.report_screenshots_folder, self.tmp_test_urls_file_path)
 
         # Search for "recenze" and choose from suggestions:
         logger.info("------- LOOK UP 'RECENZE' VIA FIRST SUGGESTION AND CHECK RESULT -------")

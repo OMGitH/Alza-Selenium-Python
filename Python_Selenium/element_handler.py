@@ -32,12 +32,6 @@ class ElementHandler:
         if report_entry:
             logger.info(f"'{value}' entered into {element_name}.")
 
-    def element_handler_switch_to_frame(self, element_locator, timeout=timeout_default):
-        WebDriverWait(self.driver, timeout).until(ec.frame_to_be_available_and_switch_to_it(element_locator), f"Cannot switch to frame.")
-
-    def element_handler_switch_back_to_default_content(self):
-        self.driver.switch_to.default_content()
-
     def element_handler_is_visible(self, element_locator, element_name, timeout=timeout_default, handle_timeout_exception=False):
         if not handle_timeout_exception:
             element = WebDriverWait(self.driver, timeout).until(ec.visibility_of_element_located(element_locator), f"{element_name} is not visible.")
